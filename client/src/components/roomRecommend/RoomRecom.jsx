@@ -3,7 +3,7 @@ import "./roomreco.scss";
 
 const RoomRecom = () => {
   return (
-    <div className="container">
+    <div className="container mb-5">
       <h3 className="mt-2">Best Room for you</h3>
       <div className="row flex-row flex-nowrap overflow-auto">
         <div className="col-3 ">
