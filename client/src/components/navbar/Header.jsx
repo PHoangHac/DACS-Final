@@ -1,11 +1,29 @@
 import React from "react";
 import logo from "../../assets/img/logo.svg";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
 
 //import components bootstrap 5
-import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
+import { Navbar, Container, Nav, NavDropdown, Button } from "react-bootstrap";
 
 const Header = () => {
+  const Navigate = useNavigate();
+
+  const { user, dispatch } = useContext(AuthContext);
+
+  const handleClick = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.get("auth/logout");
+      dispatch({ type: "LOGOUT" });
+      Navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -37,14 +55,26 @@ const Header = () => {
                 <NavDropdown.Item>Separated link</NavDropdown.Item>
               </NavDropdown>
             </Nav>
-            <Nav>
-              <Nav.Link as={Link} to={"/login"}>
-                Login
-              </Nav.Link>
-              <Nav.Link as={Link} to={"/register"}>
-                Register
-              </Nav.Link>
-            </Nav>
+            {!user && (
+              <Nav>
+                <Nav.Link as={Link} to={"/login"}>
+                  Login
+                </Nav.Link>
+                <Nav.Link as={Link} to={"/register"}>
+                  Register
+                </Nav.Link>
+              </Nav>
+            )}
+            {user && (
+              <Nav className="me-3">
+                {/* <Container> */}
+                <Navbar.Text className="text-info">
+                  Welcome ! {user.username}
+                </Navbar.Text>
+                {/* </Container> */}
+              </Nav>
+            )}
+            {user && <Button onClick={handleClick}>Logout</Button>}
           </Navbar.Collapse>
         </Container>
       </Navbar>

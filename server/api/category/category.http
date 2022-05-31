@@ -1,0 +1,26 @@
+#create category (post method)
+http://localhost:7070/api/category
+
+{
+    "name" : "Chung cư",
+    "type" : "apartment",
+    "img" : "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/M%E1%BB%99t_t%C3%B2a_nh%C3%A0_chung_c%C6%B0_trong_khu_%C4%91%C3%B4_th%E1%BB%8B_Tu%E1%BB%87_T%C4%A9nh%2C_th%C3%A0nh_ph%E1%BB%91_H%E1%BA%A3i_D%C6%B0%C6%A1ng%2C_t%E1%BB%89nh_H%E1%BA%A3i_D%C6%B0%C6%A1ng.jpg/1280px-M%E1%BB%99t_t%C3%B2a_nh%C3%A0_chung_c%C6%B0_trong_khu_%C4%91%C3%B4_th%E1%BB%8B_Tu%E1%BB%87_T%C4%A9nh%2C_th%C3%A0nh_ph%E1%BB%91_H%E1%BA%A3i_D%C6%B0%C6%A1ng%2C_t%E1%BB%89nh_H%E1%BA%A3i_D%C6%B0%C6%A1ng.jpg",
+    "featured" : false
+}
+
+#update category (put method)
+http://localhost:7070/api/category/:id
+
+
+#delete category (delete method)
+http://localhost:7070/api/category/:id
+
+
+#get one category(get)
+http://localhost:7070/api/category/:id
+
+
+#get all category(get)
+http://localhost:7070/api/category
+
+

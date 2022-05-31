@@ -1,0 +1,29 @@
+#create room (post method)
+http://localhost:7070/api/room/:categoryid
+
+{
+    "title" : "Chung cu moi xay",
+    "price" : "50",
+    "address" : "District 10",
+    "status" : "new",
+    "maxPeople" : 4,
+    "desc" : "trinh trang moi me khong hu hong",
+    "rating" : 5,
+}
+
+#update room (put method)
+http://localhost:7070/api/room/:id
+
+
+#delete room (delete method)
+http://localhost:7070/api/room/:id
+
+
+#get one room(get)
+http://localhost:7070/api/room/:id/:categoryid
+
+
+#get all room(get)
+http://localhost:7070/api/room
+
+

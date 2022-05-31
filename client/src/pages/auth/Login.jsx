@@ -1,85 +1,135 @@
-import React from "react";
-import logon_bg from "../../assets/img/bg-login.svg";
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthContext";
+import axios from "axios";
+import { Link } from "react-router-dom";
 import "./login.scss";
 
 const Login = () => {
+  const [showpass, setShowPass] = useState(false);
+
+  const togglePassword = () => {
+    setShowPass(!showpass);
+  };
+
+  const Navigate = useNavigate();
+
+  const [credentials, setCredentials] = useState({
+    username: undefined,
+    password: undefined,
+  });
+
+  const { loading, error, dispatch } = useContext(AuthContext);
+
+  const handleChange = (e) => {
+    setCredentials((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+  };
+
+  const handleClick = async (e) => {
+    e.preventDefault();
+    dispatch({ type: "LOGIN_START" });
+    try {
+      const res = await axios.post("auth/login", credentials);
+      dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
+      Navigate("/");
+    } catch (err) {
+      dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
+    }
+  };
+
   return (
-    <div className="container">
-      <section class="vh-100" style={{ backgroundcolor: "#eee" }}>
-        <div class="container h-100">
-          <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-lg-12 col-xl-11">
-              <div class="card text-black" style={{ borderradius: "25px" }}>
-                <div class="card-body p-md-5">
-                  <div class="row justify-content-center">
-                    <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-                      <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">
-                        Sign In
-                      </p>
-
-                      <form class="mx-1 mx-md-4">
-                        <div class="d-flex flex-row align-items-center mb-4">
-                          <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                          <div class="form-outline flex-fill mb-0">
-                            <input
-                              type="text"
-                              id="form3Example1c"
-                              class="form-control"
-                            />
-                            <label class="form-label" for="form3Example1c">
-                              Your Name
-                            </label>
-                          </div>
-                        </div>
-
-                        <div class="d-flex flex-row align-items-center mb-4">
-                          <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                          <div class="form-outline flex-fill mb-0">
-                            <input
-                              type="password"
-                              id="form3Example4c"
-                              class="form-control"
-                            />
-                            <label class="form-label" for="form3Example4c">
-                              Password
-                            </label>
-                          </div>
-                        </div>
-
-                        <div class="form-check d-flex justify-content-center mb-5">
-                          <input
-                            class="form-check-input me-2"
-                            type="checkbox"
-                            value=""
-                            id="form2Example3c"
-                          />
-                          <label class="form-check-label" for="form2Example3">
-                            I agree all statements in{" "}
-                            <a href="#!">Terms of service</a>
-                          </label>
-                        </div>
-
-                        <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                          <button type="button" class="btn btn-primary btn-lg">
-                            Login
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                    <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-                      <img
-                        src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
-                        class="img-fluid"
-                        alt="Sample image"
-                      />
-                    </div>
-                  </div>
-                </div>
+    <div className="container mt-5 mb-5">
+      <div className="row d-flex align-items-center justify-content-center">
+        <div className="col-md-6">
+          <div className="card px-5 py-5 card-signup">
+            <div>{error && <span>{error.message}</span>}</div>
+            <h1 className="mt-3">SIGN IN </h1>
+            <form>
+              <div className="form-input form-signup">
+                <label htmlFor="username">Username :</label>
+                <i className="fa fa-user"></i>
+                <input
+                  type="text"
+                  id="username"
+                  onChange={handleChange}
+                  className="form-control form-control-input"
+                  placeholder="User name"
+                  required
+                />
               </div>
+
+              <div className="form-input form-signup">
+                <label htmlFor="password">Password :</label>
+                <i className="fa fa-lock"></i>
+                <input
+                  id="password"
+                  onChange={handleChange}
+                  className="form-control form-control-input"
+                  placeholder="password"
+                  type={showpass ? "text" : "password"}
+                  required
+                />
+              </div>
+
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id="flexCheckChecked"
+                  onClick={togglePassword}
+                />
+                <label className="form-check-label" htmlFor="flexCheckChecked">
+                  Show password
+                </label>
+              </div>
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id="flexCheckChecked"
+                />
+                <label className="form-check-label" htmlFor="flexCheckChecked">
+                  I agree all the statements
+                </label>
+              </div>
+
+              <button
+                disabled={loading}
+                onClick={handleClick}
+                className="btn btn-primary mt-4 signup"
+              >
+                Login
+              </button>
+            </form>
+
+            <div className="text-center mt-3">
+              <span>Or login with these social profile</span>
+            </div>
+
+            <div className="d-flex justify-content-center mt-4">
+              <span className="social">
+                <i className="fa fa-google"></i>
+              </span>
+              <span className="social">
+                <i className="fa fa-facebook"></i>
+              </span>
+              <span className="social">
+                <i className="fa fa-twitter"></i>
+              </span>
+              <span className="social">
+                <i className="fa fa-linkedin"></i>
+              </span>
+            </div>
+
+            <div className="text-center mt-4">
+              <span>Don't Have Account?</span>
+              <Link to={"/register"} className="text-decoration-none">
+                Register
+              </Link>
             </div>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 };

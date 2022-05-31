@@ -1,0 +1,18 @@
+
+
+#update user (put method)
+http://localhost:7070/api/user/:id
+
+
+#delete user (delete method)
+http://localhost:7070/api/user/:id
+
+
+#get one user(get)
+http://localhost:7070/api/user/:id
+
+
+#get all user(get
+http://localhost:7070/api/user
+
+
