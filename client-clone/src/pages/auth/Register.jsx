@@ -1,8 +1,35 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import "./register.scss";
+import { useNavigate } from "react-router-dom";
+import "./auth.scss";
 
 const Register = () => {
+  const [username, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+
+  const Navigate = useNavigate();
+
+  const handelClick = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post("auth/register", {
+        username: username,
+        password: password,
+        email: email,
+        address: address,
+        phone: phone,
+      });
+      alert("Register Successfull !");
+      Navigate("/login");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="container mt-5 mb-5">
       <div className="row d-flex align-items-center justify-content-center">
@@ -11,34 +38,66 @@ const Register = () => {
             <h1 className="mt-3">SIGN UP </h1>
             <form>
               <div className="form-input form-signup">
-                <label htmlFor="">Email :</label>
+                <label htmlFor="email">Email :</label>
                 <i className="fa fa-envelope"></i>
                 <input
                   type="text"
+                  id="email"
                   className="form-control form-control-input "
                   placeholder="Email address"
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
 
               <div className="form-input form-signup">
-                <label htmlFor="">UserName :</label>
+                <label htmlFor="username">UserName :</label>
                 <i className="fa fa-user"></i>
                 <input
                   type="text"
+                  id="username"
                   className="form-control form-control-input"
                   placeholder="User name"
+                  onChange={(e) => setUserName(e.target.value)}
                   required
                 />
               </div>
 
               <div className="form-input form-signup">
-                <label htmlFor="">PassWord :</label>
+                <label htmlFor="password">PassWord :</label>
                 <i className="fa fa-lock"></i>
                 <input
                   type="text"
+                  id="password"
                   className="form-control form-control-input"
                   placeholder="password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="form-input form-signup">
+                <label htmlFor="address">Address :</label>
+                <i className="fa-solid fa-address-card"></i>
+                <input
+                  type="text"
+                  id="address"
+                  className="form-control form-control-input"
+                  placeholder="address"
+                  onChange={(e) => setAddress(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="form-input form-signup">
+                <label htmlFor="phone">Phone :</label>
+                <i className="fa-solid fa-phone"></i>
+                <input
+                  type="text"
+                  id="phone"
+                  className="form-control form-control-input"
+                  placeholder="phone"
+                  onChange={(e) => setPhone(e.target.value)}
                   required
                 />
               </div>
@@ -54,7 +113,12 @@ const Register = () => {
                 </label>
               </div>
 
-              <button className="btn btn-primary mt-4 signup">Register</button>
+              <button
+                onClick={handelClick}
+                className="btn btn-primary mt-4 signup"
+              >
+                Register
+              </button>
             </form>
 
             <div className="text-center mt-3">

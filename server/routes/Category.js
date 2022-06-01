@@ -5,6 +5,7 @@ import {
   DeleteCategory,
   GetOneCategory,
   GetAllCategory,
+  GetAll,
 } from "../controllers/CategoryController.js";
 import { verifyAdmin } from "../utils/verifyToken.js";
 
@@ -27,5 +28,8 @@ router.get("/:id", GetOneCategory);
 
 //get all
 router.get("/", GetAllCategory);
+
+//get all room in category
+router.get("/AllRoom/:id", GetAll);
 
 export default router;

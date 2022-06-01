@@ -1,4 +1,5 @@
 import Category from "../models/CategoryModel.js";
+import Room from "../models/RoomModel.js";
 
 export const createCategory = async (req, res, next) => {
   //variable newHotel thu thap du lieu tu nguoi dung gui len server
@@ -68,4 +69,18 @@ export const GetAllCategory = async (req, res, next) => {
   // } catch (err) {
   //   next(err);
   // }
+};
+
+export const GetAll = async (req, res, next) => {
+  try {
+    const getAllRoom = await Category.findById(req.params.id);
+    const list = await Promise.all(
+      getAllRoom.rooms.map((room) => {
+        return Room.findById(room);
+      })
+    );
+    res.status(200).json(list);
+  } catch (err) {
+    next(err);
+  }
 };
