@@ -10,7 +10,7 @@ const DetailRoom = () => {
 
   const Array = Object.keys(data);
 
-  console.log(Array);
+  // console.log(Array);
 
   return (
     <section style={{ backgroundcolor: "#eee" }}>

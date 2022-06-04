@@ -36,7 +36,7 @@ const Register = () => {
         <div className="col-md-6">
           <div className="card px-5 py-5 card-signup">
             <h1 className="mt-3">SIGN UP </h1>
-            <form>
+            <form onSubmit={handelClick}>
               <div className="form-input form-signup">
                 <label htmlFor="email">Email :</label>
                 <i className="fa fa-envelope"></i>
@@ -114,7 +114,7 @@ const Register = () => {
               </div>
 
               <button
-                onClick={handelClick}
+                onSubmit={handelClick}
                 className="btn btn-primary mt-4 signup"
               >
                 Register

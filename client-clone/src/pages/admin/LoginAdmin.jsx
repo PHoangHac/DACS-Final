@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import "./auth.scss";
+import "./admin.scss";
 
-const Login = () => {
+const LoginAdmin = () => {
   const [showpass, setShowPass] = useState(false);
 
   const togglePassword = () => {
@@ -31,8 +31,15 @@ const Login = () => {
     dispatch({ type: "LOGIN_START" });
     try {
       const res = await axios.post("auth/login", credentials);
-      dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
-      Navigate("/");
+      if (res.data.isAdmin) {
+        dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
+        Navigate("/Admin");
+      } else {
+        dispatch({
+          type: "LOGIN_FAILURE",
+          payload: { message: "Bạn không được quyền cho phép truy cập" },
+        });
+      }
     } catch (err) {
       dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
     }
@@ -144,4 +151,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginAdmin;

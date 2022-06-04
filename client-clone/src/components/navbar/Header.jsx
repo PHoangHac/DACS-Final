@@ -55,6 +55,7 @@ const Header = () => {
                 <NavDropdown.Item>Separated link</NavDropdown.Item>
               </NavDropdown>
             </Nav>
+
             {!user && (
               <Nav>
                 <Nav.Link as={Link} to={"/login"}>
@@ -65,15 +66,17 @@ const Header = () => {
                 </Nav.Link>
               </Nav>
             )}
+
             {user && (
               <Nav className="me-3">
                 {/* <Container> */}
                 <Navbar.Text className="text-info">
-                  Welcome ! {user.username}
+                  Welcome ! {user.username} <br />
                 </Navbar.Text>
                 {/* </Container> */}
               </Nav>
             )}
+
             {user && <Button onClick={handleClick}>Logout</Button>}
           </Navbar.Collapse>
         </Container>

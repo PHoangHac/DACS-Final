@@ -1,0 +1,21 @@
+
+
+.nav-link>.fa-solid{
+    position: relative;
+    font-size: 1rem;
+}
+
+.nav-link > #fa-navbar{
+    font-size: 1.3rem;
+}
+
+.nav-link>.fa-solid > .notification{
+    position: absolute;
+    right: -10px;
+    top: -11px;
+    font-size: 0.7rem;
+    background-color: red;
+    color: white;
+    padding: 4px;
+    border-radius: 20px;
+}
