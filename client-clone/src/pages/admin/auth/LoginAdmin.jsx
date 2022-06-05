@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../contexts/AuthContext";
+import { AuthContext } from "../../../contexts/AuthContext";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import "./admin.scss";
+import "../admin.scss";
 
 const LoginAdmin = () => {
   const [showpass, setShowPass] = useState(false);

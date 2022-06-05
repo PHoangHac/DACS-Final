@@ -9,7 +9,7 @@ import {
   FaHome,
 } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
-import "./adminDashBoard.scss";
+import "../adminDashBoard.scss";
 import { Outlet } from "react-router-dom";
 
 const Sidebar = ({ children }) => {

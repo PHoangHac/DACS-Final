@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { Navbar, Container, Nav, Dropdown, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import "./navbar.css";
-import { AuthContext } from "../../contexts/AuthContext";
+import "../navbar.css";
+import { AuthContext } from "../../../contexts/AuthContext";
 import axios from "axios";
 
 const NavBarAdmin = () => {
@@ -23,7 +23,7 @@ const NavBarAdmin = () => {
   const handleClick = async (e) => {
     e.preventDefault();
     try {
-      await axios.get("auth/logout");
+      // await axios.get("auth/logout");
       dispatch({ type: "LOGOUT" });
       Navigate("/loginAdmin");
     } catch (err) {
@@ -76,7 +76,9 @@ const NavBarAdmin = () => {
 
               <Dropdown.Menu>
                 <Dropdown.Item>Action</Dropdown.Item>
-                <Dropdown.Item>My Profile</Dropdown.Item>
+                <Dropdown.Item as={Link} to={"/Admin/UpdateUser"}>
+                  My Profile
+                </Dropdown.Item>
                 <ColoredLine color="blue" />
                 <Dropdown.Item onClick={handleClick}>Logout</Dropdown.Item>
               </Dropdown.Menu>

@@ -1,8 +1,8 @@
 import React from "react";
-import useFetch from "../../hooks/useFetch";
+import useFetch from "../../../hooks/useFetch";
 import { Link } from "react-router-dom";
 import { FaTrashAlt, FaCloudUploadAlt } from "react-icons/fa";
-import "./admin.scss";
+import "../admin.scss";
 import moment from "moment";
 
 const UsersAdmin = () => {

@@ -16,9 +16,9 @@ const Header = () => {
   const handleClick = async (e) => {
     e.preventDefault();
     try {
-      await axios.get("auth/logout");
+      // await axios.get("auth/logout");
       dispatch({ type: "LOGOUT" });
-      Navigate("/");
+      // Navigate("/");
     } catch (err) {
       console.log(err);
     }

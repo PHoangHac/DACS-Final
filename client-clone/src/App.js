@@ -13,14 +13,15 @@ import {
 import Rooms from "./pages/rooms/Rooms";
 import Rooms2 from "./pages/rooms/Rooms2";
 import Details from "./pages/details/Details";
-import DashBoard from "./pages/admin/DashBoard";
+import DashBoard from "./pages/admin/doashBoard/DashBoard";
 import { AuthContext } from "./contexts/AuthContext";
-import UsersAdmin from "./pages/admin/UsersAdmin";
-import CategoriesAdmin from "./pages/admin/CategoriesAdmin";
-import RoomsAdmin from "./pages/admin/RoomsAdmin";
+import UsersAdmin from "./pages/admin/users/UsersAdmin";
+import CategoriesAdmin from "./pages/admin/categories/CategoriesAdmin";
+import RoomsAdmin from "./pages/admin/rooms/RoomsAdmin";
 import React, { useContext } from "react";
-import LoginAdmin from "./pages/admin/LoginAdmin";
+import LoginAdmin from "./pages/admin/auth/LoginAdmin";
 import NotAllowed from "./pages/notAllowed/NotAllowed";
+import UpdateUser from "./pages/admin/updateUser/UpdateUser";
 
 //import framework, modules, other...
 
@@ -80,6 +81,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <RoomsAdmin />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="UpdateUser"
+            element={
+              <ProtectedRoute>
+                <UpdateUser />
               </ProtectedRoute>
             }
           />
