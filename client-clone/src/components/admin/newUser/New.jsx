@@ -1,63 +1,55 @@
-import React, { useState, useEffect } from "react";
-import "./update.scss";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useState } from "react";
+import "./newuser.scss";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const Update = () => {
-  const [files, setFiles] = useState("");
-  const [img, setImg] = useState("");
+const New = () => {
+  const [file, setFile] = useState("");
   const [username, setUserName] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [password, setPassword] = useState("");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
 
-  const { id } = useParams();
-  const Nagigate = useNavigate();
+  const Navigate = useNavigate();
 
-  const UpdateSubmit = async (e) => {
+  const handleSumbit = async (e) => {
     e.preventDefault();
-    // const data = new FormData();
-    // data.append("file", files);
-    // data.append("upload_preset", "upload");
+
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", "upload");
     try {
-      await axios.put(`/user/${id}`, {
+      const uploadRes = await axios.post(
+        "https://api.cloudinary.com/v1_1/hoanghac/image/upload",
+        data
+      );
+      // console.log(uploadRes.data);
+      const { url } = uploadRes.data;
+
+      await axios.post("http://localhost:7070/api/auth/register", {
+        // newUser,
         username: username,
         firstName: firstName,
         lastName: lastName,
+        password: password,
+        email: email,
         address: address,
         phone: phone,
-        email: email,
+        img: url,
       });
-      alert("Update User successful !");
-      Nagigate("/Admin/User");
+      alert("Create user Successfull !");
+      Navigate("/Admin/User");
     } catch (err) {
       console.log(err);
     }
   };
 
-  const getUserById = async () => {
-    const getdata = await axios.get(`/user/${id}`);
-    setImg(getdata.data.img);
-    setUserName(getdata.data.username);
-    setFirstName(getdata.data.firstName);
-    setLastName(getdata.data.lastName);
-    setAddress(getdata.data.address);
-    setPhone(getdata.data.phone);
-    setEmail(getdata.data.email);
-  };
-
-  useEffect(() => {
-    getUserById();
-  }, []);
-
-  console.log(img);
-
   return (
     <div className="container">
-      <h3>Update User</h3>
+      <h3>Create New User</h3>
       <div className="container-xl px-4 mt-4">
         <hr className="mt-0 mb-4"></hr>
         <div className="row">
@@ -65,34 +57,38 @@ const Update = () => {
           <div className="col-xl-4">
             <div className="card mb-4 mb-xl-0">
               <div className="card-header">Profile Picture</div>
-              <form onSubmit={UpdateSubmit}>
+              <form onSubmit={handleSumbit}>
                 <div className="card-body text-center">
                   <img
                     className="img-account-profile rounded-circle mb-2"
-                    src={files ? URL.createObjectURL(files) : { img }}
+                    src={
+                      file
+                        ? URL.createObjectURL(file)
+                        : "http://bootdey.com/img/Content/avatar/avatar1.png"
+                    }
                     alt="User image"
                   />
 
                   <div className="small font-italic text-muted mb-4">
                     JPG or PNG no larger than 5 MB
                   </div>
+
                   <input
-                    onChange={(e) => setFiles(e.target.files[0])}
                     className="form-control"
                     type="file"
                     id="formFile"
+                    onChange={(e) => setFile(e.target.files[0])}
                   ></input>
                 </div>
               </form>
             </div>
           </div>
 
-          {/* Proflie-details */}
           <div className="col-xl-8">
             <div className="card mb-4">
               <div className="card-header">Account Details</div>
               <div className="card-body">
-                <form onSubmit={UpdateSubmit}>
+                <form onSubmit={handleSumbit}>
                   <div className="mb-3">
                     <label className="small mb-1" htmlFor="inputUsername">
                       Username (how your name will appear to other users on the
@@ -102,11 +98,9 @@ const Update = () => {
                       className="form-control"
                       id="inputUsername"
                       type="text"
-                      placeholder="Enter your username to to edit ...."
-                      value={username}
-                      onChange={(e) => {
-                        setUserName(e.target.value);
-                      }}
+                      placeholder="Enter your username...."
+                      onChange={(e) => setUserName(e.target.value)}
+                      // value="username"
                     />
                   </div>
 
@@ -119,8 +113,7 @@ const Update = () => {
                         className="form-control"
                         id="inputFirstName"
                         type="text"
-                        placeholder="Enter your first name to edit ...."
-                        value={firstName}
+                        placeholder="Enter your first name...."
                         onChange={(e) => {
                           setFirstName(e.target.value);
                         }}
@@ -135,8 +128,7 @@ const Update = () => {
                         className="form-control"
                         id="inputLastName"
                         type="text"
-                        placeholder="Enter your last name to edit ...."
-                        value={lastName}
+                        placeholder="Enter your last name...."
                         onChange={(e) => {
                           setLastName(e.target.value);
                         }}
@@ -145,7 +137,7 @@ const Update = () => {
                   </div>
 
                   <div className="row gx-3 mb-3">
-                    <div className="col-md-12">
+                    <div className="col-md-6">
                       <label className="small mb-1" htmlFor="inputLocation">
                         Address
                       </label>
@@ -153,11 +145,20 @@ const Update = () => {
                         className="form-control"
                         id="inputLocation"
                         type="text"
-                        placeholder="Enter your location to edit ...."
-                        value={address}
-                        onChange={(e) => {
-                          setAddress(e.target.value);
-                        }}
+                        placeholder="Enter your location...."
+                        onChange={(e) => setAddress(e.target.value)}
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <label className="small mb-1" htmlFor="inputpassword">
+                        Password
+                      </label>
+                      <input
+                        className="form-control"
+                        id="inputpassword"
+                        type="text"
+                        placeholder="Enter your password...."
+                        onChange={(e) => setPassword(e.target.value)}
                       />
                     </div>
                   </div>
@@ -171,11 +172,8 @@ const Update = () => {
                         className="form-control"
                         id="inputPhone"
                         type="tel"
-                        placeholder="Enter your phone number to edit ...."
-                        value={phone}
-                        onChange={(e) => {
-                          setPhone(e.target.value);
-                        }}
+                        placeholder="Enter your phone number...."
+                        onChange={(e) => setPhone(e.target.value)}
                       />
                     </div>
 
@@ -187,16 +185,13 @@ const Update = () => {
                         className="form-control"
                         id="inputEmailAddress"
                         type="email"
-                        placeholder="Enter your email address to edit ...."
-                        value={email}
-                        onChange={(e) => {
-                          setEmail(e.target.value);
-                        }}
+                        placeholder="Enter your email address...."
+                        onChange={(e) => setEmail(e.target.value)}
                       />
                     </div>
                   </div>
 
-                  <button className="btn btn-primary">Save changes</button>
+                  <button className="btn btn-primary">Create</button>
                   <Link id="back-link" className="float-end" to={"/Admin/User"}>
                     Back
                   </Link>
@@ -210,4 +205,4 @@ const Update = () => {
   );
 };
 
-export default Update;
+export default New;

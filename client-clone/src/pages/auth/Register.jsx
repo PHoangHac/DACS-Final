@@ -16,7 +16,7 @@ const Register = () => {
   const handelClick = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("auth/register", {
+      await axios.post("http://localhost:7070/api/auth/register", {
         username: username,
         password: password,
         email: email,

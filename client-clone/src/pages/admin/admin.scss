@@ -1,146 +1,165 @@
-table tr:nth-child(1){
-    counter-reset: rowNumber;
-  }
-  
-  table tr {
-    counter-increment: rowNumber;
-  }
-  
-  table tr td:first-child::before {
-    content: counter(rowNumber);
-    min-width: 1em;
-    margin-right: 0.5em;
-  }
-
-  .images-category{
-    width: 120px;
-    height: 120px;
-    border-radius: 10%;
-    margin-right: 10px;
-    object-fit: cover;
-  }
-
-  table th, table td {
-    overflow: hidden;
-    white-space: nowrap;
+table tr:nth-child(1) {
+  counter-reset: rowNumber;
 }
 
-.table-scrolls{
+table tr {
+  counter-increment: rowNumber;
+}
+
+table tr td:first-child::before {
+  content: counter(rowNumber);
+  min-width: 1em;
+  margin-right: 0.5em;
+}
+
+.images-category {
+  width: 120px;
+  height: 120px;
+  border-radius: 10%;
+  margin-right: 10px;
+  object-fit: cover;
+}
+
+table th,
+table td {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.table-scrolls {
   height: 80vh;
   overflow: auto;
 }
 
-.table, th, td{
-  border: 1px solid rgba($color: #101485, $alpha: 1.0);
+.table,
+th,
+td,
+tr {
+  border: 2px solid rgba($color: #101485, $alpha: 1);
+}
+
+#tbody-user {
+  vertical-align: middle;
 }
 
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap");
 
+body {
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  background: url("../../assets/img/backgroud3.jpg") no-repeat center center
+    fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
 
-       body{
-        font-family: "Poppins", sans-serif;
-        font-weight: 300;  
-        background: url("../../assets/img/backgroud3.jpg") no-repeat center center fixed;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;   
-       }
+.card-signup {
+  border: none;
+  padding: 20px;
+  background-color: #1c1e21;
+  color: #fff;
 
+  .circle {
+    height: 20px;
+    width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #5855e7;
+    color: #fff;
+    font-size: 10px;
+    border-radius: 50%;
+  }
 
-       .card-signup{
-        border:none;
-        padding: 20px;
-        background-color: #1c1e21;
-        color: #fff;
+  .form-signup {
+    position: relative;
+    margin-bottom: 10px;
+    margin-top: 10px;
 
-            .circle{
-    
-            height: 20px;
-            width: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color:#5855e7;
-            color: #fff;
-            font-size: 10px;
-            border-radius: 50%;
-            }
+    .form-control-input {
+      height: 50px;
+      background-color: #1c1e21;
+      text-indent: 24px;
+      font-size: 15px;
+      color: rgb(255, 255, 255);
+    }
 
-            .form-signup{
+    .form-control-input:focus {
+      background-color: #25272a;
+      box-shadow: none;
+      color: #fff;
+      border-color: #4f63e7;
+    }
+  }
 
-                position: relative;
-                margin-bottom: 10px;
-                margin-top: 10px;
+  .form-signup i {
+    position: absolute;
+    font-size: 18px;
+    top: 40px;
+    left: 10px;
+  }
 
-                .form-control-input{
+  .form-check-label {
+    margin-top: 2px;
+    font-size: 14px;
+  }
 
-                    height: 50px;
-                    background-color: #1c1e21;
-                    text-indent: 24px;
-                    font-size: 15px;
-                    color: rgb(255, 255, 255);    
-            
-                   }
-            
-                   .form-control-input:focus{
-            
-                    background-color: #25272a;
-                    box-shadow: none;
-                    color: #fff;
-                    border-color: #4f63e7;
-                   }
-            }
-        
-            .form-signup i{
-        
-                position: absolute;
-                font-size: 18px;
-                top: 40px;
-                left: 10px;
-            }
+  .signup {
+    height: 50px;
+    font-size: 14px;
+    width: 40%;
+    margin-left: 30%;
+  }
 
-            .form-check-label{
-                margin-top: 2px;
-                font-size: 14px;
-            }
+  .social {
+    height: 50px;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #eee;
+    border-radius: 50%;
+    margin-right: 10px;
+    cursor: pointer;
+  }
 
-            .signup{
-                height: 50px;
-                font-size: 14px;
-                width: 40%;
-                margin-left: 30%;
-            }
+  .social:hover {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+  }
+}
 
-            .social{
+// ----------- User --------
+#delete_user {
+  color: #0d6efd;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
 
-                height: 50px;
-                width: 50px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                border: 1px solid #eee;
-                border-radius: 50%;
-                margin-right: 10px; 
-                cursor: pointer;
-            }
-      
-            .social:hover{
-      
-                background-color: #0d6efd;
-                border-color: #0d6efd;
-      
-            }
+#delete_user:hover {
+  color: #101485;
+}
 
-       }
+#update_user {
+  color: #0d6efd;
+  cursor: pointer;
+  font-size: 1.7rem;
+}
 
+#update_user:hover {
+  color: #101485;
+}
 
-       
+// ----------- User --------
 
-       
+//---------- new user -------
+#newuser-user {
+  color: rgb(53, 46, 46);
+}
 
-       
-
-       
-
-        
+#newuser-user:hover {
+  color: green;
+}
+//---------- new user -------

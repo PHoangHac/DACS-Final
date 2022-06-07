@@ -8,10 +8,6 @@ const DetailRoom = () => {
 
   const { data, loading } = useFetch(`/room/${id}`);
 
-  const Array = Object.keys(data);
-
-  // console.log(Array);
-
   return (
     <section style={{ backgroundcolor: "#eee" }}>
       <div className="container py-5">

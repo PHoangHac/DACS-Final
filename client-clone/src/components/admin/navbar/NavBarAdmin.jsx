@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Navbar, Container, Nav, Dropdown, Button } from "react-bootstrap";
+import { Navbar, Container, Nav, Dropdown } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import "../navbar.css";
 import { AuthContext } from "../../../contexts/AuthContext";
@@ -66,7 +66,7 @@ const NavBarAdmin = () => {
                 }}
               >
                 <img
-                  src={"https://github.com/mshaaban0.png"}
+                  src="https://cdn-icons-png.flaticon.com/512/345/345736.png"
                   roundedcircle="true"
                   style={{ width: "40px", marginRight: "10px" }}
                   alt="Admin Img"
@@ -76,7 +76,7 @@ const NavBarAdmin = () => {
 
               <Dropdown.Menu>
                 <Dropdown.Item>Action</Dropdown.Item>
-                <Dropdown.Item as={Link} to={"/Admin/UpdateUser"}>
+                <Dropdown.Item as={Link} to={`/Admin/UpdateUser/${user._id}`}>
                   My Profile
                 </Dropdown.Item>
                 <ColoredLine color="blue" />

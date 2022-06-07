@@ -11,6 +11,11 @@ const CategoriesAdmin = () => {
   return (
     <div className="container">
       <div className="badge bg-primary text-wrap fs-4 mb-3">All Category</div>
+      <div className="badge bg-light text-wrap fs-6 mb-3 ms-5">
+        <Link id="newuser-user" to={"/Admin/NewCategory"}>
+          New Category
+        </Link>
+      </div>
       <div className="table-responsive bg-light ">
         <table className="table table-hover table-bordered text-center">
           <thead>
@@ -24,7 +29,7 @@ const CategoriesAdmin = () => {
               <th scope="col">Hành Động</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="tbody-user">
             {loading ? (
               "loading..."
             ) : (
@@ -55,10 +60,10 @@ const CategoriesAdmin = () => {
                       </td>
                       <td>
                         <Link to={"/Admin/UpdateCategory"}>
-                          <FaCloudUploadAlt />
+                          <FaCloudUploadAlt id="update_user" />
                         </Link>
                         &nbsp;&nbsp;&nbsp;
-                        <FaTrashAlt />
+                        <FaTrashAlt id="delete_user" />
                       </td>
                     </tr>
                   );

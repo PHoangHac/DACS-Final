@@ -21,7 +21,10 @@ import RoomsAdmin from "./pages/admin/rooms/RoomsAdmin";
 import React, { useContext } from "react";
 import LoginAdmin from "./pages/admin/auth/LoginAdmin";
 import NotAllowed from "./pages/notAllowed/NotAllowed";
+import NewUser from "./pages/admin/newUser/NewUser";
 import UpdateUser from "./pages/admin/updateUser/UpdateUser";
+import NewCategory from "./components/admin/newCategory/NewCategory";
+import UpdateCategory from "./pages/admin/updateCate/UpdateCategory";
 
 //import framework, modules, other...
 
@@ -69,6 +72,22 @@ function App() {
             }
           />
           <Route
+            path="NewUser"
+            element={
+              <ProtectedRoute>
+                <NewUser />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="UpdateUser/:id"
+            element={
+              <ProtectedRoute>
+                <UpdateUser />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="Category"
             element={
               <ProtectedRoute>
@@ -77,18 +96,26 @@ function App() {
             }
           />
           <Route
-            path="Room"
+            path="NewCategory"
             element={
               <ProtectedRoute>
-                <RoomsAdmin />
+                <NewCategory />
               </ProtectedRoute>
             }
           />
           <Route
-            path="UpdateUser"
+            path="UpdateCategory"
             element={
               <ProtectedRoute>
-                <UpdateUser />
+                <UpdateCategory />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="Room"
+            element={
+              <ProtectedRoute>
+                <RoomsAdmin />
               </ProtectedRoute>
             }
           />
