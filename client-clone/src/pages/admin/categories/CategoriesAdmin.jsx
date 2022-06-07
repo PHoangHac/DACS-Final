@@ -23,6 +23,7 @@ const CategoriesAdmin = () => {
               <th scope="col">Id</th>
               <th scope="col">Tên loại</th>
               <th scope="col">Type</th>
+              <th scope="col">Featured</th>
               <th scope="col">Hình</th>
               <th scope="col">Khởi tạo lúc</th>
               <th scope="col">Cập nhập lúc</th>
@@ -41,6 +42,7 @@ const CategoriesAdmin = () => {
                       <td></td>
                       <td>{value.name}</td>
                       <td>{value.type}</td>
+                      <td>{value.featured.toString()}</td>
                       <td>
                         <img
                           src={value.img}
@@ -59,7 +61,7 @@ const CategoriesAdmin = () => {
                         )}
                       </td>
                       <td>
-                        <Link to={"/Admin/UpdateCategory"}>
+                        <Link to={`/Admin/UpdateCategory/${value._id}`}>
                           <FaCloudUploadAlt id="update_user" />
                         </Link>
                         &nbsp;&nbsp;&nbsp;

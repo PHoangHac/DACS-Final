@@ -104,7 +104,7 @@ function App() {
             }
           />
           <Route
-            path="UpdateCategory"
+            path="UpdateCategory/:id"
             element={
               <ProtectedRoute>
                 <UpdateCategory />

@@ -31,7 +31,7 @@ const RoomsAdmin = () => {
               <th scope="col">Hành Động</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="tbody-user">
             {loading ? (
               "loading..."
             ) : (
@@ -79,10 +79,10 @@ const RoomsAdmin = () => {
                       </td>
                       <td>
                         <Link to={"/Admin/UpdateRoom"}>
-                          <FaCloudUploadAlt />
+                          <FaCloudUploadAlt id="update_user" />
                         </Link>
                         &nbsp;&nbsp;&nbsp;
-                        <FaTrashAlt />
+                        <FaTrashAlt id="delete_user" />
                       </td>
                     </tr>
                   );

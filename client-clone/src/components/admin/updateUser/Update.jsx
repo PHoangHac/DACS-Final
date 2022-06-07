@@ -53,7 +53,7 @@ const Update = () => {
     getUserById();
   }, []);
 
-  console.log(img);
+  // console.log(img);
 
   return (
     <div className="container">

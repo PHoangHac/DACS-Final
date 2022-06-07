@@ -1,55 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../newUser/newuser.scss";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const UpdateCate = () => {
-  const [file, setFile] = useState("");
-  const [username, setUserName] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [password, setPassword] = useState("");
-  const [address, setAddress] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
+  const [img, setImg] = useState("");
+  const [name, setName] = useState("");
+  const [type, setType] = useState("");
+  const [featured, setFeatured] = useState(false);
 
+  const { id } = useParams();
   const Navigate = useNavigate();
 
   const handleSumbit = async (e) => {
     e.preventDefault();
-
-    const data = new FormData();
-    data.append("file", file);
-    data.append("upload_preset", "upload");
     try {
-      const uploadRes = await axios.post(
-        "https://api.cloudinary.com/v1_1/hoanghac/image/upload",
-        data
-      );
-      // console.log(uploadRes.data);
-      const { url } = uploadRes.data;
-
-      await axios.post("http://localhost:7070/api/auth/register", {
-        // newUser,
-        username: username,
-        firstName: firstName,
-        lastName: lastName,
-        password: password,
-        email: email,
-        address: address,
-        phone: phone,
-        img: url,
+      await axios.put(`/category/${id}`, {
+        name: name,
+        type: type,
+        featured: featured,
       });
-      alert("Create user Successfull !");
-      Navigate("/Admin/User");
+      alert("Update category Successfull !");
+      Navigate("/Admin/Category");
     } catch (err) {
       console.log(err);
     }
   };
 
+  const getCateById = async () => {
+    const getdata = await axios.get(`/category/${id}`);
+    setImg(getdata.data.img);
+    setName(getdata.data.name);
+    setType(getdata.data.type);
+    setFeatured(getdata.data.featured);
+  };
+
+  useEffect(() => {
+    getCateById();
+  }, []);
+
+  const handleChange = (e) => {
+    setFeatured(e.target.value);
+  };
+
   return (
     <div className="container">
-      <h3>Create New Category</h3>
+      <h3>Update Category</h3>
       <div className="container-xl px-4 mt-4">
         <hr className="mt-0 mb-4"></hr>
         <div className="row">
@@ -61,11 +57,7 @@ const UpdateCate = () => {
                 <div className="card-body text-center">
                   <img
                     className="img-account-profile rounded-circle mb-2"
-                    src={
-                      file
-                        ? URL.createObjectURL(file)
-                        : "https://media.istockphoto.com/vectors/camera-icon-vector-id1175387759?k=20&m=1175387759&s=612x612&w=0&h=a-8a56ol0jlX_S5NuKxgCPwRg5xqcZlXXseMpmB0Bek="
-                    }
+                    src={img}
                     alt="User image"
                   />
 
@@ -77,7 +69,7 @@ const UpdateCate = () => {
                     className="form-control"
                     type="file"
                     id="formFile"
-                    onChange={(e) => setFile(e.target.files[0])}
+                    onChange={(e) => setImg(e.target.files[0])}
                   ></input>
                 </div>
               </form>
@@ -97,8 +89,9 @@ const UpdateCate = () => {
                       className="form-control"
                       id="inputName"
                       type="text"
-                      placeholder="Enter your hotel name...."
-                      onChange={(e) => setUserName(e.target.value)}
+                      placeholder="Enter name category...."
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
                       // value="username"
                     />
                   </div>
@@ -112,9 +105,10 @@ const UpdateCate = () => {
                         className="form-control"
                         id="inputType"
                         type="text"
-                        placeholder="Enter your first name...."
+                        placeholder="Enter type...."
+                        value={type}
                         onChange={(e) => {
-                          setFirstName(e.target.value);
+                          setType(e.target.value);
                         }}
                       />
                     </div>
@@ -123,14 +117,14 @@ const UpdateCate = () => {
                       <label className="small mb-1 ms-2" htmlFor="featured">
                         Featured
                       </label>
-                      <select id="featured">
-                        <option value={false}>No</option>
-                        <option value={true}>Yes</option>
+                      <select id="featured" onChange={handleChange}>
+                        <option value={false}>False</option>
+                        <option value={true}>True</option>
                       </select>
                     </div>
                   </div>
 
-                  <button className="btn btn-primary">Create</button>
+                  <button className="btn btn-primary">Update</button>
                   <Link
                     id="back-link"
                     className="float-end"
