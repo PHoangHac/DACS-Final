@@ -19,10 +19,17 @@ const Update = () => {
 
   const UpdateSubmit = async (e) => {
     e.preventDefault();
-    // const data = new FormData();
-    // data.append("file", files);
-    // data.append("upload_preset", "upload");
+    const data = new FormData();
+    data.append("file", files);
+    data.append("upload_preset", "upload");
     try {
+      const uploadRes = await axios.post(
+        "https://api.cloudinary.com/v1_1/hoanghac/image/upload",
+        data
+      );
+      // console.log(uploadRes.data);
+      const { url } = uploadRes.data;
+
       await axios.put(`/user/${id}`, {
         username: username,
         firstName: firstName,
@@ -30,6 +37,7 @@ const Update = () => {
         address: address,
         phone: phone,
         email: email,
+        img: url,
       });
       alert("Update User successful !");
       Nagigate("/Admin/User");
@@ -69,7 +77,7 @@ const Update = () => {
                 <div className="card-body text-center">
                   <img
                     className="img-account-profile rounded-circle mb-2"
-                    src={files ? URL.createObjectURL(files) : { img }}
+                    src={files ? URL.createObjectURL(files) : img}
                     alt="User image"
                   />
 

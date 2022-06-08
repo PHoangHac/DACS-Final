@@ -4,10 +4,10 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
 const NewCategory = () => {
-  const [file, setFileS] = useState("");
   const [name, setName] = useState("");
   const [type, setType] = useState("");
   const [featured, setFeatured] = useState(false);
+  const [file, setFile] = useState("");
 
   const Navigate = useNavigate();
 
@@ -17,18 +17,19 @@ const NewCategory = () => {
     const data = new FormData();
     data.append("file", file);
     data.append("upload_preset", "upload");
-    try {
-      // const uploadRes = await axios.post(
-      //   "https://api.cloudinary.com/v1_1/hoanghac/image/upload",
-      //   data
-      // );
-      // // console.log(uploadRes.data);
-      // const { url } = uploadRes.data;
 
-      await axios.post("http://localhost:7070/api/category", {
+    try {
+      const uploadRes = await axios.post(
+        "https://api.cloudinary.com/v1_1/hoanghac/image/upload",
+        data
+      );
+      // console.log(uploadRes.data);
+      const { url } = uploadRes.data;
+
+      await axios.post("/category", {
         name: name,
         type: type,
-        // img: url,
+        img: url,
         featured: featured,
       });
       alert("Create Category Successfull !");
@@ -48,34 +49,33 @@ const NewCategory = () => {
       <div className="container-xl px-4 mt-4">
         <hr className="mt-0 mb-4"></hr>
         <div className="row">
-          {/* piture-profile */}
           <div className="col-xl-4">
             <div className="card mb-4 mb-xl-0">
-              <div className="card-header">Choose Picture</div>
-              {/* <form onSubmit={handleSumbit}> */}
-              <div className="card-body text-center">
-                <img
-                  className="img-account-profile rounded-circle mb-2"
-                  src={
-                    file
-                      ? URL.createObjectURL(file)
-                      : "https://scr.vn/wp-content/uploads/2020/08/bi%E1%BB%83u-t%C6%B0%E1%BB%A3ng-camera.jpg"
-                  }
-                  alt="Category image"
-                />
+              <div className="card-header">Profile Picture</div>
+              <form onSubmit={handleSumbit}>
+                <div className="card-body text-center">
+                  <img
+                    className="img-account-profile rounded-circle mb-2"
+                    src={
+                      file
+                        ? URL.createObjectURL(file)
+                        : "https://i.pinimg.com/736x/c3/41/3f/c3413f7c697760db7608ee10e1e234fb.jpg"
+                    }
+                    alt="User image"
+                  />
 
-                <div className="small font-italic text-muted mb-4">
-                  JPG or PNG no larger than 5 MB
+                  <div className="small font-italic text-muted mb-4">
+                    JPG or PNG no larger than 5 MB
+                  </div>
+
+                  <input
+                    className="form-control"
+                    type="file"
+                    id="formFile"
+                    onChange={(e) => setFile(e.target.files[0])}
+                  ></input>
                 </div>
-
-                <input
-                  className="form-control"
-                  type="file"
-                  id="formFile"
-                  onChange={(e) => setFileS(e.target.files[0])}
-                ></input>
-              </div>
-              {/* </form> */}
+              </form>
             </div>
           </div>
 

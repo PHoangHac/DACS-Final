@@ -25,6 +25,9 @@ import NewUser from "./pages/admin/newUser/NewUser";
 import UpdateUser from "./pages/admin/updateUser/UpdateUser";
 import NewCategory from "./components/admin/newCategory/NewCategory";
 import UpdateCategory from "./pages/admin/updateCate/UpdateCategory";
+import NewRoom from "./pages/admin/newRoom/NewRoom";
+import UpdateRoom from "./pages/admin/updateRoom/UpdateRoom";
+import Contact from "./pages/contact/Contact";
 
 //import framework, modules, other...
 
@@ -51,6 +54,7 @@ function App() {
         <Route path="/loginAdmin" exact element={<LoginAdmin />} />
         <Route path="/category/AllRoom/:id" exact element={<Rooms2 />} />
         <Route path="/register" exact element={<Register />} />
+        <Route path="/contacts" exact element={<Contact />} />
 
         <Route path="/NotAllowd" exact element={<NotAllowed />} />
 
@@ -116,6 +120,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <RoomsAdmin />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="NewRoom"
+            element={
+              <ProtectedRoute>
+                <NewRoom />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="UpdateRoom/:id"
+            element={
+              <ProtectedRoute>
+                <UpdateRoom />
               </ProtectedRoute>
             }
           />

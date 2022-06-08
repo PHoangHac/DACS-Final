@@ -4,6 +4,7 @@ import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 const UpdateCate = () => {
+  const [files, setFiles] = useState("");
   const [img, setImg] = useState("");
   const [name, setName] = useState("");
   const [type, setType] = useState("");
@@ -14,11 +15,22 @@ const UpdateCate = () => {
 
   const handleSumbit = async (e) => {
     e.preventDefault();
+    const data = new FormData();
+    data.append("file", files);
+    data.append("upload_preset", "upload");
     try {
+      const uploadRes = await axios.post(
+        "https://api.cloudinary.com/v1_1/hoanghac/image/upload",
+        data
+      );
+      // console.log(uploadRes.data);
+      const { url } = uploadRes.data;
+
       await axios.put(`/category/${id}`, {
         name: name,
         type: type,
         featured: featured,
+        img: url,
       });
       alert("Update category Successfull !");
       Navigate("/Admin/Category");
@@ -57,7 +69,7 @@ const UpdateCate = () => {
                 <div className="card-body text-center">
                   <img
                     className="img-account-profile rounded-circle mb-2"
-                    src={img}
+                    src={files ? URL.createObjectURL(files) : img}
                     alt="User image"
                   />
 
@@ -69,7 +81,7 @@ const UpdateCate = () => {
                     className="form-control"
                     type="file"
                     id="formFile"
-                    onChange={(e) => setImg(e.target.files[0])}
+                    onChange={(e) => setFiles(e.target.files[0])}
                   ></input>
                 </div>
               </form>

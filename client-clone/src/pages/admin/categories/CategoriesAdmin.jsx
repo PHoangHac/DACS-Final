@@ -1,12 +1,33 @@
-import React from "react";
-import useFetch from "../../../hooks/useFetch";
+import React, { useState, useEffect } from "react";
+// import useFetch from "../../../hooks/useFetch";
 import { Link } from "react-router-dom";
 import { FaTrashAlt, FaCloudUploadAlt } from "react-icons/fa";
 import "../admin.scss";
 import moment from "moment";
+import axios from "axios";
 
 const CategoriesAdmin = () => {
-  const { data, loading } = useFetch("/category");
+  // const { data, loading } = useFetch("/category");
+
+  const [listCate, setListCate] = useState([]);
+
+  const displayAllCate = async () => {
+    axios.get("/category").then((res) => {
+      setListCate(res.data);
+      // console.log(res);
+    });
+  };
+
+  const deleteCate = async (id) => {
+    axios.delete(`/category/${id}`).then((res) => {
+      displayAllCate();
+      // console.log(res);
+    });
+  };
+
+  useEffect(() => {
+    displayAllCate();
+  }, []);
 
   return (
     <div className="container">
@@ -16,7 +37,7 @@ const CategoriesAdmin = () => {
           New Category
         </Link>
       </div>
-      <div className="table-responsive bg-light ">
+      <div className="table-responsive bg-light table-scrolls">
         <table className="table table-hover table-bordered text-center">
           <thead>
             <tr>
@@ -31,47 +52,36 @@ const CategoriesAdmin = () => {
             </tr>
           </thead>
           <tbody id="tbody-user">
-            {loading ? (
-              "loading..."
-            ) : (
-              <>
-                {data.map((value) => {
-                  return (
-                    <tr key={value._id}>
-                      {/* <th className="counterCell" scope="row"></th> */}
-                      <td></td>
-                      <td>{value.name}</td>
-                      <td>{value.type}</td>
-                      <td>{value.featured.toString()}</td>
-                      <td>
-                        <img
-                          src={value.img}
-                          alt=""
-                          className="images-category"
-                        />
-                      </td>
-                      <td>
-                        {moment(value.createdAt).format(
-                          "MMMM Do YYYY, h:mm:ss a"
-                        )}
-                      </td>
-                      <td>
-                        {moment(value.updatedAt).format(
-                          "MMMM Do YYYY, h:mm:ss a"
-                        )}
-                      </td>
-                      <td>
-                        <Link to={`/Admin/UpdateCategory/${value._id}`}>
-                          <FaCloudUploadAlt id="update_user" />
-                        </Link>
-                        &nbsp;&nbsp;&nbsp;
-                        <FaTrashAlt id="delete_user" />
-                      </td>
-                    </tr>
-                  );
-                })}
-              </>
-            )}
+            {listCate.map((value) => {
+              return (
+                <tr key={value._id}>
+                  {/* <th className="counterCell" scope="row"></th> */}
+                  <td></td>
+                  <td>{value.name}</td>
+                  <td>{value.type}</td>
+                  <td>{value.featured.toString()}</td>
+                  <td>
+                    <img src={value.img} alt="" className="images-category" />
+                  </td>
+                  <td>
+                    {moment(value.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
+                  </td>
+                  <td>
+                    {moment(value.updatedAt).format("MMMM Do YYYY, h:mm:ss a")}
+                  </td>
+                  <td>
+                    <Link to={`/Admin/UpdateCategory/${value._id}`}>
+                      <FaCloudUploadAlt id="update_user" />
+                    </Link>
+                    &nbsp;&nbsp;&nbsp;
+                    <FaTrashAlt
+                      onClick={() => deleteCate(value._id)}
+                      id="delete_user"
+                    />
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
