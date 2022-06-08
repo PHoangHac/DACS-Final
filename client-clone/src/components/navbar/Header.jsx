@@ -44,10 +44,10 @@ const Header = () => {
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
               <Nav.Link as={Link} to={"/rooms"}>
-                Phòng
+                Rooms
               </Nav.Link>
               <Nav.Link as={Link} to={"/contacts"}>
-                Liên hệ
+                Contacts
               </Nav.Link>
               <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
                 <NavDropdown.Item>Action</NavDropdown.Item>

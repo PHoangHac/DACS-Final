@@ -10,7 +10,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import Rooms from "./pages/rooms/Rooms";
+import Rooms3 from "./pages/rooms/Rooms3";
 import Rooms2 from "./pages/rooms/Rooms2";
 import Details from "./pages/details/Details";
 import DashBoard from "./pages/admin/doashBoard/DashBoard";
@@ -48,7 +48,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" exact element={<Home />} />
-        <Route path="/rooms" exact element={<Rooms />} />
+        <Route path="/rooms" exact element={<Rooms3 />} />
         <Route path="/detailRoom/:id" exact element={<Details />} />
         <Route path="/login" exact element={<Login />} />
         <Route path="/loginAdmin" exact element={<LoginAdmin />} />
