@@ -7,6 +7,8 @@ const RoomList = () => {
 
   const { data, loading } = useFetch(`/category/AllRoom/${id}`);
 
+  // console.log(data);
+
   return (
     <div className="card mb-3 mt-3" style={{ maxwidth: "540px" }}>
       {loading ? (

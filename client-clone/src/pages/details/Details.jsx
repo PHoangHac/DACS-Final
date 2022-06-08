@@ -1,13 +1,13 @@
 import React from "react";
 import Header from "../../components/navbar/Header";
 import Footer from "../../components/footer/Footer";
-import DetailRoom from "../../components/details/DetailRoom";
+import DetailRoom2 from "../../components/details/DetailRoom2";
 
 const Details = () => {
   return (
     <>
       <Header />
-      <DetailRoom />
+      <DetailRoom2 />
       <Footer />
     </>
   );

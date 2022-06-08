@@ -1,4 +1,5 @@
 import Users from "../models/UserModel.js";
+
 //import modules
 
 export const UpdateUser = async (req, res, next) => {

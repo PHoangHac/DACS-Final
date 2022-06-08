@@ -26,7 +26,7 @@ const New = () => {
         "https://api.cloudinary.com/v1_1/hoanghac/image/upload",
         data
       );
-      // console.log(uploadRes.data);
+      console.log(uploadRes.data);
       const { url } = uploadRes.data;
 
       await axios.post("http://localhost:7070/api/auth/register", {

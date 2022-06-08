@@ -1,6 +1,6 @@
 import React from "react";
 import logo from "../../assets/img/logo.svg";
-import axios from "axios";
+// import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -9,7 +9,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { Navbar, Container, Nav, NavDropdown, Button } from "react-bootstrap";
 
 const Header = () => {
-  const Navigate = useNavigate();
+  // const Navigate = useNavigate();
 
   const { user, dispatch } = useContext(AuthContext);
 
@@ -37,17 +37,17 @@ const Header = () => {
                 height="30"
                 className="d-inline-block align-top"
               />{" "}
-              Found Rooms
+              Group 9
             </Link>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
               <Nav.Link as={Link} to={"/rooms"}>
-                Rooms
+                Phòng
               </Nav.Link>
               <Nav.Link as={Link} to={"/contacts"}>
-                Contacts
+                Liên hệ
               </Nav.Link>
               <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
                 <NavDropdown.Item>Action</NavDropdown.Item>
@@ -61,10 +61,10 @@ const Header = () => {
             {!user && (
               <Nav>
                 <Nav.Link as={Link} to={"/login"}>
-                  Login
+                  Đăng nhập
                 </Nav.Link>
                 <Nav.Link as={Link} to={"/register"}>
-                  Register
+                  Đăng ký
                 </Nav.Link>
               </Nav>
             )}
@@ -73,13 +73,13 @@ const Header = () => {
               <Nav className="me-3">
                 {/* <Container> */}
                 <Navbar.Text className="text-info">
-                  Welcome ! {user.username} <br />
+                  Chào mừng ! {user.username} <br />
                 </Navbar.Text>
                 {/* </Container> */}
               </Nav>
             )}
 
-            {user && <Button onClick={handleClick}>Logout</Button>}
+            {user && <Button onClick={handleClick}>Đăng xuất</Button>}
           </Navbar.Collapse>
         </Container>
       </Navbar>
