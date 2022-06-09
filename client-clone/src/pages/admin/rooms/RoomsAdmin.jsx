@@ -14,8 +14,8 @@ const RoomsAdmin = () => {
     });
   };
 
-  const deleteRoom = async (id) => {
-    axios.delete(`/room/${id}`).then((res) => {
+  const deleteRoom = async (id, categoryid) => {
+    axios.delete(`/room/${id}/${categoryid}`).then((res) => {
       displayAllRoom();
     });
   };

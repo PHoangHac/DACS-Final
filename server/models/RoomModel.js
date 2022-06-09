@@ -44,7 +44,6 @@ const RoomSchema = new mongoose.Schema(
     type: {
       type: String,
       required: true,
-      unique: true,
     },
   },
   { timestamps: true }

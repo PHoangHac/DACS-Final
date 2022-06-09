@@ -38,19 +38,18 @@ export const UpdateRoom = async (req, res, next) => {
 };
 
 export const DeleteRoom = async (req, res, next) => {
-  const categoryId = req.params.categorylid;
+  const categoryId = req.params.categoryid;
   try {
     await Room.findByIdAndDelete(req.params.id);
     try {
       await Category.findByIdAndUpdate(categoryId, {
-        $push: { rooms: req.params.id },
+        $pull: { rooms: req.params.id },
       });
     } catch (err) {
       next(err);
     }
     res.status(200).json("Delete Room successfull !");
   } catch (err) {
-    //   res.status(500).json(err);
     next();
   }
 };

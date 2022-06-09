@@ -16,7 +16,7 @@ const NewR = () => {
   const [desc, setDesc] = useState("");
   const [type, setType] = useState("");
 
-  const [hotelId, setHotelId] = useState(undefined);
+  const [categoryId, setCategoryId] = useState(undefined);
 
   const { data, loading } = useFetch("/category");
 
@@ -41,7 +41,7 @@ const NewR = () => {
         })
       );
 
-      await axios.post(`/room/${hotelId}`, {
+      await axios.post(`/room/${categoryId}`, {
         title: title,
         price: price,
         status: status,
@@ -59,7 +59,7 @@ const NewR = () => {
     }
   };
 
-  console.log(hotelId);
+  // console.log(hotelId);
 
   return (
     <div className="container">
@@ -223,7 +223,7 @@ const NewR = () => {
                       </label>
                       <select
                         id="hotelId"
-                        onChange={(e) => setHotelId(e.target.value)}
+                        onChange={(e) => setCategoryId(e.target.value)}
                         className="featured"
                       >
                         {loading
