@@ -38,17 +38,16 @@ export const UpdateRoom = async (req, res, next) => {
 };
 
 export const DeleteRoom = async (req, res, next) => {
-  const categoryId = req.params.categoryid;
   try {
-    await Room.findByIdAndDelete(req.params.id);
-    try {
-      await Category.findByIdAndUpdate(categoryId, {
+    const room = await Room.findById(req.params.id);
+    await Category.findOneAndUpdate(
+      { _id: room.categoryid },
+      {
         $pull: { rooms: req.params.id },
-      });
-    } catch (err) {
-      next(err);
-    }
-    res.status(200).json("Delete Room successfull !");
+      }
+    );
+    await room.deleteOne();
+    return res.status(200).json("Delete Room successfull !");
   } catch (err) {
     next();
   }

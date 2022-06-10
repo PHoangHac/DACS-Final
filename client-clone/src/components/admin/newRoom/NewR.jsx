@@ -51,6 +51,7 @@ const NewR = () => {
         desc: desc,
         photos: listphoto,
         type: type,
+        categoryid: categoryId,
       });
       alert("Create Room successful !");
       Nagigate("/Admin/Room");

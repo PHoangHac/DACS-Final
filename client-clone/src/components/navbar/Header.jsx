@@ -1,7 +1,7 @@
 import React from "react";
 import logo from "../../assets/img/logo.svg";
 // import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 
@@ -9,8 +9,6 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { Navbar, Container, Nav, NavDropdown, Button } from "react-bootstrap";
 
 const Header = () => {
-  // const Navigate = useNavigate();
-
   const { user, dispatch } = useContext(AuthContext);
 
   const handleClick = async (e) => {
@@ -49,22 +47,28 @@ const Header = () => {
               <Nav.Link as={Link} to={"/contacts"}>
                 Contacts
               </Nav.Link>
-              <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
+              <NavDropdown title="Setting" id="collasible-nav-dropdown">
                 <NavDropdown.Item>Action</NavDropdown.Item>
-                <NavDropdown.Item>Another action</NavDropdown.Item>
-                <NavDropdown.Item>Something</NavDropdown.Item>
+                <NavDropdown.Item>ChangePassword</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to={`/profiles/${user?._id}`}>
+                  Profile
+                </NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item>Separated link</NavDropdown.Item>
+                {user?.isAdmin && (
+                  <NavDropdown.Item>
+                    <Link to={"/Admin"}>Admin Pages</Link>
+                  </NavDropdown.Item>
+                )}
               </NavDropdown>
             </Nav>
 
             {!user && (
               <Nav>
                 <Nav.Link as={Link} to={"/login"}>
-                  Đăng nhập
+                  Login
                 </Nav.Link>
                 <Nav.Link as={Link} to={"/register"}>
-                  Đăng ký
+                  Sign Up
                 </Nav.Link>
               </Nav>
             )}
@@ -73,13 +77,13 @@ const Header = () => {
               <Nav className="me-3">
                 {/* <Container> */}
                 <Navbar.Text className="text-info">
-                  Chào mừng ! {user.username} <br />
+                  Welcome ! {user.username} <br />
                 </Navbar.Text>
                 {/* </Container> */}
               </Nav>
             )}
 
-            {user && <Button onClick={handleClick}>Đăng xuất</Button>}
+            {user && <Button onClick={handleClick}>Logout</Button>}
           </Navbar.Collapse>
         </Container>
       </Navbar>

@@ -1,7 +1,12 @@
 import mongoose from "mongoose";
+import Schema from "mongoose";
 const RoomSchema = new mongoose.Schema(
   {
     title: {
+      type: String,
+      required: true,
+    },
+    username: {
       type: String,
       required: true,
     },
@@ -45,6 +50,7 @@ const RoomSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    categoryid: { type: Schema.Types.ObjectId, ref: "Category" },
   },
   { timestamps: true }
 );

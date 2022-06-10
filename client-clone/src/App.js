@@ -28,6 +28,7 @@ import UpdateCategory from "./pages/admin/updateCate/UpdateCategory";
 import NewRoom from "./pages/admin/newRoom/NewRoom";
 import UpdateRoom from "./pages/admin/updateRoom/UpdateRoom";
 import Contact from "./pages/contact/Contact";
+import Profile from "./pages/profile/Profile";
 
 //import framework, modules, other...
 
@@ -55,6 +56,7 @@ function App() {
         <Route path="/category/AllRoom/:id" exact element={<Rooms2 />} />
         <Route path="/register" exact element={<Register />} />
         <Route path="/contacts" exact element={<Contact />} />
+        <Route path="/profiles/:id" exact element={<Profile />} />
 
         <Route path="/NotAllowd" exact element={<NotAllowed />} />
 

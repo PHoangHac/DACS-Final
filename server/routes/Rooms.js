@@ -20,7 +20,7 @@ router.post("/:categoryid", verifyAdmin, createRoom);
 router.put("/:id", verifyAdmin, UpdateRoom);
 
 //delete
-router.delete("/:id/:categoryid", verifyAdmin, DeleteRoom);
+router.delete("/delete/:id", verifyAdmin, DeleteRoom);
 
 //get one
 router.get("/:id", GetOneRoom);
