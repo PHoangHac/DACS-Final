@@ -19,7 +19,7 @@ const Category = () => {
               return (
                 <div className="col-3" key={value._id}>
                   <div className="card">
-                    <Link to={`/category/AllRoom/${value._id}`}>
+                    <Link to={`/categories/${value._id}`}>
                       <img src={value.img} className="card-img-top" alt="..." />
                     </Link>
                     <div className="card-body">

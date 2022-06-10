@@ -7,9 +7,10 @@ import {
   DeleteUser,
   GetOneUser,
   getAllUser,
+  GetRoomsUser,
 } from "../controllers/UserController.js";
 
-import { verifyToken, verifyUser, verifyAdmin } from "../utils/verifyToken.js";
+import { verifyUser } from "../utils/verifyToken.js";
 
 //create variable use Router in express framework
 const router = express.Router();
@@ -27,5 +28,8 @@ router.get("/:id", GetOneUser);
 
 //get all
 router.get("/", getAllUser);
+
+//get all room with user have
+router.get("/UserRooms/:id", GetRoomsUser);
 
 export default router;

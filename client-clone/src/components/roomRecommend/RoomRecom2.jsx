@@ -8,7 +8,7 @@ const RoomRecom2 = () => {
   const { data, loading } = useFetch("/room?bestChoice=true");
 
   return (
-    <div className="container">
+    <div className="container mb-5">
       <h3 className="mt-2 badge bg-primary text-wrap fs-4">Recommend</h3>
       <div className="row flex-row flex-nowrap overflow-auto">
         {loading ? (

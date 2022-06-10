@@ -10,8 +10,8 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import Rooms3 from "./pages/rooms/Rooms3";
-import Rooms2 from "./pages/rooms/Rooms2";
+import Rooms from "./pages/rooms/Rooms";
+import CategoriesR from "./pages/rooms/CategoriesR";
 import Details from "./pages/details/Details";
 import DashBoard from "./pages/admin/doashBoard/DashBoard";
 import { AuthContext } from "./contexts/AuthContext";
@@ -29,11 +29,14 @@ import NewRoom from "./pages/admin/newRoom/NewRoom";
 import UpdateRoom from "./pages/admin/updateRoom/UpdateRoom";
 import Contact from "./pages/contact/Contact";
 import Profile from "./pages/profile/Profile";
+import Post from "./pages/post/Post";
+import MyPost from "./pages/post/MyPost";
+import UpdatePost from "./pages/post/UpdatePost";
 
 //import framework, modules, other...
 
 function App() {
-  const ProtectedRoute = ({ children }) => {
+  const ProtectedRouteAdmin = ({ children }) => {
     const { user } = useContext(AuthContext);
 
     if (!user) {
@@ -45,18 +48,64 @@ function App() {
     return children;
   };
 
+  const ProtectedRouteHome = ({ children }) => {
+    const { user } = useContext(AuthContext);
+
+    if (!user) {
+      return <Navigate to={"/login"} />;
+    }
+    return children;
+  };
+
   return (
     <Router>
       <Routes>
         <Route path="/" exact element={<Home />} />
-        <Route path="/rooms" exact element={<Rooms3 />} />
+        <Route path="/rooms" exact element={<Rooms />} />
         <Route path="/detailRoom/:id" exact element={<Details />} />
         <Route path="/login" exact element={<Login />} />
         <Route path="/loginAdmin" exact element={<LoginAdmin />} />
-        <Route path="/category/AllRoom/:id" exact element={<Rooms2 />} />
+        <Route path="/categories/:id" exact element={<CategoriesR />} />
         <Route path="/register" exact element={<Register />} />
         <Route path="/contacts" exact element={<Contact />} />
-        <Route path="/profiles/:id" exact element={<Profile />} />
+
+        <Route
+          path="/profiles/:id"
+          exact
+          element={
+            <ProtectedRouteHome>
+              <Profile />
+            </ProtectedRouteHome>
+          }
+        />
+
+        <Route
+          path="/Createpost/:id"
+          exact
+          element={
+            <ProtectedRouteHome>
+              <Post />
+            </ProtectedRouteHome>
+          }
+        />
+        <Route
+          path="/MyPost/:id"
+          exact
+          element={
+            <ProtectedRouteHome>
+              <MyPost />
+            </ProtectedRouteHome>
+          }
+        />
+        <Route
+          path="/UpdatePost/:id"
+          exact
+          element={
+            <ProtectedRouteHome>
+              <UpdatePost />
+            </ProtectedRouteHome>
+          }
+        />
 
         <Route path="/NotAllowd" exact element={<NotAllowed />} />
 
@@ -64,81 +113,81 @@ function App() {
           path="/Admin"
           exact
           element={
-            <ProtectedRoute>
+            <ProtectedRouteAdmin>
               <DashBoard />
-            </ProtectedRoute>
+            </ProtectedRouteAdmin>
           }
         >
           <Route
             path="User"
             element={
-              <ProtectedRoute>
+              <ProtectedRouteAdmin>
                 <UsersAdmin />
-              </ProtectedRoute>
+              </ProtectedRouteAdmin>
             }
           />
           <Route
             path="NewUser"
             element={
-              <ProtectedRoute>
+              <ProtectedRouteAdmin>
                 <NewUser />
-              </ProtectedRoute>
+              </ProtectedRouteAdmin>
             }
           />
           <Route
             path="UpdateUser/:id"
             element={
-              <ProtectedRoute>
+              <ProtectedRouteAdmin>
                 <UpdateUser />
-              </ProtectedRoute>
+              </ProtectedRouteAdmin>
             }
           />
           <Route
             path="Category"
             element={
-              <ProtectedRoute>
+              <ProtectedRouteAdmin>
                 <CategoriesAdmin />
-              </ProtectedRoute>
+              </ProtectedRouteAdmin>
             }
           />
           <Route
             path="NewCategory"
             element={
-              <ProtectedRoute>
+              <ProtectedRouteAdmin>
                 <NewCategory />
-              </ProtectedRoute>
+              </ProtectedRouteAdmin>
             }
           />
           <Route
             path="UpdateCategory/:id"
             element={
-              <ProtectedRoute>
+              <ProtectedRouteAdmin>
                 <UpdateCategory />
-              </ProtectedRoute>
+              </ProtectedRouteAdmin>
             }
           />
           <Route
             path="Room"
             element={
-              <ProtectedRoute>
+              <ProtectedRouteAdmin>
                 <RoomsAdmin />
-              </ProtectedRoute>
+              </ProtectedRouteAdmin>
             }
           />
           <Route
             path="NewRoom"
             element={
-              <ProtectedRoute>
+              <ProtectedRouteAdmin>
                 <NewRoom />
-              </ProtectedRoute>
+              </ProtectedRouteAdmin>
             }
           />
           <Route
             path="UpdateRoom/:id"
             element={
-              <ProtectedRoute>
+              <ProtectedRouteAdmin>
                 <UpdateRoom />
-              </ProtectedRoute>
+              </ProtectedRouteAdmin>
             }
           />
         </Route>

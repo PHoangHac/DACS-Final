@@ -1,8 +1,10 @@
 import Room from "../models/RoomModel.js";
 import Category from "../models/CategoryModel.js";
+import Users from "../models/UserModel.js";
 
 export const createRoom = async (req, res, next) => {
   const categoryId = req.params.categoryid;
+  const UserID = req.params.userid;
   const newRoom = new Room(req.body);
 
   try {
@@ -10,6 +12,9 @@ export const createRoom = async (req, res, next) => {
     try {
       await Category.findByIdAndUpdate(categoryId, {
         $push: { rooms: saveRoom._id },
+      });
+      await Users.findByIdAndUpdate(UserID, {
+        $push: { roomsUser: saveRoom._id },
       });
     } catch (err) {
       next(err);
@@ -40,14 +45,27 @@ export const UpdateRoom = async (req, res, next) => {
 export const DeleteRoom = async (req, res, next) => {
   try {
     const room = await Room.findById(req.params.id);
-    await Category.findOneAndUpdate(
-      { _id: room.categoryid },
-      {
-        $pull: { rooms: req.params.id },
-      }
-    );
-    await room.deleteOne();
-    return res.status(200).json("Delete Room successfull !");
+
+    if (req.user.isAdmin || room.username === req.body.username) {
+      await Category.findOneAndUpdate(
+        { _id: room.categoryid },
+
+        {
+          $pull: { rooms: req.params.id },
+        }
+      );
+      await Users.findOneAndUpdate(
+        { _id: room.userid },
+
+        {
+          $pull: { roomsUser: req.params.id },
+        }
+      );
+      await room.deleteOne();
+      return res.status(200).json("Delete Room successfull !");
+    } else {
+      res.status(401).json("You can delete only your room! !");
+    }
   } catch (err) {
     next();
   }

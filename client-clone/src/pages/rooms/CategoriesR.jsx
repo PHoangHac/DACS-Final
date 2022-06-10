@@ -2,11 +2,10 @@ import React from "react";
 import Header from "../../components/navbar/Header";
 import Footer from "../../components/footer/Footer";
 import "./room.scss";
-
 import Filter from "../../components/filter/Filter";
-import RoomList3 from "../../components/roomlist/RoomList3";
+import CategoryRoom from "../../components/roomlist/CategoryRoom";
 
-const Rooms3 = () => {
+const CategoriesR = () => {
   return (
     <>
       <Header />
@@ -17,7 +16,7 @@ const Rooms3 = () => {
             <Filter />
             {/* End filter */}
 
-            <RoomList3 />
+            <CategoryRoom />
           </div>
         </div>
       </section>
@@ -26,4 +25,4 @@ const Rooms3 = () => {
   );
 };
 
-export default Rooms3;
+export default CategoriesR;

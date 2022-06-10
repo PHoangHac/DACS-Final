@@ -1,4 +1,5 @@
 import Users from "../models/UserModel.js";
+import Room from "../models/RoomModel.js";
 
 //import modules
 
@@ -50,5 +51,19 @@ export const getAllUser = async (req, res, next) => {
   } catch (err) {
     next(err);
     // console.log(err);
+  }
+};
+
+export const GetRoomsUser = async (req, res, next) => {
+  try {
+    const getAllRoom = await Users.findById(req.params.id);
+    const list = await Promise.all(
+      getAllRoom.roomsUser.map((room) => {
+        return Room.findById(room);
+      })
+    );
+    res.status(200).json(list);
+  } catch (err) {
+    next(err);
   }
 };

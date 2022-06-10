@@ -36,6 +36,9 @@ const UserSchema = new mongoosee.Schema(
       type: Boolean,
       default: false,
     },
+    roomsUser: {
+      type: [String],
+    },
   },
   { timestamps: true }
 );

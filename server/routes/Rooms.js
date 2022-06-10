@@ -6,7 +6,7 @@ import {
   GetOneRoom,
   GetAllRoom,
 } from "../controllers/RoomController.js";
-import { verifyAdmin } from "../utils/verifyToken.js";
+import { verifyToken } from "../utils/verifyToken.js";
 
 //create variable use Router in express framework
 const router = express.Router();
@@ -14,13 +14,13 @@ const router = express.Router();
 //All methods
 
 //create
-router.post("/:categoryid", verifyAdmin, createRoom);
+router.post("/:categoryid/:userid", verifyToken, createRoom);
 
 //update
-router.put("/:id", verifyAdmin, UpdateRoom);
+router.put("/:id", verifyToken, UpdateRoom);
 
 //delete
-router.delete("/delete/:id", verifyAdmin, DeleteRoom);
+router.delete("/delete/:id", verifyToken, DeleteRoom);
 
 //get one
 router.get("/:id", GetOneRoom);

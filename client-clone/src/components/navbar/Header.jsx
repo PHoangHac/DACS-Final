@@ -48,7 +48,12 @@ const Header = () => {
                 Contacts
               </Nav.Link>
               <NavDropdown title="Setting" id="collasible-nav-dropdown">
-                <NavDropdown.Item>Action</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to={`/Createpost/${user?._id}`}>
+                  New Post
+                </NavDropdown.Item>
+                <NavDropdown.Item as={Link} to={`/MyPost/${user?._id}`}>
+                  My Post
+                </NavDropdown.Item>
                 <NavDropdown.Item>ChangePassword</NavDropdown.Item>
                 <NavDropdown.Item as={Link} to={`/profiles/${user?._id}`}>
                   Profile

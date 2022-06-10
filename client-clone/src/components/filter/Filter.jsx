@@ -26,6 +26,9 @@ const Filter = () => {
                   <li>
                     <a href="#">Clothes </a>
                   </li>
+                  <li>
+                    <a href="#">Rooms </a>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -39,7 +42,7 @@ const Filter = () => {
               <div className="card-body">
                 <div className="form-inline">
                   <select className="mr-2 form-control">
-                    <option selected>Select Address</option>
+                    <option defaultValue>Select Address</option>
                     <option>District 1</option>
                     <option>District 10</option>
                     <option>District 3</option>

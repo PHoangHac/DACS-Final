@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
-import "../updateUser/update.scss";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import "../../components/admin/updateUser/update.scss";
+// import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import useFetch from "../../../hooks/useFetch";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import useFetch from "../../hooks/useFetch";
+import { AuthContext } from "../../contexts/AuthContext";
 
-const NewR = () => {
+const PostUser = () => {
   const [files, setFiles] = useState("");
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
@@ -15,7 +16,11 @@ const NewR = () => {
   const [address, setAddress] = useState("");
   const [desc, setDesc] = useState("");
 
+  const { id } = useParams();
+
   const [categoryId, setCategoryId] = useState(undefined);
+
+  const { user } = useContext(AuthContext);
 
   const { data, loading } = useFetch("/category");
 
@@ -23,7 +28,6 @@ const NewR = () => {
 
   const handleSumbit = async (e) => {
     e.preventDefault();
-
     try {
       const listphoto = await Promise.all(
         Object.values(files).map(async (file) => {
@@ -40,30 +44,31 @@ const NewR = () => {
         })
       );
 
-      await axios.post(`/room/${categoryId}`, {
+      const res = await axios.post(`/room/${categoryId}/${id}`, {
         title: title,
         price: price,
+        username: user.username,
         status: status,
         maxPeople: maxPeople,
         area: area,
         address: address,
         desc: desc,
         photos: listphoto,
-
         categoryid: categoryId,
+        userid: id,
       });
       alert("Create Room successful !");
-      Nagigate("/Admin/Room");
+      Nagigate(`/MyPost/${user._id}`);
     } catch (err) {
       console.log(err);
     }
   };
 
   // console.log(hotelId);
-
+  // console.log(id);
   return (
     <div className="container">
-      <h3>Add New Room</h3>
+      <h3 className="mt-4 badge bg-primary text-wrap fs-4">Add New Post</h3>
       <div className="container-xl px-4 mt-4">
         <hr className="mt-0 mb-4"></hr>
         <div className="row">
@@ -247,15 +252,12 @@ const NewR = () => {
                         id="inputDesc"
                         type="text"
                         placeholder="Enter descripton ...."
-                        onChange={(e) => {
-                          setDesc(e.target.value);
-                        }}
                       />
                     </div>
                   </div>
 
                   <button className="btn btn-primary">Create</button>
-                  <Link id="back-link" className="float-end" to={"/Admin/Room"}>
+                  <Link id="back-link" className="float-end" to={"/"}>
                     Back
                   </Link>
                 </form>
@@ -268,4 +270,4 @@ const NewR = () => {
   );
 };
 
-export default NewR;
+export default PostUser;

@@ -1,9 +1,11 @@
 import React from "react";
 import useFetch from "../../hooks/useFetch";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-const RoomList3 = () => {
-  const { data, loading } = useFetch("/room");
+const UserPost = () => {
+  let { id } = useParams();
+
+  const { data, loading } = useFetch(`/user/UserRooms/${id}`);
 
   return (
     <>
@@ -28,20 +30,24 @@ const RoomList3 = () => {
                 <article className="card card-product-list mb-2" key={val._id}>
                   <div className="row no-gutters">
                     <aside className="col-md-3">
-                      <div className="img-wrap">
+                      <div className="img-wrap" style={{ height: "100%" }}>
                         <img
                           src={val.photos[0]}
-                          className="img-fluid rounded-start rounded-end"
+                          className="img-fluid rounded border border-warning"
+                          style={{ height: "100%" }}
                         />
                       </div>
                     </aside>
                     <div className="col-md-6">
-                      <div className="info-main">
+                      <div className="info-main mt-3">
                         <div className="h5 title"> {val.title} </div>
                         <div className="rating-wrap mb-3">
                           <ul
                             className="rating-stars"
-                            style={{ listStyleType: "none" }}
+                            style={{
+                              listStyleType: "none",
+                              paddingLeft: 0,
+                            }}
                           >
                             <li className="stars-active w-80">
                               <i className="fa fa-star"></i>{" "}
@@ -57,7 +63,7 @@ const RoomList3 = () => {
                       </div>
                     </div>
                     <aside className="col-sm-3">
-                      <div className="info-aside">
+                      <div className="info-aside mt-3">
                         <div className="price-wrap">
                           <span className="price h5"> {val.price} Triệu </span>
                         </div>
@@ -120,4 +126,4 @@ const RoomList3 = () => {
   );
 };
 
-export default RoomList3;
+export default UserPost;

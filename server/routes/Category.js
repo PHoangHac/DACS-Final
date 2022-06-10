@@ -7,7 +7,7 @@ import {
   GetAllCategory,
   GetAll,
 } from "../controllers/CategoryController.js";
-import { verifyAdmin } from "../utils/verifyToken.js";
+import { verifyAdmin, verifyUser } from "../utils/verifyToken.js";
 
 //create variable use Router in express framework
 const router = express.Router();

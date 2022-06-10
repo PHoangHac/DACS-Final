@@ -1,9 +1,11 @@
 import React from "react";
 import useFetch from "../../hooks/useFetch";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-const RoomList = () => {
-  const { data, loading } = useFetch("/room");
+const CategoryRoom = () => {
+  const { categoryid } = useParams();
+
+  const { data, loading } = useFetch(`/category/AllRoom/${categoryid}`);
 
   return (
     <>
@@ -121,4 +123,4 @@ const RoomList = () => {
   );
 };
 
-export default RoomList;
+export default CategoryRoom;

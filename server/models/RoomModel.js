@@ -46,11 +46,11 @@ const RoomSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    type: {
+    realEstate: {
       type: String,
-      required: true,
     },
     categoryid: { type: Schema.Types.ObjectId, ref: "Category" },
+    userid: { type: Schema.Types.ObjectId, ref: "Users" },
   },
   { timestamps: true }
 );

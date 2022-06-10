@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { FaTrashAlt, FaCloudUploadAlt } from "react-icons/fa";
 import "../admin.scss";
 import moment from "moment";
 import axios from "axios";
+import { AuthContext } from "../../../contexts/AuthContext";
 
 const RoomsAdmin = () => {
   const [listRoom, setListRoom] = useState([]);
+
+  const { user } = useContext(AuthContext);
 
   const displayAllRoom = async () => {
     axios.get("/room").then((res) => {
@@ -83,7 +86,7 @@ const RoomsAdmin = () => {
                     />
                   </td>
                   <td>{value.bestChoice.toString()}</td>
-                  <td>{value.type}</td>
+                  <td>{value.typeRoom}</td>
                   <td>
                     {moment(value.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
                   </td>

@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import "../updateUser/update.scss";
-import { useNavigate } from "react-router-dom";
+import "../../components/admin/updateUser/update.scss";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import useFetch from "../../../hooks/useFetch";
 
-const NewR = () => {
+const PostUpdate = () => {
   const [files, setFiles] = useState("");
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
@@ -14,16 +13,17 @@ const NewR = () => {
   const [area, setArea] = useState("");
   const [address, setAddress] = useState("");
   const [desc, setDesc] = useState("");
+  const [photos, setPhotos] = useState([]);
+  const [type, setType] = useState("");
 
-  const [categoryId, setCategoryId] = useState(undefined);
-
-  const { data, loading } = useFetch("/category");
-
+  const { id } = useParams();
   const Nagigate = useNavigate();
 
-  const handleSumbit = async (e) => {
+  const UpdateSubmit = async (e) => {
     e.preventDefault();
-
+    const data = new FormData();
+    data.append("file", files);
+    data.append("upload_preset", "upload");
     try {
       const listphoto = await Promise.all(
         Object.values(files).map(async (file) => {
@@ -40,30 +40,44 @@ const NewR = () => {
         })
       );
 
-      await axios.post(`/room/${categoryId}`, {
+      await axios.put(`/room/${id}`, {
         title: title,
         price: price,
         status: status,
         maxPeople: maxPeople,
-        area: area,
-        address: address,
         desc: desc,
         photos: listphoto,
-
-        categoryid: categoryId,
+        type: type,
       });
-      alert("Create Room successful !");
-      Nagigate("/Admin/Room");
+      alert("Update Room successful !");
+      Nagigate(`/detailRoom/${id}`);
     } catch (err) {
       console.log(err);
     }
   };
 
-  // console.log(hotelId);
+  const getRoomById = async () => {
+    const getdata = await axios.get(`/room/${id}`);
+    setTitle(getdata.data.title);
+    setPrice(getdata.data.price);
+    setStatus(getdata.data.status);
+    setAddress(getdata.data.address);
+    setMaxPeople(getdata.data.maxPeople);
+    setArea(getdata.data.area);
+    setDesc(getdata.data.desc);
+    setPhotos(getdata.data.photos);
+    setType(getdata.data.type);
+  };
+
+  useEffect(() => {
+    getRoomById();
+  }, []);
+
+  // console.log(img);
 
   return (
     <div className="container">
-      <h3>Add New Room</h3>
+      <h3>Update User</h3>
       <div className="container-xl px-4 mt-4">
         <hr className="mt-0 mb-4"></hr>
         <div className="row">
@@ -71,15 +85,11 @@ const NewR = () => {
           <div className="col-xl-4">
             <div className="card mb-4 mb-xl-0">
               <div className="card-header">Profile Picture</div>
-              <form onSubmit={handleSumbit}>
+              <form onSubmit={UpdateSubmit}>
                 <div className="card-body text-center">
                   <img
                     className="img-account-profile rounded-circle mb-2"
-                    src={
-                      files
-                        ? URL.createObjectURL(files[0])
-                        : "https://i.pinimg.com/736x/c3/41/3f/c3413f7c697760db7608ee10e1e234fb.jpg"
-                    }
+                    src={files ? URL.createObjectURL(files[0]) : photos[0]}
                     alt="User image"
                   />
 
@@ -88,9 +98,9 @@ const NewR = () => {
                   </div>
                   <input
                     className="form-control"
+                    multiple
                     type="file"
                     id="formFile"
-                    multiple
                     onChange={(e) => {
                       setFiles(e.target.files);
                     }}
@@ -103,9 +113,9 @@ const NewR = () => {
           {/* Proflie-details */}
           <div className="col-xl-8">
             <div className="card mb-4">
-              <div className="card-header">Choose picture</div>
+              <div className="card-header">Account Details</div>
               <div className="card-body">
-                <form onSubmit={handleSumbit}>
+                <form onSubmit={UpdateSubmit}>
                   <div className="mb-3">
                     <label className="small mb-1" htmlFor="inputTitle">
                       Title
@@ -114,7 +124,8 @@ const NewR = () => {
                       className="form-control"
                       id="inputTitle"
                       type="text"
-                      placeholder="Enter title ...."
+                      placeholder="Enter title to to edit ...."
+                      value={title}
                       onChange={(e) => {
                         setTitle(e.target.value);
                       }}
@@ -130,7 +141,8 @@ const NewR = () => {
                         className="form-control"
                         id="inputPrice"
                         type="number"
-                        placeholder="Enter price ...."
+                        placeholder="Enter price to edit ...."
+                        value={price}
                         onChange={(e) => {
                           setPrice(e.target.value);
                         }}
@@ -145,7 +157,8 @@ const NewR = () => {
                         className="form-control"
                         id="inputStatus"
                         type="text"
-                        placeholder="Enter status ...."
+                        placeholder="Enter status to edit ...."
+                        value={status}
                         onChange={(e) => {
                           setStatus(e.target.value);
                         }}
@@ -154,7 +167,7 @@ const NewR = () => {
                   </div>
 
                   <div className="row gx-3 mb-3">
-                    <div className="col-md-12">
+                    <div className="col-md-9">
                       <label className="small mb-1" htmlFor="inputLocation">
                         Address
                       </label>
@@ -162,9 +175,25 @@ const NewR = () => {
                         className="form-control"
                         id="inputLocation"
                         type="text"
-                        placeholder="Enter location ...."
+                        placeholder="Enter location to edit ...."
+                        value={address}
                         onChange={(e) => {
                           setAddress(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="col-md-3">
+                      <label className="small mb-1" htmlFor="inputArea">
+                        Area
+                      </label>
+                      <input
+                        className="form-control"
+                        id="inputArea"
+                        type="text"
+                        placeholder="Enter Area to edit ...."
+                        value={area}
+                        onChange={(e) => {
+                          setArea(e.target.value);
                         }}
                       />
                     </div>
@@ -179,7 +208,8 @@ const NewR = () => {
                         className="form-control"
                         id="inputmaxPeople"
                         type="number"
-                        placeholder="Enter maxPeople ...."
+                        placeholder="Enter maxPeople to edit ...."
+                        value={maxPeople}
                         onChange={(e) => {
                           setMaxPeople(e.target.value);
                         }}
@@ -194,46 +224,12 @@ const NewR = () => {
                         className="form-control"
                         id="inputType"
                         type="text"
-                        placeholder="Enter type ...."
-                      />
-                    </div>
-                  </div>
-
-                  <div className="row gx-3 mb-3">
-                    <div className="col-md-6">
-                      <label className="small mb-1" htmlFor="inputArea">
-                        Area
-                      </label>
-                      <input
-                        className="form-control"
-                        id="inputArea"
-                        type="text"
-                        placeholder="Enter Area ...."
+                        placeholder="Enter type to edit ...."
+                        value={type}
                         onChange={(e) => {
-                          setArea(e.target.value);
+                          setType(e.target.value);
                         }}
                       />
-                    </div>
-                    <div className="col-md-6">
-                      <label className="small mb-1 ms-2" htmlFor="featured">
-                        Category
-                      </label>
-                      <select
-                        id="hotelId"
-                        onChange={(e) => setCategoryId(e.target.value)}
-                        className="featured"
-                      >
-                        {loading
-                          ? "loading..."
-                          : data &&
-                            data.map((val) => {
-                              return (
-                                <option key={val._id} value={val._id}>
-                                  {val.type}
-                                </option>
-                              );
-                            })}
-                      </select>
                     </div>
                   </div>
 
@@ -246,7 +242,8 @@ const NewR = () => {
                         className="form-control"
                         id="inputDesc"
                         type="text"
-                        placeholder="Enter descripton ...."
+                        placeholder="Enter descripton to edit ...."
+                        value={desc}
                         onChange={(e) => {
                           setDesc(e.target.value);
                         }}
@@ -254,8 +251,12 @@ const NewR = () => {
                     </div>
                   </div>
 
-                  <button className="btn btn-primary">Create</button>
-                  <Link id="back-link" className="float-end" to={"/Admin/Room"}>
+                  <button className="btn btn-primary">Save changes</button>
+                  <Link
+                    id="back-link"
+                    className="float-end"
+                    to={`/detailRoom/${id}`}
+                  >
                     Back
                   </Link>
                 </form>
@@ -268,4 +269,4 @@ const NewR = () => {
   );
 };
 
-export default NewR;
+export default PostUpdate;
