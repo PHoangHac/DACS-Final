@@ -46,8 +46,9 @@ const RoomSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    realEstate: {
+    type: {
       type: String,
+      required: true,
     },
     categoryid: { type: Schema.Types.ObjectId, ref: "Category" },
     userid: { type: Schema.Types.ObjectId, ref: "Users" },

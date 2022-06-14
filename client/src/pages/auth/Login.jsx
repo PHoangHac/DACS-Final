@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import "./login.scss";
+import "./auth.scss";
+import { ToastContainer, toast } from "react-toastify";
 
 const Login = () => {
   const [showpass, setShowPass] = useState(false);
@@ -27,24 +28,32 @@ const Login = () => {
 
   const handleClick = async (e) => {
     e.preventDefault();
+
     dispatch({ type: "LOGIN_START" });
     try {
       const res = await axios.post("auth/login", credentials);
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
       Navigate("/");
     } catch (err) {
+      console.log(err);
+      toast.error(err.response.data, {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 10000,
+      });
       dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
     }
   };
+
+  // console.log(error);
 
   return (
     <div className="container mt-5 mb-5">
       <div className="row d-flex align-items-center justify-content-center">
         <div className="col-md-6">
           <div className="card px-5 py-5 card-signup">
-            <div>{error && <span>{error.message}</span>}</div>
+            {/* <div>{error && <span>{error.message}</span>}</div> */}
             <h1 className="mt-3">SIGN IN </h1>
-            <form>
+            <form onSubmit={handleClick}>
               <div className="form-input form-signup">
                 <label htmlFor="username">Username :</label>
                 <i className="fa fa-user"></i>
@@ -68,6 +77,7 @@ const Login = () => {
                   placeholder="password"
                   type={showpass ? "text" : "password"}
                   required
+                  autoComplete="true"
                 />
               </div>
 
@@ -82,7 +92,7 @@ const Login = () => {
                   Show password
                 </label>
               </div>
-              <div className="form-check">
+              {/* <div className="form-check">
                 <input
                   className="form-check-input"
                   type="checkbox"
@@ -91,11 +101,12 @@ const Login = () => {
                 <label className="form-check-label" htmlFor="flexCheckChecked">
                   I agree all the statements
                 </label>
-              </div>
+              </div> */}
 
               <button
+                type="submit"
                 disabled={loading}
-                onClick={handleClick}
+                onSubmit={handleClick}
                 className="btn btn-primary mt-4 signup"
               >
                 Login
@@ -127,9 +138,15 @@ const Login = () => {
                 Register
               </Link>
             </div>
+            <div className="text-center mt-4">
+              <Link to={"/"} className="text-decoration-none">
+                <i className="fa-solid fa-arrow-left-long"></i>&nbsp;Home
+              </Link>
+            </div>
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

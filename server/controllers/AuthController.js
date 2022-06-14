@@ -26,7 +26,8 @@ export const CreateUser = async (req, res, next) => {
 export const loginUser = async (req, res, next) => {
   try {
     const user = await Users.findOne({ username: req.body.username });
-    if (!user) return next(createError(400, "Không tìm thấy tài khoản"));
+    if (!user) return res.status(409).json("Không tìm thấy tài khoản");
+    // next(createError(400, "Không tìm thấy tài khoản"));
 
     //Su dung compare de ma hoa nguoc lai
     const CorrectPassword = await bcrypt.compare(
@@ -35,7 +36,8 @@ export const loginUser = async (req, res, next) => {
     );
 
     if (!CorrectPassword)
-      return next(createError(400, "Sai mật khẩu và tài khoản !"));
+      return res.status(409).json("Sai mật khẩu và tài khoản !");
+    // next(createError(400, "Sai mật khẩu và tài khoản !"));
 
     //khoi tao variable token
     //su dung sign trong jsonwebtoken - payload len id va isAdmin
@@ -51,14 +53,12 @@ export const loginUser = async (req, res, next) => {
       .cookie("access_token", token, { httpOnly: true })
       .status(200)
       .json({ details: { ...otherDetails, isAdmin }, isAdmin });
-
-    // res.status(200).json(user);
   } catch (err) {
     next(err);
   }
 };
 
-export const logout = async (req, res, next) => {
-  res.clearCookie("access_token");
-  res.redirect("/");
-};
+// export const logout = async (req, res, next) => {
+//   res.clearCookie("access_token");
+//   res.redirect("/");
+// };

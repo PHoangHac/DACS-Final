@@ -1,0 +1,37 @@
+.container-detail {
+  width: 85%;
+
+  #detail-h1 {
+    border-top: 1px solid #0d6efd;
+    border-bottom: 1px solid #0d6efd !important;
+  }
+
+  #detail-h5 {
+    color: #092a5b;
+  }
+
+  #card-user {
+    max-width: 15rem;
+  }
+
+  #username {
+    font-size: 1rem;
+  }
+
+  #userPhone {
+    font-size: 1rem;
+  }
+
+  #delete-post {
+    color: blue;
+    cursor: pointer;
+  }
+
+  #delete-post:hover {
+    color: red;
+  }
+
+  // #detail-type {
+  //   margin-left: 4.5rem;
+  // }
+}

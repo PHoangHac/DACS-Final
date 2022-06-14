@@ -3,8 +3,10 @@ import express from "express";
 import {
   CreateUser,
   loginUser,
-  logout,
+  // logout,
 } from "../controllers/AuthController.js";
+
+import { checkAuthSignUp } from "../utils/error.js";
 
 //create variable use Router in express framework
 const router = express.Router();
@@ -12,12 +14,12 @@ const router = express.Router();
 //All methods
 
 //PostRegister
-router.post("/register", CreateUser);
+router.post("/register", checkAuthSignUp, CreateUser);
 
 //Postlogin
 router.post("/login", loginUser);
 
 //Logout with clear cookie
-router.get("/logout", logout);
+// router.get("/logout", logout);
 
 export default router;
