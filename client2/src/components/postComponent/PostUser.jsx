@@ -40,6 +40,7 @@ const PostUser = () => {
             data
           );
 
+          console.log(uploadRes);
           const { url } = uploadRes.data;
           return url;
         })
@@ -53,7 +54,7 @@ const PostUser = () => {
         maxPeople: maxPeople,
         area: area,
         address: address,
-        typeRoom: typeRoom,
+        type: typeRoom,
         desc: desc,
         photos: listphoto,
         categoryid: categoryId,
@@ -66,8 +67,6 @@ const PostUser = () => {
     }
   };
 
-  // console.log(hotelId);
-  // console.log(id);
   return (
     <div className="container">
       <h3 className="mt-4 badge bg-primary text-wrap fs-4">Add New Post</h3>

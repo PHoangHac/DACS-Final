@@ -1,13 +1,13 @@
 import React from "react";
 import Footer from "../../components/footer/Footer";
 import Header from "../../components/navbar/Header";
-import PostUpdate from "../../components/postComponent/PostUpdate";
+import PostUpdate2 from "../../components/postComponent/PostUpdate2";
 
 const UpdatePost = () => {
   return (
     <>
       <Header />
-      <PostUpdate />
+      <PostUpdate2 />
       <Footer />
     </>
   );

@@ -30,6 +30,7 @@ import UpdateRoom from "./pages/admin/updateRoom/UpdateRoom";
 import Contact from "./pages/contact/Contact";
 import Profile from "./pages/profile/Profile";
 import Post from "./pages/post/Post";
+import Post2 from "./pages/post/Post2";
 import MyPost from "./pages/post/MyPost";
 import UpdatePost from "./pages/post/UpdatePost";
 import "react-toastify/dist/ReactToastify.css";
@@ -87,7 +88,7 @@ function App() {
           exact
           element={
             <ProtectedRouteHome>
-              <Post />
+              <Post2 />
             </ProtectedRouteHome>
           }
         />

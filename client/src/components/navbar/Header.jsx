@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../../assets/img/logo.svg";
+import logo from "../../assets/img/icons8-bbb.svg";
 // import axios from "axios";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
@@ -27,12 +27,19 @@ const Header = () => {
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Container>
           <Navbar.Brand>
-            <Link to={"/"} style={{ textDecoration: "none", color: "white" }}>
+            <Link
+              to={"/"}
+              style={{
+                textDecoration: "none",
+                color: "white",
+                lineHeight: "40px",
+              }}
+            >
               <img
                 alt=""
                 src={logo}
-                width="30"
-                height="30"
+                width="40"
+                height="40"
                 className="d-inline-block align-top"
               />{" "}
               Group 9
@@ -41,13 +48,17 @@ const Header = () => {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link as={Link} to={"/rooms"}>
+              <Nav.Link className=" fs-5" as={Link} to={"/rooms"}>
                 Rooms
               </Nav.Link>
-              <Nav.Link as={Link} to={"/contacts"}>
+              <Nav.Link className=" fs-5" as={Link} to={"/contacts"}>
                 Contacts
               </Nav.Link>
-              <NavDropdown title="Setting" id="collasible-nav-dropdown">
+              <NavDropdown
+                title="Setting"
+                className=" fs-5"
+                id="collasible-nav-dropdown"
+              >
                 <NavDropdown.Item as={Link} to={`/Createpost/${user?._id}`}>
                   New Post
                 </NavDropdown.Item>

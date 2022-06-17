@@ -71,17 +71,31 @@ const DetailRoom = () => {
       });
   };
 
+  const PL = "http://localhost:7070/images/";
+
   return (
     <div className="card border-primary mb-3" style={{ maxwidth: "18rem" }}>
       <Carousel>
         <Carousel.Item>
-          <img className="d-block w-100" src={photos[0]} alt="First slide" />
+          <img
+            className="d-block w-100"
+            src={PL + photos[0]}
+            alt="First slide"
+          />
         </Carousel.Item>
         <Carousel.Item>
-          <img className="d-block w-100" src={photos[1]} alt="Second slide" />
+          <img
+            className="d-block w-100"
+            src={PL + photos[1]}
+            alt="Second slide"
+          />
         </Carousel.Item>
         <Carousel.Item>
-          <img className="d-block w-100" src={photos[2]} alt="Third slide" />
+          <img
+            className="d-block w-100"
+            src={PL + photos[2]}
+            alt="Third slide"
+          />
         </Carousel.Item>
       </Carousel>
       <div id="detail-h1" className="card-header text-center">

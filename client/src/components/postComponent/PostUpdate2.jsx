@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-const PostUpdate = () => {
+const PostUpdate2 = () => {
   const [files, setFiles] = useState("");
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
@@ -21,24 +21,32 @@ const PostUpdate = () => {
 
   const UpdateSubmit = async (e) => {
     e.preventDefault();
-    const data = new FormData();
-    data.append("file", files);
-    data.append("upload_preset", "upload");
+
     try {
       const listphoto = await Promise.all(
         Object.values(files).map(async (file) => {
           const data = new FormData();
-          data.append("file", file);
-          data.append("upload_preset", "upload");
-          const uploadRes = await axios.post(
-            "https://api.cloudinary.com/v1_1/hoanghac/image/upload",
-            data
-          );
-
-          const { url } = uploadRes.data;
-          return url;
+          const filename = Date.now() + file.name;
+          data.append("name", filename);
+          data.append("MultipleFiles", file);
+          const uploadRes = await axios.post("/upload-multiple", data);
+          return uploadRes.data;
         })
       );
+
+      // if (listphoto.length === 0) {
+      //   console.log("Array is empty!");
+      // } else {
+      //   console.log("Array have value!");
+      // }
+
+      if (files === "") {
+        console.log("String is empty!");
+      } else {
+        console.log("String have value!");
+      }
+
+      // console.log(files);
 
       await axios.put(`/room/${id}`, {
         title: title,
@@ -46,9 +54,10 @@ const PostUpdate = () => {
         status: status,
         maxPeople: maxPeople,
         desc: desc,
-        photos: listphoto,
+        photos: files ? listphoto : photos,
         typeRoom: typeRoom,
       });
+
       alert("Update Room successful !");
       Nagigate(`/detailRoom/${id}`);
     } catch (err) {
@@ -73,7 +82,9 @@ const PostUpdate = () => {
     getRoomById();
   }, [getRoomById]);
 
-  // console.log(img);
+  // console.log(files);
+
+  const PL = "http://localhost:7070/images/";
 
   return (
     <div className="container">
@@ -90,7 +101,7 @@ const PostUpdate = () => {
                   <img
                     alt="RoomImg"
                     className="img-account-profile rounded-circle mb-2"
-                    src={files ? URL.createObjectURL(files[0]) : photos[0]}
+                    src={files ? URL.createObjectURL(files[0]) : PL + photos[0]}
                   />
 
                   <div className="small font-italic text-muted mb-4">
@@ -269,4 +280,4 @@ const PostUpdate = () => {
   );
 };
 
-export default PostUpdate;
+export default PostUpdate2;

@@ -47,7 +47,7 @@ const PostUpdate = () => {
         maxPeople: maxPeople,
         desc: desc,
         photos: listphoto,
-        typeRoom: typeRoom,
+        type: typeRoom,
       });
       alert("Update Room successful !");
       Nagigate(`/detailRoom/${id}`);
@@ -73,7 +73,8 @@ const PostUpdate = () => {
     getRoomById();
   }, [getRoomById]);
 
-  // console.log(img);
+  console.log(photos);
+  console.log(files);
 
   return (
     <div className="container">

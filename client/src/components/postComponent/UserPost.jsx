@@ -7,6 +7,8 @@ const UserPost = () => {
 
   const { data, loading } = useFetch(`/user/UserRooms/${id}`);
 
+  const PL = "http://localhost:7070/images/";
+
   return (
     <>
       <main className="col-md-9">
@@ -33,7 +35,7 @@ const UserPost = () => {
                       <div className="img-wrap" style={{ height: "100%" }}>
                         <img
                           alt=""
-                          src={val.photos[0]}
+                          src={PL + val.photos[0]}
                           className="img-fluid rounded border border-warning"
                           style={{ height: "100%" }}
                         />

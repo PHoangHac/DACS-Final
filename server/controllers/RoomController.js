@@ -17,6 +17,7 @@ export const createRoom = async (req, res, next) => {
         $push: { roomsUser: saveRoom._id },
       });
     } catch (err) {
+      res.status(404).json("Some thing error !");
       next(err);
     }
     res.status(200).json(saveRoom);
@@ -35,6 +36,7 @@ export const UpdateRoom = async (req, res, next) => {
       },
       { new: true }
     );
+
     res.status(200).json(updateRoom);
   } catch (err) {
     //   res.status(500).json(err);
