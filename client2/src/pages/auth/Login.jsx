@@ -35,10 +35,10 @@ const Login = () => {
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
       Navigate("/");
     } catch (err) {
-      // console.log(err);
+      console.log(err);
       toast.error(err.response.data, {
         position: toast.POSITION.TOP_LEFT,
-        autoClose: 5000,
+        autoClose: 10000,
       });
       dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
     }
@@ -53,7 +53,7 @@ const Login = () => {
           <div className="card px-5 py-5 card-signup">
             {/* <div>{error && <span>{error.message}</span>}</div> */}
             <h1 className="mt-3">SIGN IN </h1>
-            <form autoComplete="off" onSubmit={handleClick}>
+            <form onSubmit={handleClick} autoComplete="off">
               <div className="form-input form-signup">
                 <label htmlFor="username">Username :</label>
                 <i className="fa fa-user"></i>

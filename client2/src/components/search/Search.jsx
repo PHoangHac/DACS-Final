@@ -8,7 +8,7 @@ const Search = () => {
         <br />
         <div className="row justify-content-center">
           <div className="col-12 col-md-10 col-lg-8">
-            <form className="card card-sm">
+            <form className="card card-sm" id="search-bar">
               <div className="card-body row no-gutters align-items-center">
                 <div className="col-auto">
                   <i className="fa-solid fa-magnifying-glass fs-4"></i>

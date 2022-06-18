@@ -1,13 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 // import useFetch from "../../hooks/useFetch";
 import { Link } from "react-router-dom";
+import ReactPaginate from "react-paginate";
 
 const RoomList = ({ list }) => {
+  const [pageNumber, setPageNumber] = useState(0);
+
+  const RoomsPerPage = 3;
+  const pagesVisited = pageNumber * RoomsPerPage;
+
+  const pageCount = Math.ceil(list.length / RoomsPerPage);
+
+  const changePage = ({ selected }) => {
+    setPageNumber(selected);
+  };
+
   // const { data, loading } = useFetch(`/room/?typeRoom=${props.queryName}`);
+  const PL = "http://localhost:7070/images/";
 
   return (
     <>
-      {list.map((val) => {
+      {list.slice(pagesVisited, pagesVisited + RoomsPerPage).map((val) => {
         return (
           <article className="card card-product-list mb-2" key={val._id}>
             <div className="row no-gutters">
@@ -15,8 +28,8 @@ const RoomList = ({ list }) => {
                 <div className="img-wrap" style={{ height: "100%" }}>
                   <img
                     alt=""
-                    src={val.photos[0]}
-                    className="img-fluid rounded border border-warning"
+                    src={PL + val.photos[0]}
+                    className="img-fluid rounded border border-primary border-3"
                     style={{ height: "100%" }}
                   />
                 </div>
@@ -71,33 +84,25 @@ const RoomList = ({ list }) => {
       })}
 
       <nav className="mt-4" aria-label="Page navigation sample">
-        <ul className="pagination">
-          <li className="page-item disabled">
-            <a className="page-link" href="!#">
-              Previous
-            </a>
-          </li>
-          <li className="page-item active">
-            <a className="page-link" href="!#">
-              1
-            </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="!#">
-              2
-            </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="!#">
-              3
-            </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="!#">
-              Next
-            </a>
-          </li>
-        </ul>
+        <ReactPaginate
+          previousLabel={"previous"}
+          nextLabel={"next"}
+          breakLabel={"..."}
+          pageCount={pageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={3}
+          onPageChange={changePage}
+          containerClassName={"pagination justify-content-center"}
+          pageClassName={"page-item"}
+          pageLinkClassName={"page-link"}
+          previousClassName={"page-item"}
+          previousLinkClassName={"page-link"}
+          nextClassName={"page-item"}
+          nextLinkClassName={"page-link"}
+          breakClassName={"page-item"}
+          breakLinkClassName={"page-link"}
+          activeClassName={"active"}
+        />
       </nav>
     </>
   );

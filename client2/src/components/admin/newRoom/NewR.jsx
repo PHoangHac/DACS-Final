@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../updateUser/update.scss";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import useFetch from "../../../hooks/useFetch";
+// import { AuthContext } from "../../../contexts/AuthContext";
+import { ToastContainer, toast } from "react-toastify";
 
 const NewR = () => {
   const [files, setFiles] = useState("");
@@ -14,75 +16,126 @@ const NewR = () => {
   const [area, setArea] = useState("");
   const [address, setAddress] = useState("");
   const [desc, setDesc] = useState("");
-  const [typeRoom, setTypeRoom] = useState("");
+  const [type, setType] = useState("");
+
+  const [userID, setUserID] = useState(undefined);
+  const [userName, setUserName] = useState("");
 
   const [categoryId, setCategoryId] = useState(undefined);
 
-  const { data, loading } = useFetch("/category");
+  // const { user } = useContext(AuthContext);
 
-  const Nagigate = useNavigate();
+  // console.log(userID);
+  // console.log(userName);
+
+  const { data } = useFetch("/category");
+
+  const [listUser, setListUser] = useState([]);
+
+  const displayAllUser = async () => {
+    axios.get("/user").then((res) => {
+      setListUser(res.data);
+      // console.log(res);
+    });
+  };
+
+  useEffect(() => {
+    displayAllUser();
+  }, []);
+
+  // console.log(listUser);
+
+  // const Nagigate = useNavigate();
 
   const handleSumbit = async (e) => {
     e.preventDefault();
 
+    const newPost = {
+      title,
+      price,
+      username: userName,
+      status,
+      maxPeople,
+      area,
+      address,
+      type,
+      desc,
+      categoryid: categoryId,
+      userid: userID,
+    };
+
+    const listphoto = await Promise.all(
+      Object.values(files).map(async (file) => {
+        const data = new FormData();
+        const filename = Date.now() + file.name;
+        data.append("name", filename);
+        data.append("MultipleFiles", file);
+        const uploadRes = await axios.post("/upload-multiple", data);
+
+        return uploadRes.data;
+      })
+    );
+
+    newPost.photos = listphoto;
     try {
-      const listphoto = await Promise.all(
-        Object.values(files).map(async (file) => {
-          const data = new FormData();
-          data.append("file", file);
-          data.append("upload_preset", "upload");
-          const uploadRes = await axios.post(
-            "https://api.cloudinary.com/v1_1/hoanghac/image/upload",
-            data
-          );
-
-          const { url } = uploadRes.data;
-          return url;
-        })
-      );
-
-      await axios.post(`/room/${categoryId}`, {
-        title: title,
-        price: price,
-        status: status,
-        maxPeople: maxPeople,
-        area: area,
-        address: address,
-        desc: desc,
-        photos: listphoto,
-        typeRoom: typeRoom,
-
-        categoryid: categoryId,
+      const res = await axios.post(`/room/${categoryId}/${userID}`, newPost);
+      // alert("Create Room successful !");
+      toast.success(res.data, {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 2000,
       });
-      alert("Create Room successful !");
-      Nagigate("/Admin/Room");
+      toast.info(CustomToastWithLink, {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 20000,
+      });
+      // Nagigate("/Admin/Room");
     } catch (err) {
       console.log(err);
     }
   };
 
-  // console.log(hotelId);
+  const CustomToastWithLink = () => (
+    <div>
+      <Link to="/Admin/Room">Click here back to List</Link>
+    </div>
+  );
+
+  let list = data.map((val) => {
+    return (
+      <option key={val._id} value={[val._id, val.type]}>
+        {val.type}
+      </option>
+    );
+  });
+
+  let SelectedUser = listUser.map((val) => {
+    return (
+      <option key={val._id} value={[val._id, val.username]}>
+        {val.username}
+      </option>
+    );
+  });
 
   return (
     <div className="container">
-      <h3>Add New Room</h3>
+      <h3 className="badge bg-success text-wrap fs-4 ms-4 ">Add New Room</h3>
       <div className="container-xl px-4 mt-4">
         <hr className="mt-0 mb-4"></hr>
         <div className="row">
           {/* piture-profile */}
           <div className="col-xl-4">
             <div className="card mb-4 mb-xl-0">
-              <div className="card-header">Profile Picture</div>
+              <div className="card-header fs-5">Room Image</div>
               <form onSubmit={handleSumbit}>
                 <div className="card-body text-center">
-                  <image
+                  <img
+                    alt="Roomsimage"
                     className="img-account-profile rounded-circle mb-2"
                     src={
                       files
                         ? URL.createObjectURL(files[0])
                         : "https://i.pinimg.com/736x/c3/41/3f/c3413f7c697760db7608ee10e1e234fb.jpg"
                     }
-                    alt="User image"
                   />
 
                   <div className="small font-italic text-muted mb-4">
@@ -105,11 +158,14 @@ const NewR = () => {
           {/* Proflie-details */}
           <div className="col-xl-8">
             <div className="card mb-4">
-              <div className="card-header">Choose picture</div>
+              <div className="card-header fs-5">Room infomation</div>
               <div className="card-body">
                 <form onSubmit={handleSumbit}>
                   <div className="mb-3">
-                    <label className="small mb-1" htmlFor="inputTitle">
+                    <label
+                      className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                      htmlFor="inputTitle"
+                    >
                       Title
                     </label>
                     <input
@@ -125,13 +181,18 @@ const NewR = () => {
 
                   <div className="row gx-3 mb-3">
                     <div className="col-md-6">
-                      <label className="small mb-1" htmlFor="inputPrice">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputPrice"
+                      >
                         Price
                       </label>
                       <input
                         className="form-control"
                         id="inputPrice"
                         type="number"
+                        step="0.01"
+                        min="0"
                         placeholder="Enter price ...."
                         onChange={(e) => {
                           setPrice(e.target.value);
@@ -140,7 +201,10 @@ const NewR = () => {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="small mb-1" htmlFor="inputStatus">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputStatus"
+                      >
                         Status
                       </label>
                       <input
@@ -157,7 +221,10 @@ const NewR = () => {
 
                   <div className="row gx-3 mb-3">
                     <div className="col-md-12">
-                      <label className="small mb-1" htmlFor="inputLocation">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputLocation"
+                      >
                         Address
                       </label>
                       <input
@@ -174,13 +241,17 @@ const NewR = () => {
 
                   <div className="row gx-3 mb-3">
                     <div className="col-md-5">
-                      <label className="small mb-1" htmlFor="inputmaxPeople">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputmaxPeople"
+                      >
                         MaxPeople
                       </label>
                       <input
                         className="form-control"
                         id="inputmaxPeople"
                         type="number"
+                        min="0"
                         placeholder="Enter maxPeople ...."
                         onChange={(e) => {
                           setMaxPeople(e.target.value);
@@ -189,16 +260,21 @@ const NewR = () => {
                     </div>
 
                     <div className="col-md-7">
-                      <label className="small mb-1" htmlFor="inputType">
-                        Type
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputType"
+                      >
+                        Type Room
                       </label>
                       <input
                         className="form-control"
                         id="inputType"
                         type="text"
-                        placeholder="Enter type ...."
+                        placeholder="Please select an item below"
+                        disabled
+                        value={type}
                         onChange={(e) => {
-                          setTypeRoom(e.target.value);
+                          setType(e.target.value);
                         }}
                       />
                     </div>
@@ -206,7 +282,10 @@ const NewR = () => {
 
                   <div className="row gx-3 mb-3">
                     <div className="col-md-6">
-                      <label className="small mb-1" htmlFor="inputArea">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputArea"
+                      >
                         Area
                       </label>
                       <input
@@ -219,35 +298,58 @@ const NewR = () => {
                         }}
                       />
                     </div>
-                    <div className="col-md-6">
-                      <label className="small mb-1 ms-2" htmlFor="featured">
+                    <div className="col-md-3">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary ms-2"
+                        htmlFor="featured"
+                      >
                         Category
                       </label>
                       <select
                         id="hotelId"
-                        onChange={(e) => setCategoryId(e.target.value)}
-                        className="featured"
+                        style={{ lineHeight: "1.7rem" }}
+                        onChange={(e) => {
+                          setCategoryId(e.target.value.split(",")[0]);
+                          setType(e.target.value.split(",")[1]);
+                        }}
+                        className="form-control featured"
                       >
-                        {loading
-                          ? "loading..."
-                          : data &&
-                            data.map((val) => {
-                              return (
-                                <option key={val._id} value={val._id}>
-                                  {val.type}
-                                </option>
-                              );
-                            })}
+                        <option hidden>Select Type</option>
+                        {list}
+                      </select>
+                    </div>
+                    <div className="col-md-3">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary ms-2"
+                        htmlFor="featured"
+                      >
+                        UserName
+                      </label>
+                      <select
+                        id="hotelId"
+                        style={{ lineHeight: "1.7rem" }}
+                        onChange={(e) => {
+                          setUserID(e.target.value.split(",")[0]);
+                          setUserName(e.target.value.split(",")[1]);
+                        }}
+                        className="form-control featured"
+                      >
+                        <option hidden>Select Username</option>
+                        {SelectedUser}
                       </select>
                     </div>
                   </div>
 
                   <div className="row gx-3 mb-3">
                     <div className="col-md-12">
-                      <label className="small mb-1" htmlFor="inputDesc">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputDesc"
+                      >
                         Desc
                       </label>
-                      <input
+                      <textarea
+                        style={{ height: "7rem" }}
                         className="form-control"
                         id="inputDesc"
                         type="text"
@@ -269,6 +371,7 @@ const NewR = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

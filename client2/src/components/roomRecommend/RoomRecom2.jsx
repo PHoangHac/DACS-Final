@@ -7,6 +7,8 @@ import moment from "moment";
 const RoomRecom2 = () => {
   const { data, loading } = useFetch("/room?bestChoice=true");
 
+  const PL = "http://localhost:7070/images/";
+
   return (
     <div className="container mb-5">
       <h3 className="mt-2 badge bg-primary text-wrap fs-4">Recommend</h3>
@@ -24,7 +26,7 @@ const RoomRecom2 = () => {
                   <div className="card">
                     <img
                       className="card-img"
-                      src={value.photos[0]}
+                      src={PL + value.photos[0]}
                       alt="Bologna"
                     />
                     <div className="card-body">
@@ -47,7 +49,7 @@ const RoomRecom2 = () => {
                     </div>
                     <div className="card-footer text-muted d-flex justify-content-between bg-transparent border-top-0">
                       <div className="views">
-                        {moment(value.createdAt).startOf("day").fromNow()}
+                        {moment(value.createdAt).startOf("hour").fromNow()}
                       </div>
                       <div className="stats">
                         <i className="far fa-eye"></i> 1347

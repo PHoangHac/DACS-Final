@@ -27,6 +27,7 @@ const Filter = ({
   handleFilterPrice,
   selectedCategory,
   selectToggle,
+  handleRefresh,
 }) => {
   const classes = useStyles();
 
@@ -140,6 +141,11 @@ const Filter = ({
                 </label>
               </div>
             </div>
+            <header className="card-header">
+              <button onClick={handleRefresh} className="btn btn-primary">
+                Refresh
+              </button>
+            </header>
           </article>
         </div>
       </aside>

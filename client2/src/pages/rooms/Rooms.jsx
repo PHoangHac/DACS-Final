@@ -6,12 +6,23 @@ import axios from "axios";
 import Filter from "../../components/filter/Filter";
 import RoomList from "../../components/roomlist/RoomList";
 import Empty from "../../components/empty/Empty";
+import useFetch from "../../hooks/useFetch";
 
 const Rooms = () => {
   const [dataC, setDataC] = useState([]);
   const [selectedPrice, setSelectedPrice] = useState([0, 200]);
   const [resultsFound, setResultsFound] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(null);
+
+  const { data } = useFetch(`/room`);
+
+  console.log(data);
+
+  const handleRefresh = (event, value) => {
+    setSelectedCategory(null);
+    setDataC(data);
+    setSelectedPrice([0, 200]);
+  };
 
   const handleFilterPrice = (event, value) => {
     setSelectedPrice(value);
@@ -59,11 +70,12 @@ const Rooms = () => {
               setSelectedPrice={selectedPrice}
               selectedCategory={selectedCategory}
               selectToggle={handleSelectCategory}
+              handleRefresh={handleRefresh}
             />
             {/* End filter */}
 
             <main className="col-md-9">
-              <header className="border-bottom mb-4 pb-3 mt-3">
+              <header className="border-bottom border-primary mb-3 pb-3 mt-3">
                 <div className="form-inline">
                   <select className="mr-2 form-control">
                     <option>Latest items</option>
