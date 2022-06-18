@@ -31,7 +31,7 @@ const RoomRecom2 = () => {
                     />
                     <div className="card-body">
                       <h4 className="card-title">{value.title}</h4>
-                      <small className="text-muted cat">
+                      <small className="text-dark cat fs-6">
                         <i className="fa text-info fa-area-chart"></i>{" "}
                         {value.area} m²
                         <i className="fas fa-users text-info ms-3"></i>{" "}
