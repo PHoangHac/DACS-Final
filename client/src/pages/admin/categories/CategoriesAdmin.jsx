@@ -5,6 +5,7 @@ import { FaTrashAlt, FaCloudUploadAlt } from "react-icons/fa";
 import "../admin.scss";
 import moment from "moment";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 const CategoriesAdmin = () => {
   // const { data, loading } = useFetch("/category");
@@ -19,7 +20,11 @@ const CategoriesAdmin = () => {
   };
 
   const deleteCate = async (id) => {
-    axios.delete(`/category/${id}`).then(() => {
+    axios.delete(`/category/${id}`).then((res) => {
+      toast.success(res.data, {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 2000,
+      });
       displayAllCate();
       // console.log(res);
     });
@@ -28,6 +33,8 @@ const CategoriesAdmin = () => {
   useEffect(() => {
     displayAllCate();
   }, []);
+
+  const PL = "http://localhost:7070/images/";
 
   return (
     <div className="container">
@@ -42,13 +49,13 @@ const CategoriesAdmin = () => {
           <thead>
             <tr>
               <th scope="col">Id</th>
-              <th scope="col">Tên loại</th>
-              <th scope="col">Loại</th>
+              <th scope="col">Name Of Type</th>
+              <th scope="col">Type</th>
               {/* <th scope="col">Featured</th> */}
-              <th scope="col">Hình</th>
-              <th scope="col">Khởi tạo lúc</th>
-              <th scope="col">Cập nhập lúc</th>
-              <th scope="col">Hành Động</th>
+              <th scope="col">Images</th>
+              <th scope="col">Create At</th>
+              <th scope="col">Update At</th>
+              <th scope="col">Action</th>
             </tr>
           </thead>
           <tbody id="tbody-user">
@@ -61,7 +68,11 @@ const CategoriesAdmin = () => {
                   <td>{value.type}</td>
                   {/* <td>{value.featured.toString()}</td> */}
                   <td>
-                    <img src={value.img} alt="" className="images-category" />
+                    <img
+                      src={PL + value.img}
+                      alt=""
+                      className="images-category"
+                    />
                   </td>
                   <td>
                     {moment(value.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
@@ -85,6 +96,7 @@ const CategoriesAdmin = () => {
           </tbody>
         </table>
       </div>
+      <ToastContainer />
     </div>
   );
 };

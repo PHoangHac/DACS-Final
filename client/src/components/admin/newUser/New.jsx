@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import "./newuser.scss";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 const New = () => {
-  const [file, setFile] = useState("");
+  const [file, setFile] = useState(null);
   const [username, setUserName] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -13,50 +14,68 @@ const New = () => {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
 
-  const Navigate = useNavigate();
+  // const Navigate = useNavigate();
 
   const handleSumbit = async (e) => {
     e.preventDefault();
 
-    const data = new FormData();
-    data.append("file", file);
-    data.append("upload_preset", "upload");
-    try {
-      const uploadRes = await axios.post(
-        "https://api.cloudinary.com/v1_1/hoanghac/image/upload",
-        data
-      );
-      console.log(uploadRes.data);
-      const { url } = uploadRes.data;
+    const newUser = {
+      username,
+      firstName,
+      lastName,
+      password,
+      email,
+      address,
+      phone,
+    };
 
-      await axios.post("http://localhost:7070/api/auth/register", {
-        // newUser,
-        username: username,
-        firstName: firstName,
-        lastName: lastName,
-        password: password,
-        email: email,
-        address: address,
-        phone: phone,
-        img: url,
+    if (file) {
+      const data = new FormData();
+      const filename = Date.now() + file.name;
+      data.append("name", filename);
+      data.append("file", file);
+
+      try {
+        const uploadRes = await axios.post("/upload-single", data);
+        newUser.img = uploadRes.data;
+        console.log(uploadRes);
+      } catch (err) {}
+    }
+    try {
+      const res = await axios.post(
+        "http://localhost:7070/api/auth/register",
+        newUser
+      );
+      // alert("Create user Successfull !");
+      // Navigate("/Admin/User");
+      toast.success(res.data, {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 2000,
       });
-      alert("Create user Successfull !");
-      Navigate("/Admin/User");
+      toast.info(CustomToastWithLink, {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 20000,
+      });
     } catch (err) {
       console.log(err);
     }
   };
+  const CustomToastWithLink = () => (
+    <div>
+      <Link to="/Admin/User">Click here back to List</Link>
+    </div>
+  );
 
   return (
     <div className="container">
-      <h3>Create New User</h3>
+      <h3 className="badge bg-success text-wrap fs-4 ms-4 ">Add New User</h3>
       <div className="container-xl px-4 mt-4">
         <hr className="mt-0 mb-4"></hr>
         <div className="row">
           {/* piture-profile */}
           <div className="col-xl-4">
             <div className="card mb-4 mb-xl-0">
-              <div className="card-header">Profile Picture</div>
+              <div className="card-header fs-5">User Image</div>
               <form onSubmit={handleSumbit}>
                 <div className="card-body text-center">
                   <img
@@ -86,19 +105,22 @@ const New = () => {
 
           <div className="col-xl-8">
             <div className="card mb-4">
-              <div className="card-header">Account Details</div>
+              <div className="card-header fs-5">User Infomation</div>
               <div className="card-body">
                 <form onSubmit={handleSumbit}>
                   <div className="mb-3">
-                    <label className="small mb-1" htmlFor="inputUsername">
-                      Username (how your name will appear to other users on the
+                    <label
+                      className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                      htmlFor="inputUsername"
+                    >
+                      User name (how your name will appear to other users on the
                       site)
                     </label>
                     <input
                       className="form-control"
                       id="inputUsername"
                       type="text"
-                      placeholder="Enter your username...."
+                      placeholder="Enter username...."
                       onChange={(e) => setUserName(e.target.value)}
                       // value="username"
                     />
@@ -106,14 +128,17 @@ const New = () => {
 
                   <div className="row gx-3 mb-3">
                     <div className="col-md-6">
-                      <label className="small mb-1" htmlFor="inputFirstName">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputFirstName"
+                      >
                         First name
                       </label>
                       <input
                         className="form-control"
                         id="inputFirstName"
                         type="text"
-                        placeholder="Enter your first name...."
+                        placeholder="Enter first name...."
                         onChange={(e) => {
                           setFirstName(e.target.value);
                         }}
@@ -121,14 +146,17 @@ const New = () => {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="small mb-1" htmlFor="inputLastName">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputLastName"
+                      >
                         Last name
                       </label>
                       <input
                         className="form-control"
                         id="inputLastName"
                         type="text"
-                        placeholder="Enter your last name...."
+                        placeholder="Enter last name...."
                         onChange={(e) => {
                           setLastName(e.target.value);
                         }}
@@ -137,27 +165,33 @@ const New = () => {
                   </div>
 
                   <div className="row gx-3 mb-3">
-                    <div className="col-md-6">
-                      <label className="small mb-1" htmlFor="inputLocation">
+                    <div className="col-md-6 ">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputLocation"
+                      >
                         Address
                       </label>
                       <input
                         className="form-control"
                         id="inputLocation"
                         type="text"
-                        placeholder="Enter your location...."
+                        placeholder="Enter location...."
                         onChange={(e) => setAddress(e.target.value)}
                       />
                     </div>
                     <div className="col-md-6">
-                      <label className="small mb-1" htmlFor="inputpassword">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputpassword"
+                      >
                         Password
                       </label>
                       <input
                         className="form-control"
                         id="inputpassword"
-                        type="text"
-                        placeholder="Enter your password...."
+                        type="password"
+                        placeholder="Enter password...."
                         onChange={(e) => setPassword(e.target.value)}
                       />
                     </div>
@@ -165,27 +199,33 @@ const New = () => {
 
                   <div className="row gx-3 mb-3">
                     <div className="col-md-6">
-                      <label className="small mb-1" htmlFor="inputPhone">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputPhone"
+                      >
                         Phone number
                       </label>
                       <input
                         className="form-control"
                         id="inputPhone"
                         type="tel"
-                        placeholder="Enter your phone number...."
+                        placeholder="Enter phone number...."
                         onChange={(e) => setPhone(e.target.value)}
                       />
                     </div>
 
                     <div className="col-md-6">
-                      <label className="small mb-1" htmlFor="inputEmailAddress">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputEmailAddress"
+                      >
                         Email
                       </label>
                       <input
                         className="form-control"
                         id="inputEmailAddress"
                         type="email"
-                        placeholder="Enter your email address...."
+                        placeholder="Enter email address...."
                         onChange={(e) => setEmail(e.target.value)}
                       />
                     </div>
@@ -201,6 +241,7 @@ const New = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

@@ -16,7 +16,8 @@ export const CreateUser = async (req, res, next) => {
     });
 
     const user = await newUser.save();
-    res.send("User has been created !");
+    // res.send("User has been created !");
+    return res.status(200).json("User has been created !");
   } catch (err) {
     // console.log(err);
     next(err);
@@ -26,7 +27,7 @@ export const CreateUser = async (req, res, next) => {
 export const loginUser = async (req, res, next) => {
   try {
     const user = await Users.findOne({ username: req.body.username });
-    if (!user) return res.status(409).json("Không tìm thấy tài khoản");
+    if (!user) return res.status(409).json("User not found !");
     // next(createError(400, "Không tìm thấy tài khoản"));
 
     //Su dung compare de ma hoa nguoc lai
@@ -36,7 +37,7 @@ export const loginUser = async (req, res, next) => {
     );
 
     if (!CorrectPassword)
-      return res.status(409).json("Sai mật khẩu và tài khoản !");
+      return res.status(409).json("Wrong password and username !");
     // next(createError(400, "Sai mật khẩu và tài khoản !"));
 
     //khoi tao variable token

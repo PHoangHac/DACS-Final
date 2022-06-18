@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 const Category = () => {
   const { data, loading } = useFetch("/category");
 
+  const PL = "http://localhost:7070/images/";
+
   return (
     <div className="container mt-5 mb-5">
       <h3 className="mt-2 badge bg-primary text-wrap fs-4">Category</h3>
@@ -20,7 +22,11 @@ const Category = () => {
                 <div className="col-3" key={value._id}>
                   <div className="card">
                     <Link to={`/categories/${value._id}`}>
-                      <img src={value.img} className="card-img-top" alt="..." />
+                      <img
+                        src={PL + value.img}
+                        className="card-img-top"
+                        alt="..."
+                      />
                     </Link>
                     <div className="card-body">
                       <h5 className="card-title">{value.name}</h5>

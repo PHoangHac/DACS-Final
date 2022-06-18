@@ -4,6 +4,7 @@ import { FaTrashAlt, FaRegEdit } from "react-icons/fa";
 import "../admin.scss";
 import moment from "moment";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 const UsersAdmin = () => {
   const [listUser, setListUser] = useState([]);
@@ -17,6 +18,10 @@ const UsersAdmin = () => {
 
   const deleteUser = async (id) => {
     axios.delete(`/user/${id}`).then((res) => {
+      toast.success(res.data, {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 2000,
+      });
       displayAllUser();
       // console.log(res);
     });
@@ -25,6 +30,8 @@ const UsersAdmin = () => {
   useEffect(() => {
     displayAllUser();
   }, []);
+
+  const PL = "http://localhost:7070/images/";
 
   return (
     <div className="container">
@@ -39,18 +46,18 @@ const UsersAdmin = () => {
           <thead>
             <tr>
               <th scope="col">Id</th>
-              <th scope="col">Tên tài khoản</th>
-              <th scope="col">Mật khẩu</th>
-              <th scope="col">Họ</th>
-              <th scope="col">Tên</th>
+              <th scope="col">Username</th>
+              <th scope="col">Password</th>
+              <th scope="col">First name</th>
+              <th scope="col">Last name</th>
               <th scope="col">Admin ?</th>
-              <th scope="col">Hình</th>
+              <th scope="col">Picture</th>
               <th scope="col">Email</th>
-              <th scope="col">Điện thoại</th>
-              <th scope="col">Địa chỉ</th>
-              <th scope="col">Khởi tạo lúc</th>
-              <th scope="col">Cập nhập lúc</th>
-              <th scope="col">Hành Động</th>
+              <th scope="col">Phone</th>
+              <th scope="col">Address</th>
+              <th scope="col">Create At</th>
+              <th scope="col">Update At</th>
+              <th scope="col">Action</th>
             </tr>
           </thead>
           <tbody id="tbody-user">
@@ -65,7 +72,11 @@ const UsersAdmin = () => {
                   <td>{value.firstName}</td>
                   <td>{value.isAdmin.toString()}</td>
                   <td>
-                    <img src={value.img} alt="" className="images-category" />
+                    <img
+                      src={PL + value.img}
+                      alt=""
+                      className="images-category"
+                    />
                   </td>
                   <td>{value.email}</td>
                   <td>{value.phone}</td>
@@ -92,6 +103,7 @@ const UsersAdmin = () => {
           </tbody>
         </table>
       </div>
+      <ToastContainer />
     </div>
   );
 };

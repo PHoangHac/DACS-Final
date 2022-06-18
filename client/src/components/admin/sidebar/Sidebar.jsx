@@ -10,6 +10,7 @@ import {
 import { NavLink } from "react-router-dom";
 import "../adminDashBoard.scss";
 import { Outlet } from "react-router-dom";
+import logo from "../../../assets/img/icons8-bbb.svg";
 
 const Sidebar = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,7 +43,7 @@ const Sidebar = ({ children }) => {
     },
   ];
   return (
-    <div className="container container-sidebar">
+    <div className="container container-sidebar" style={{ height: "130vh" }}>
       <div
         style={{ width: isOpen ? "200px" : "50px" }}
         className="sidebar sidebar-side"
@@ -52,7 +53,7 @@ const Sidebar = ({ children }) => {
             style={{ display: isOpen ? "block" : "none" }}
             className="logo logo-sidebar"
           >
-            Logo
+            <img src={logo} alt="Logo" width="60" height="60" />
           </h1>
           <div
             style={{ marginLeft: isOpen ? "50px" : "0px" }}

@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./update.scss";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 const Update = () => {
-  const [files, setFiles] = useState("");
+  const [file, setFile] = useState(null);
   const [img, setImg] = useState("");
   const [username, setUserName] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -15,36 +16,51 @@ const Update = () => {
   const [email, setEmail] = useState("");
 
   const { id } = useParams();
-  const Nagigate = useNavigate();
+
+  // console.log(img);
 
   const UpdateSubmit = async (e) => {
     e.preventDefault();
-    const data = new FormData();
-    data.append("file", files);
-    data.append("upload_preset", "upload");
-    try {
-      const uploadRes = await axios.post(
-        "https://api.cloudinary.com/v1_1/hoanghac/image/upload",
-        data
-      );
-      // console.log(uploadRes.data);
-      const { url } = uploadRes.data;
 
-      await axios.put(`/user/${id}`, {
+    try {
+      const data = new FormData();
+      const filename = Date.now() + file?.name;
+      data.append("name", filename);
+      data.append("file", file);
+
+      const uploadRes = await axios.post("/upload-single", data);
+
+      // console.log(uploadRes);
+
+      const res = await axios.put(`/user/${id}`, {
         username: username,
         firstName: firstName,
         lastName: lastName,
         address: address,
         phone: phone,
         email: email,
-        img: url,
+        img: file ? uploadRes.data : img,
       });
-      alert("Update User successful !");
-      Nagigate("/Admin/User");
+      // alert("Update User successful !");
+      toast.success(res.data, {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 2000,
+      });
+      toast.info(CustomToastWithLink, {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 20000,
+      });
+      // Nagigate("/Admin/User");
     } catch (err) {
       console.log(err);
     }
   };
+
+  const CustomToastWithLink = () => (
+    <div>
+      <Link to="/Admin/User">Click here back to List</Link>
+    </div>
+  );
 
   const getUserById = useCallback(async () => {
     const getdata = await axios.get(`/user/${id}`);
@@ -61,23 +77,23 @@ const Update = () => {
     getUserById();
   }, [getUserById]);
 
-  // console.log(img);
+  const PL = "http://localhost:7070/images/";
 
   return (
     <div className="container">
-      <h3>Update User</h3>
+      <h3 className="badge bg-success text-wrap fs-4 ms-4 ">Update User</h3>
       <div className="container-xl px-4 mt-4">
         <hr className="mt-0 mb-4"></hr>
         <div className="row">
           {/* piture-profile */}
           <div className="col-xl-4">
             <div className="card mb-4 mb-xl-0">
-              <div className="card-header">Profile Picture</div>
+              <div className="card-header fs-5">User Image</div>
               <form onSubmit={UpdateSubmit}>
                 <div className="card-body text-center">
                   <img
                     className="img-account-profile rounded-circle mb-2"
-                    src={files ? URL.createObjectURL(files) : img}
+                    src={file ? URL.createObjectURL(file) : PL + img}
                     alt="Userimage"
                   />
 
@@ -85,7 +101,7 @@ const Update = () => {
                     JPG or PNG no larger than 5 MB
                   </div>
                   <input
-                    onChange={(e) => setFiles(e.target.files[0])}
+                    onChange={(e) => setFile(e.target.files[0])}
                     className="form-control"
                     type="file"
                     id="formFile"
@@ -98,11 +114,14 @@ const Update = () => {
           {/* Proflie-details */}
           <div className="col-xl-8">
             <div className="card mb-4">
-              <div className="card-header">Account Details</div>
+              <div className="card-header fs-5">User Infomation</div>
               <div className="card-body">
                 <form onSubmit={UpdateSubmit}>
                   <div className="mb-3">
-                    <label className="small mb-1" htmlFor="inputUsername">
+                    <label
+                      className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                      htmlFor="inputUsername"
+                    >
                       Username (how your name will appear to other users on the
                       site)
                     </label>
@@ -120,7 +139,10 @@ const Update = () => {
 
                   <div className="row gx-3 mb-3">
                     <div className="col-md-6">
-                      <label className="small mb-1" htmlFor="inputFirstName">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputFirstName"
+                      >
                         First name
                       </label>
                       <input
@@ -136,7 +158,10 @@ const Update = () => {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="small mb-1" htmlFor="inputLastName">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputLastName"
+                      >
                         Last name
                       </label>
                       <input
@@ -154,7 +179,10 @@ const Update = () => {
 
                   <div className="row gx-3 mb-3">
                     <div className="col-md-12">
-                      <label className="small mb-1" htmlFor="inputLocation">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputLocation"
+                      >
                         Address
                       </label>
                       <input
@@ -172,7 +200,10 @@ const Update = () => {
 
                   <div className="row gx-3 mb-3">
                     <div className="col-md-6">
-                      <label className="small mb-1" htmlFor="inputPhone">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputPhone"
+                      >
                         Phone number
                       </label>
                       <input
@@ -188,7 +219,10 @@ const Update = () => {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="small mb-1" htmlFor="inputEmailAddress">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputEmailAddress"
+                      >
                         Email
                       </label>
                       <input
@@ -214,6 +248,7 @@ const Update = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

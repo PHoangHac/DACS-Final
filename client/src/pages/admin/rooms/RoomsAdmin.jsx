@@ -4,6 +4,7 @@ import { FaTrashAlt, FaCloudUploadAlt } from "react-icons/fa";
 import "../admin.scss";
 import moment from "moment";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 const RoomsAdmin = () => {
   const [listRoom, setListRoom] = useState([]);
@@ -15,7 +16,11 @@ const RoomsAdmin = () => {
   };
 
   const deleteRoom = async (id) => {
-    axios.delete(`/room/delete/${id}`).then(() => {
+    axios.delete(`/room/delete/${id}`).then((res) => {
+      toast.success(res.data, {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 2000,
+      });
       displayAllRoom();
     });
   };
@@ -23,6 +28,8 @@ const RoomsAdmin = () => {
   useEffect(() => {
     displayAllRoom();
   }, []);
+
+  const PL = "http://localhost:7070/images/";
 
   return (
     <div className="container">
@@ -37,19 +44,20 @@ const RoomsAdmin = () => {
           <thead>
             <tr>
               <th scope="col">Id</th>
-              <th scope="col">Tiêu Đề</th>
-              <th scope="col">Giá</th>
-              <th scope="col">Địa chỉ</th>
-              <th scope="col">Trạng thái</th>
-              <th scope="col">Số lượng người ở</th>
-              <th scope="col">Diện tích</th>
-              <th scope="col">Mô tả</th>
-              <th scope="col">Hình</th>
-              <th scope="col">Ưu thích</th>
-              <th scope="col">Thuộc loại</th>
-              <th scope="col">Khởi tạo lúc</th>
-              <th scope="col">Cập nhập lúc</th>
-              <th scope="col">Hành Động</th>
+              <th scope="col">Title</th>
+              <th scope="col">Price</th>
+              <th scope="col">Location</th>
+              <th scope="col">Status</th>
+              <th scope="col">Max People</th>
+              <th scope="col">Area</th>
+              <th scope="col">User name</th>
+              <th scope="col">Description</th>
+              <th scope="col">Images</th>
+              <th scope="col">BestChoice</th>
+              <th scope="col">Type Room</th>
+              <th scope="col">Create At</th>
+              <th scope="col">Update At</th>
+              <th scope="col">Action</th>
             </tr>
           </thead>
           <tbody id="tbody-user">
@@ -64,26 +72,27 @@ const RoomsAdmin = () => {
                   <td>{value.status}</td>
                   <td>{value.maxPeople}</td>
                   <td>{value.area}</td>
+                  <td>{value.username}</td>
                   <td>{value.desc}</td>
                   <td>
                     <img
-                      src={value.photos[0]}
+                      src={PL + value.photos[0]}
                       alt=""
                       className="images-category"
                     />
                     <img
-                      src={value.photos[1]}
+                      src={PL + value.photos[1]}
                       alt=""
                       className="images-category"
                     />
                     <img
-                      src={value.photos[2]}
+                      src={PL + value.photos[2]}
                       alt=""
                       className="images-category"
                     />
                   </td>
                   <td>{value.bestChoice.toString()}</td>
-                  <td>{value.typeRoom}</td>
+                  <td>{value.type}</td>
                   <td>
                     {moment(value.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
                   </td>
@@ -106,6 +115,7 @@ const RoomsAdmin = () => {
           </tbody>
         </table>
       </div>
+      <ToastContainer />
     </div>
   );
 };

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "../newUser/newuser.scss";
 import axios from "axios";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 const UpdateCate = () => {
   const [files, setFiles] = useState("");
@@ -11,33 +12,45 @@ const UpdateCate = () => {
   const [featured, setFeatured] = useState(false);
 
   const { id } = useParams();
-  const Navigate = useNavigate();
+  // const Navigate = useNavigate();
 
   const handleSumbit = async (e) => {
     e.preventDefault();
-    const data = new FormData();
-    data.append("file", files);
-    data.append("upload_preset", "upload");
-    try {
-      const uploadRes = await axios.post(
-        "https://api.cloudinary.com/v1_1/hoanghac/image/upload",
-        data
-      );
-      // console.log(uploadRes.data);
-      const { url } = uploadRes.data;
 
-      await axios.put(`/category/${id}`, {
+    try {
+      const data = new FormData();
+      const filename = Date.now() + files?.name;
+      data.append("name", filename);
+      data.append("file", files);
+
+      const uploadRes = await axios.post("/upload-single", data);
+
+      const res = await axios.put(`/category/${id}`, {
         name: name,
         type: type,
         featured: featured,
-        img: url,
+        img: files ? uploadRes.data : img,
       });
-      alert("Update category Successfull !");
-      Navigate("/Admin/Category");
+      // alert("Update category Successfull !");
+      // Navigate("/Admin/Category");
+      toast.success(res.data, {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 2000,
+      });
+      toast.info(CustomToastWithLink, {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 20000,
+      });
     } catch (err) {
       console.log(err);
     }
   };
+
+  const CustomToastWithLink = () => (
+    <div>
+      <Link to="/Admin/Category">Click here back to List</Link>
+    </div>
+  );
 
   const getCateById = useCallback(async () => {
     const getdata = await axios.get(`/category/${id}`);
@@ -55,21 +68,23 @@ const UpdateCate = () => {
     setFeatured(e.target.value);
   };
 
+  const PL = "http://localhost:7070/images/";
+
   return (
     <div className="container">
-      <h3>Update Category</h3>
+      <h3 className="badge bg-success text-wrap fs-4 ms-4">Update Category</h3>
       <div className="container-xl px-4 mt-4">
         <hr className="mt-0 mb-4"></hr>
         <div className="row">
           {/* piture-profile */}
           <div className="col-xl-4">
             <div className="card mb-4 mb-xl-0">
-              <div className="card-header">Choose Picture</div>
+              <div className="card-header fs-5">Category Image</div>
               <form onSubmit={handleSumbit}>
                 <div className="card-body text-center">
                   <img
                     className="img-account-profile rounded-circle mb-2"
-                    src={files ? URL.createObjectURL(files) : img}
+                    src={files ? URL.createObjectURL(files) : PL + img}
                     alt="Userimage"
                   />
 
@@ -90,11 +105,14 @@ const UpdateCate = () => {
 
           <div className="col-xl-8">
             <div className="card mb-4">
-              <div className="card-header">Account Details</div>
+              <div className="card-header fs-5">Category Details</div>
               <div className="card-body">
                 <form onSubmit={handleSumbit}>
                   <div className="mb-3">
-                    <label className="small mb-1" htmlFor="inputName">
+                    <label
+                      className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                      htmlFor="inputName"
+                    >
                       Name
                     </label>
                     <input
@@ -110,7 +128,10 @@ const UpdateCate = () => {
 
                   <div className="row gx-3 mb-3">
                     <div className="col-md-6">
-                      <label className="small mb-1" htmlFor="inputType">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputType"
+                      >
                         Type
                       </label>
                       <input
@@ -125,11 +146,19 @@ const UpdateCate = () => {
                       />
                     </div>
 
-                    <div className="col-md-6">
-                      <label className="small mb-1 ms-2" htmlFor="featured">
+                    <div className="col-md-2">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary ms-2"
+                        htmlFor="featured"
+                      >
                         Featured
                       </label>
-                      <select id="featured" onChange={handleChange}>
+                      <select
+                        id="featured"
+                        onChange={handleChange}
+                        style={{ lineHeight: "1.7rem" }}
+                        className="form-control"
+                      >
                         <option value={false}>False</option>
                         <option value={true}>True</option>
                       </select>
@@ -150,6 +179,7 @@ const UpdateCate = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

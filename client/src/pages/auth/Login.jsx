@@ -20,7 +20,7 @@ const Login = () => {
     password: undefined,
   });
 
-  const { loading, error, dispatch } = useContext(AuthContext);
+  const { loading, dispatch } = useContext(AuthContext);
 
   const handleChange = (e) => {
     setCredentials((prev) => ({ ...prev, [e.target.id]: e.target.value }));
@@ -53,7 +53,7 @@ const Login = () => {
           <div className="card px-5 py-5 card-signup">
             {/* <div>{error && <span>{error.message}</span>}</div> */}
             <h1 className="mt-3">SIGN IN </h1>
-            <form onSubmit={handleClick}>
+            <form onSubmit={handleClick} autoComplete="off">
               <div className="form-input form-signup">
                 <label htmlFor="username">Username :</label>
                 <i className="fa fa-user"></i>

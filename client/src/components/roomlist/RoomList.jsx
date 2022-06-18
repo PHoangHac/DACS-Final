@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 // import useFetch from "../../hooks/useFetch";
 import { Link } from "react-router-dom";
 
 const RoomList = ({ list }) => {
   // const { data, loading } = useFetch(`/room/?typeRoom=${props.queryName}`);
-
+  const PL = "http://localhost:7070/images/";
   return (
     <>
       {list.map((val) => {
@@ -15,7 +15,7 @@ const RoomList = ({ list }) => {
                 <div className="img-wrap" style={{ height: "100%" }}>
                   <img
                     alt=""
-                    src={val.photos[0]}
+                    src={PL + val.photos[0]}
                     className="img-fluid rounded border border-warning"
                     style={{ height: "100%" }}
                   />

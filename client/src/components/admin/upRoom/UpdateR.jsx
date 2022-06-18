@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "../updateUser/update.scss";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 const UpdateR = () => {
   const [files, setFiles] = useState("");
@@ -17,44 +18,52 @@ const UpdateR = () => {
   const [typeRoom, setTypeRoom] = useState("");
 
   const { id } = useParams();
-  const Nagigate = useNavigate();
+  // const Nagigate = useNavigate();
 
   const UpdateSubmit = async (e) => {
     e.preventDefault();
-    const data = new FormData();
-    data.append("file", files);
-    data.append("upload_preset", "upload");
+
     try {
       const listphoto = await Promise.all(
         Object.values(files).map(async (file) => {
           const data = new FormData();
-          data.append("file", file);
-          data.append("upload_preset", "upload");
-          const uploadRes = await axios.post(
-            "https://api.cloudinary.com/v1_1/hoanghac/image/upload",
-            data
-          );
-
-          const { url } = uploadRes.data;
-          return url;
+          const filename = Date.now() + file.name;
+          data.append("name", filename);
+          data.append("MultipleFiles", file);
+          const uploadRes = await axios.post("/upload-multiple", data);
+          return uploadRes.data;
         })
       );
 
-      await axios.put(`/room/${id}`, {
+      const res = await axios.put(`/room/${id}`, {
         title: title,
         price: price,
         status: status,
         maxPeople: maxPeople,
         desc: desc,
-        photos: listphoto,
-        typeRoom: typeRoom,
+        photos: files ? listphoto : photos,
+        type: typeRoom,
       });
-      alert("Update Room successful !");
-      Nagigate("/Admin/Room");
+      // alert("Update Room successful !");
+      toast.success(res.data, {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 2000,
+      });
+      toast.info(CustomToastWithLink, {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 20000,
+      });
+      // Nagigate("/Admin/Room");
     } catch (err) {
       console.log(err);
     }
   };
+
+  const CustomToastWithLink = () => (
+    <div>
+      <Link to="/Admin/Room">Click here back to List</Link>
+    </div>
+  );
 
   const getRoomById = useCallback(async () => {
     const getdata = await axios.get(`/room/${id}`);
@@ -66,7 +75,7 @@ const UpdateR = () => {
     setArea(getdata.data.area);
     setDesc(getdata.data.desc);
     setPhotos(getdata.data.photos);
-    setTypeRoom(getdata.data.typeRoom);
+    setTypeRoom(getdata.data.type);
   }, [id]);
 
   useEffect(() => {
@@ -75,22 +84,24 @@ const UpdateR = () => {
 
   // console.log(img);
 
+  const PL = "http://localhost:7070/images/";
+
   return (
     <div className="container">
-      <h3>Update User</h3>
+      <h3>Update Room</h3>
       <div className="container-xl px-4 mt-4">
         <hr className="mt-0 mb-4"></hr>
         <div className="row">
           {/* piture-profile */}
           <div className="col-xl-4">
             <div className="card mb-4 mb-xl-0">
-              <div className="card-header">Profile Picture</div>
+              <div className="card-header">Room Picture</div>
               <form onSubmit={UpdateSubmit}>
                 <div className="card-body text-center">
-                  <image
+                  <img
                     className="img-account-profile rounded-circle mb-2"
-                    src={files ? URL.createObjectURL(files[0]) : photos[0]}
-                    alt="User image"
+                    src={files ? URL.createObjectURL(files[0]) : PL + photos[0]}
+                    alt="Roomsimage"
                   />
 
                   <div className="small font-italic text-muted mb-4">
@@ -113,7 +124,7 @@ const UpdateR = () => {
           {/* Proflie-details */}
           <div className="col-xl-8">
             <div className="card mb-4">
-              <div className="card-header">Account Details</div>
+              <div className="card-header">Room Details</div>
               <div className="card-body">
                 <form onSubmit={UpdateSubmit}>
                   <div className="mb-3">
@@ -224,6 +235,7 @@ const UpdateR = () => {
                         className="form-control"
                         id="inputType"
                         type="text"
+                        disabled
                         placeholder="Enter type to edit ...."
                         value={typeRoom}
                         onChange={(e) => {
@@ -238,7 +250,8 @@ const UpdateR = () => {
                       <label className="small mb-1" htmlFor="inputDesc">
                         Desc
                       </label>
-                      <input
+                      <textarea
+                        style={{ height: "7rem" }}
                         className="form-control"
                         id="inputDesc"
                         type="text"
@@ -261,6 +274,7 @@ const UpdateR = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

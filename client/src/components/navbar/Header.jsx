@@ -84,10 +84,10 @@ const Header = () => {
 
             {!user && (
               <Nav>
-                <Nav.Link as={Link} to={"/login"}>
+                <Nav.Link className=" fs-5" as={Link} to={"/login"}>
                   Login
                 </Nav.Link>
-                <Nav.Link as={Link} to={"/register"}>
+                <Nav.Link className=" fs-5" as={Link} to={"/register"}>
                   Sign Up
                 </Nav.Link>
               </Nav>
@@ -96,7 +96,7 @@ const Header = () => {
             {user && (
               <Nav className="me-3">
                 {/* <Container> */}
-                <Navbar.Text className="text-info">
+                <Navbar.Text className="text-info fs-5">
                   Welcome ! {user.username} <br />
                 </Navbar.Text>
                 {/* </Container> */}

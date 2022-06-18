@@ -7,7 +7,8 @@ export const createCategory = async (req, res, next) => {
   // console.log(newHotel);
   try {
     const saveCategory = await newCategory.save();
-    res.status(200).json(saveCategory);
+    // res.status(200).json(saveCategory);
+    return res.status(200).json("Create category successfull !");
     // console.log(saveHotel);
   } catch (err) {
     next(err);
@@ -24,7 +25,8 @@ export const UpdateCategory = async (req, res, next) => {
       },
       { new: true }
     );
-    res.status(200).json(updateCategory);
+    // res.status(200).json(updateCategory);
+    return res.status(200).json("Update category successfull !");
   } catch (err) {
     //   res.status(500).json(err);
     next();
@@ -34,7 +36,7 @@ export const UpdateCategory = async (req, res, next) => {
 export const DeleteCategory = async (req, res, next) => {
   try {
     await Category.findByIdAndDelete(req.params.id);
-    res.status(200).json("Delete successfull !");
+    res.status(200).json("Delete category successfull !");
   } catch (err) {
     //   res.status(500).json(err);
     next();

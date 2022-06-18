@@ -21,22 +21,16 @@ const PostUpdate = () => {
 
   const UpdateSubmit = async (e) => {
     e.preventDefault();
-    const data = new FormData();
-    data.append("file", files);
-    data.append("upload_preset", "upload");
+
     try {
       const listphoto = await Promise.all(
         Object.values(files).map(async (file) => {
           const data = new FormData();
-          data.append("file", file);
-          data.append("upload_preset", "upload");
-          const uploadRes = await axios.post(
-            "https://api.cloudinary.com/v1_1/hoanghac/image/upload",
-            data
-          );
-
-          const { url } = uploadRes.data;
-          return url;
+          const filename = Date.now() + file.name;
+          data.append("name", filename);
+          data.append("MultipleFiles", file);
+          const uploadRes = await axios.post("/upload-multiple", data);
+          return uploadRes.data;
         })
       );
 
@@ -46,10 +40,11 @@ const PostUpdate = () => {
         status: status,
         maxPeople: maxPeople,
         desc: desc,
-        photos: listphoto,
+        photos: files ? listphoto : photos,
         typeRoom: typeRoom,
       });
-      alert("Update Room successful !");
+
+      // alert("Update Room successful !");
       Nagigate(`/detailRoom/${id}`);
     } catch (err) {
       console.log(err);
@@ -73,24 +68,26 @@ const PostUpdate = () => {
     getRoomById();
   }, [getRoomById]);
 
-  // console.log(img);
+  // console.log(files);
+
+  const PL = "http://localhost:7070/images/";
 
   return (
     <div className="container">
-      <h3>Update User</h3>
+      <h3 className="badge bg-primary text-wrap fs-4 ms-4 mt-3">Post Update</h3>
       <div className="container-xl px-4 mt-4">
         <hr className="mt-0 mb-4"></hr>
         <div className="row">
           {/* piture-profile */}
           <div className="col-xl-4">
             <div className="card mb-4 mb-xl-0">
-              <div className="card-header">Profile Picture</div>
+              <div className="card-header fs-5">Profile Picture</div>
               <form onSubmit={UpdateSubmit}>
                 <div className="card-body text-center">
                   <img
                     alt="RoomImg"
                     className="img-account-profile rounded-circle mb-2"
-                    src={files ? URL.createObjectURL(files[0]) : photos[0]}
+                    src={files ? URL.createObjectURL(files[0]) : PL + photos[0]}
                   />
 
                   <div className="small font-italic text-muted mb-4">
@@ -113,11 +110,14 @@ const PostUpdate = () => {
           {/* Proflie-details */}
           <div className="col-xl-8">
             <div className="card mb-4">
-              <div className="card-header">Account Details</div>
+              <div className="card-header fs-5">Account Details</div>
               <div className="card-body">
                 <form onSubmit={UpdateSubmit}>
                   <div className="mb-3">
-                    <label className="small mb-1" htmlFor="inputTitle">
+                    <label
+                      className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                      htmlFor="inputTitle"
+                    >
                       Title
                     </label>
                     <input
@@ -134,13 +134,17 @@ const PostUpdate = () => {
 
                   <div className="row gx-3 mb-3">
                     <div className="col-md-6">
-                      <label className="small mb-1" htmlFor="inputPrice">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputPrice"
+                      >
                         Price
                       </label>
                       <input
                         className="form-control"
                         id="inputPrice"
                         type="number"
+                        min="0"
                         placeholder="Enter price to edit ...."
                         value={price}
                         onChange={(e) => {
@@ -150,7 +154,10 @@ const PostUpdate = () => {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="small mb-1" htmlFor="inputStatus">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputStatus"
+                      >
                         Status
                       </label>
                       <input
@@ -168,7 +175,10 @@ const PostUpdate = () => {
 
                   <div className="row gx-3 mb-3">
                     <div className="col-md-9">
-                      <label className="small mb-1" htmlFor="inputLocation">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputLocation"
+                      >
                         Address
                       </label>
                       <input
@@ -183,7 +193,10 @@ const PostUpdate = () => {
                       />
                     </div>
                     <div className="col-md-3">
-                      <label className="small mb-1" htmlFor="inputArea">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputArea"
+                      >
                         Area
                       </label>
                       <input
@@ -201,13 +214,17 @@ const PostUpdate = () => {
 
                   <div className="row gx-3 mb-3">
                     <div className="col-md-5">
-                      <label className="small mb-1" htmlFor="inputmaxPeople">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputmaxPeople"
+                      >
                         MaxPeople
                       </label>
                       <input
                         className="form-control"
                         id="inputmaxPeople"
                         type="number"
+                        min="0"
                         placeholder="Enter maxPeople to edit ...."
                         value={maxPeople}
                         onChange={(e) => {
@@ -217,7 +234,10 @@ const PostUpdate = () => {
                     </div>
 
                     <div className="col-md-7">
-                      <label className="small mb-1" htmlFor="inputType">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputType"
+                      >
                         Type
                       </label>
                       <input
@@ -235,7 +255,10 @@ const PostUpdate = () => {
 
                   <div className="row gx-3 mb-3">
                     <div className="col-md-12">
-                      <label className="small mb-1" htmlFor="inputDesc">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputDesc"
+                      >
                         Desc
                       </label>
                       <input

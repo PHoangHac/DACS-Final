@@ -7,7 +7,7 @@ import useFetch from "../../hooks/useFetch";
 import { AuthContext } from "../../contexts/AuthContext";
 
 const PostUser = () => {
-  const [files, setFiles] = useState("");
+  const [file, setFile] = useState("");
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [status, setStatus] = useState("");
@@ -15,59 +15,72 @@ const PostUser = () => {
   const [area, setArea] = useState("");
   const [address, setAddress] = useState("");
   const [desc, setDesc] = useState("");
-  const [typeRoom, setTypeRoom] = useState("");
+  const [type, setType] = useState("");
 
   const { id } = useParams();
 
   const [categoryId, setCategoryId] = useState(undefined);
+  // const [categoryName, setCategoryName] = useState("");
 
   const { user } = useContext(AuthContext);
 
-  const { data, loading } = useFetch("/category");
+  const { data } = useFetch("/category");
 
   const Nagigate = useNavigate();
 
   const handleSumbit = async (e) => {
     e.preventDefault();
+
+    const newPost = {
+      title,
+      price,
+      username: user.username,
+      status,
+      maxPeople,
+      area,
+      address,
+      type,
+      desc,
+      categoryid: categoryId,
+      userid: id,
+    };
+
+    const listphoto = await Promise.all(
+      Object.values(file).map(async (file) => {
+        const data = new FormData();
+        const filename = Date.now() + file.name;
+        data.append("name", filename);
+        data.append("MultipleFiles", file);
+        const uploadRes = await axios.post("/upload-multiple", data);
+
+        return uploadRes.data;
+      })
+    );
+
+    newPost.photos = listphoto;
+
+    // console.log(listphoto);
+
     try {
-      const listphoto = await Promise.all(
-        Object.values(files).map(async (file) => {
-          const data = new FormData();
-          data.append("file", file);
-          data.append("upload_preset", "upload");
-          const uploadRes = await axios.post(
-            "https://api.cloudinary.com/v1_1/hoanghac/image/upload",
-            data
-          );
-
-          const { url } = uploadRes.data;
-          return url;
-        })
-      );
-
-      await axios.post(`/room/${categoryId}/${id}`, {
-        title: title,
-        price: price,
-        username: user.username,
-        status: status,
-        maxPeople: maxPeople,
-        area: area,
-        address: address,
-        typeRoom: typeRoom,
-        desc: desc,
-        photos: listphoto,
-        categoryid: categoryId,
-        userid: id,
-      });
-      alert("Create Room successful !");
+      await axios.post(`/room/${categoryId}/${id}`, newPost);
+      // alert("Create Room successful !");
       Nagigate(`/MyPost/${user._id}`);
     } catch (err) {
       console.log(err);
     }
   };
 
-  // console.log(hotelId);
-  // console.log(id);
+  // console.log(categoryId);
+  // console.log(categoryName);
+
+  let list = data.map((val) => {
+    return (
+      <option key={val._id} value={[val._id, val.type]}>
+        {val.type}
+      </option>
+    );
+  });
+
   return (
     <div className="container">
       <h3 className="mt-4 badge bg-primary text-wrap fs-4">Add New Post</h3>
@@ -77,15 +90,15 @@ const PostUser = () => {
           {/* piture-profile */}
           <div className="col-xl-4">
             <div className="card mb-4 mb-xl-0">
-              <div className="card-header">Profile Picture</div>
+              <div className="card-header fs-5">Room Picture</div>
               <form onSubmit={handleSumbit}>
                 <div className="card-body text-center">
                   <img
-                    className="img-account-profile rounded-circle mb-2"
+                    className="img-account-profile rounded mb-2"
                     alt="UserImage"
                     src={
-                      files
-                        ? URL.createObjectURL(files[0])
+                      file
+                        ? URL.createObjectURL(file[0])
                         : "https://i.pinimg.com/736x/c3/41/3f/c3413f7c697760db7608ee10e1e234fb.jpg"
                     }
                   />
@@ -97,9 +110,10 @@ const PostUser = () => {
                     className="form-control"
                     type="file"
                     id="formFile"
+                    name="MultipleFiles"
                     multiple
                     onChange={(e) => {
-                      setFiles(e.target.files);
+                      setFile(e.target.files);
                     }}
                   ></input>
                 </div>
@@ -110,11 +124,14 @@ const PostUser = () => {
           {/* Proflie-details */}
           <div className="col-xl-8">
             <div className="card mb-4">
-              <div className="card-header">Choose picture</div>
+              <div className="card-header fs-5">Room infomation</div>
               <div className="card-body">
                 <form onSubmit={handleSumbit}>
                   <div className="mb-3">
-                    <label className="small mb-1" htmlFor="inputTitle">
+                    <label
+                      className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                      htmlFor="inputTitle"
+                    >
                       Title
                     </label>
                     <input
@@ -125,27 +142,36 @@ const PostUser = () => {
                       onChange={(e) => {
                         setTitle(e.target.value);
                       }}
+                      required
                     />
                   </div>
 
                   <div className="row gx-3 mb-3">
                     <div className="col-md-6">
-                      <label className="small mb-1" htmlFor="inputPrice">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputPrice"
+                      >
                         Price
                       </label>
                       <input
                         className="form-control"
                         id="inputPrice"
                         type="number"
+                        min="0"
                         placeholder="Enter price ...."
                         onChange={(e) => {
                           setPrice(e.target.value);
                         }}
+                        required
                       />
                     </div>
 
                     <div className="col-md-6">
-                      <label className="small mb-1" htmlFor="inputStatus">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputStatus"
+                      >
                         Status
                       </label>
                       <input
@@ -156,13 +182,17 @@ const PostUser = () => {
                         onChange={(e) => {
                           setStatus(e.target.value);
                         }}
+                        required
                       />
                     </div>
                   </div>
 
                   <div className="row gx-3 mb-3">
                     <div className="col-md-12">
-                      <label className="small mb-1" htmlFor="inputLocation">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputLocation"
+                      >
                         Address
                       </label>
                       <input
@@ -173,37 +203,49 @@ const PostUser = () => {
                         onChange={(e) => {
                           setAddress(e.target.value);
                         }}
+                        required
                       />
                     </div>
                   </div>
 
                   <div className="row gx-3 mb-3">
                     <div className="col-md-5">
-                      <label className="small mb-1" htmlFor="inputmaxPeople">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputmaxPeople"
+                      >
                         MaxPeople
                       </label>
                       <input
                         className="form-control"
                         id="inputmaxPeople"
                         type="number"
+                        min="0"
                         placeholder="Enter maxPeople ...."
                         onChange={(e) => {
                           setMaxPeople(e.target.value);
                         }}
+                        required
                       />
                     </div>
 
                     <div className="col-md-7">
-                      <label className="small mb-1" htmlFor="inputType">
-                        Type
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputType"
+                      >
+                        Type Room
                       </label>
                       <input
                         className="form-control"
                         id="inputType"
                         type="text"
-                        placeholder="Enter type ...."
+                        disabled
+                        placeholder="Please select an item below"
+                        value={type}
+                        // placeholder="Enter type ...."
                         onChange={(e) => {
-                          setTypeRoom(e.target.value);
+                          setType(e.target.value);
                         }}
                       />
                     </div>
@@ -211,7 +253,10 @@ const PostUser = () => {
 
                   <div className="row gx-3 mb-3">
                     <div className="col-md-6">
-                      <label className="small mb-1" htmlFor="inputArea">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputArea"
+                      >
                         Area
                       </label>
                       <input
@@ -222,37 +267,40 @@ const PostUser = () => {
                         onChange={(e) => {
                           setArea(e.target.value);
                         }}
+                        required
                       />
                     </div>
                     <div className="col-md-6">
-                      <label className="small mb-1 ms-2" htmlFor="featured">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary ms-2"
+                        htmlFor="featured"
+                      >
                         Category
                       </label>
                       <select
                         id="hotelId"
-                        onChange={(e) => setCategoryId(e.target.value)}
+                        onChange={(e) => {
+                          setCategoryId(e.target.value.split(",")[0]);
+                          setType(e.target.value.split(",")[1]);
+                        }}
                         className="featured"
                       >
-                        {loading
-                          ? "loading..."
-                          : data &&
-                            data.map((val) => {
-                              return (
-                                <option key={val._id} value={val._id}>
-                                  {val.type}
-                                </option>
-                              );
-                            })}
+                        <option hidden>Please select Type</option>
+                        {list}
                       </select>
                     </div>
                   </div>
 
                   <div className="row gx-3 mb-3">
                     <div className="col-md-12">
-                      <label className="small mb-1" htmlFor="inputDesc">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputDesc"
+                      >
                         Desc
                       </label>
-                      <input
+                      <textarea
+                        style={{ height: "7rem" }}
                         className="form-control"
                         id="inputDesc"
                         type="text"

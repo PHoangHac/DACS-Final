@@ -5,7 +5,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 const ProfileUser = () => {
-  const [files, setFiles] = useState("");
+  const [files, setFiles] = useState(null);
   const [img, setImg] = useState("");
   const [username, setUserName] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -19,16 +19,14 @@ const ProfileUser = () => {
 
   const UpdateSubmit = async (e) => {
     e.preventDefault();
-    const data = new FormData();
-    data.append("file", files);
-    data.append("upload_preset", "upload");
+
     try {
-      const uploadRes = await axios.post(
-        "https://api.cloudinary.com/v1_1/hoanghac/image/upload",
-        data
-      );
-      // console.log(uploadRes.data);
-      const { url } = uploadRes.data;
+      const data = new FormData();
+      const filename = Date.now() + files?.name;
+      data.append("name", filename);
+      data.append("file", files);
+
+      const uploadRes = await axios.post("/upload-single", data);
 
       await axios.put(`/user/${id}`, {
         username: username,
@@ -37,9 +35,9 @@ const ProfileUser = () => {
         address: address,
         phone: phone,
         email: email,
-        img: url,
+        img: files ? uploadRes.data : img,
       });
-      alert("Update User successful !");
+      // alert("Update User successful !");
       Nagigate("/profiles");
     } catch (err) {
       console.log(err);
@@ -61,23 +59,27 @@ const ProfileUser = () => {
     getUserById();
   }, [getUserById]);
 
-  // console.log(img);
+  const PL = "http://localhost:7070/images/";
+
+  const handleValdate = (e) => {
+    setFiles(e.target.files[0]);
+  };
 
   return (
     <div className="container">
-      <h3>Update User</h3>
+      <h3 className="badge bg-primary text-wrap fs-4 mt-3 ms-4">Update User</h3>
       <div className="container-xl px-4 mt-4">
         <hr className="mt-0 mb-4"></hr>
         <div className="row">
           {/* piture-profile */}
           <div className="col-xl-4">
             <div className="card mb-4 mb-xl-0">
-              <div className="card-header">Profile Picture</div>
+              <div className="card-header fs-5">Profile Picture</div>
               <form onSubmit={UpdateSubmit}>
                 <div className="card-body text-center">
                   <img
                     className="img-account-profile rounded-circle mb-2"
-                    src={files ? URL.createObjectURL(files) : img}
+                    src={files ? URL.createObjectURL(files) : PL + img}
                     alt="Userimage"
                   />
 
@@ -85,7 +87,7 @@ const ProfileUser = () => {
                     JPG or PNG no larger than 5 MB
                   </div>
                   <input
-                    onChange={(e) => setFiles(e.target.files[0])}
+                    onChange={handleValdate}
                     className="form-control"
                     type="file"
                     id="formFile"
@@ -98,11 +100,14 @@ const ProfileUser = () => {
           {/* Proflie-details */}
           <div className="col-xl-8">
             <div className="card mb-4">
-              <div className="card-header">Account Details</div>
+              <div className="card-header fs-5">Account Details</div>
               <div className="card-body">
                 <form onSubmit={UpdateSubmit}>
                   <div className="mb-3">
-                    <label className="small mb-1" htmlFor="inputUsername">
+                    <label
+                      className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                      htmlFor="inputUsername"
+                    >
                       Username (how your name will appear to other users on the
                       site)
                     </label>
@@ -120,7 +125,10 @@ const ProfileUser = () => {
 
                   <div className="row gx-3 mb-3">
                     <div className="col-md-6">
-                      <label className="small mb-1" htmlFor="inputFirstName">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputFirstName"
+                      >
                         First name
                       </label>
                       <input
@@ -136,7 +144,10 @@ const ProfileUser = () => {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="small mb-1" htmlFor="inputLastName">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputLastName"
+                      >
                         Last name
                       </label>
                       <input
@@ -154,7 +165,10 @@ const ProfileUser = () => {
 
                   <div className="row gx-3 mb-3">
                     <div className="col-md-12">
-                      <label className="small mb-1" htmlFor="inputLocation">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputLocation"
+                      >
                         Address
                       </label>
                       <input
@@ -172,7 +186,10 @@ const ProfileUser = () => {
 
                   <div className="row gx-3 mb-3">
                     <div className="col-md-6">
-                      <label className="small mb-1" htmlFor="inputPhone">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputPhone"
+                      >
                         Phone number
                       </label>
                       <input
@@ -188,7 +205,10 @@ const ProfileUser = () => {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="small mb-1" htmlFor="inputEmailAddress">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputEmailAddress"
+                      >
                         Email
                       </label>
                       <input

@@ -20,7 +20,8 @@ export const createRoom = async (req, res, next) => {
       res.status(404).json("Some thing error !");
       next(err);
     }
-    res.status(200).json(saveRoom);
+    // res.status(200).json(saveRoom);
+    return res.status(200).json("Create Room successfull !");
     // console.log(categoryId);
   } catch (err) {
     next(err);
@@ -37,7 +38,8 @@ export const UpdateRoom = async (req, res, next) => {
       { new: true }
     );
 
-    res.status(200).json(updateRoom);
+    // res.status(200).json(updateRoom);
+    return res.status(200).json("Update Room successfull !");
   } catch (err) {
     //   res.status(500).json(err);
     next();

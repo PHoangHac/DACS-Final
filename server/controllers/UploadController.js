@@ -8,9 +8,10 @@ export let handleUpdloadFile = async (req, res, next) => {
   }
 
   // Display uploaded image for user validation
-  res.send(
-    `You have uploaded this image: <hr/><img src="/images/${req.file.filename}" width="500"><hr /><a href="./">Upload another image</a>`
-  );
+  const image = req.file;
+  let result = `${image.filename}`;
+
+  res.send(result);
 };
 
 export let handleUpdloadMultipleFile = async (req, res, next) => {

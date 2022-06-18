@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import "../newUser/newuser.scss";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
+import { ToastContainer, toast } from "react-toastify";
 
 const NewCategory = () => {
   const [name, setName] = useState("");
@@ -9,35 +11,50 @@ const NewCategory = () => {
   const [featured, setFeatured] = useState(false);
   const [file, setFile] = useState("");
 
-  const Navigate = useNavigate();
+  // const Navigate = useNavigate();
 
   const handleSumbit = async (e) => {
     e.preventDefault();
 
-    const data = new FormData();
-    data.append("file", file);
-    data.append("upload_preset", "upload");
+    const newCate = {
+      name,
+      type,
+      featured,
+    };
+
+    if (file) {
+      const data = new FormData();
+      const filename = Date.now() + file.name;
+      data.append("name", filename);
+      data.append("file", file);
+      try {
+        const uploadRes = await axios.post("/upload-single", data);
+        newCate.img = uploadRes.data;
+      } catch (err) {}
+    }
 
     try {
-      const uploadRes = await axios.post(
-        "https://api.cloudinary.com/v1_1/hoanghac/image/upload",
-        data
-      );
-      // console.log(uploadRes.data);
-      const { url } = uploadRes.data;
-
-      await axios.post("/category", {
-        name: name,
-        type: type,
-        img: url,
-        featured: featured,
+      const res = await axios.post("/category", newCate);
+      // alert("Create Category Successfull !");
+      // Navigate("/Admin/Category");
+      toast.success(res.data, {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 2000,
       });
-      alert("Create Category Successfull !");
-      Navigate("/Admin/Category");
+      toast.info(CustomToastWithLink, {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 20000,
+      });
     } catch (err) {
       console.log(err);
     }
   };
+
+  const CustomToastWithLink = () => (
+    <div>
+      <Link to="/Admin/Category">Click here back to List</Link>
+    </div>
+  );
 
   const handleChange = (e) => {
     setFeatured(e.target.value);
@@ -45,13 +62,15 @@ const NewCategory = () => {
 
   return (
     <div className="container">
-      <h3>Create New Category</h3>
+      <h3 className="badge bg-success text-wrap fs-4 ms-4 ">
+        Add New Category
+      </h3>
       <div className="container-xl px-4 mt-4">
         <hr className="mt-0 mb-4"></hr>
         <div className="row">
           <div className="col-xl-4">
             <div className="card mb-4 mb-xl-0">
-              <div className="card-header">Profile Picture</div>
+              <div className="card-header fs-5">Category Image</div>
               <form onSubmit={handleSumbit}>
                 <div className="card-body text-center">
                   <img
@@ -81,11 +100,14 @@ const NewCategory = () => {
 
           <div className="col-xl-8">
             <div className="card mb-4">
-              <div className="card-header">Account Details</div>
+              <div className="card-header fs-5">Category Details</div>
               <div className="card-body">
                 <form onSubmit={handleSumbit}>
                   <div className="mb-3">
-                    <label className="small mb-1" htmlFor="inputName">
+                    <label
+                      className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                      htmlFor="inputName"
+                    >
                       Name
                     </label>
                     <input
@@ -99,7 +121,10 @@ const NewCategory = () => {
 
                   <div className="row gx-3 mb-3">
                     <div className="col-md-6">
-                      <label className="small mb-1" htmlFor="inputType">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary"
+                        htmlFor="inputType"
+                      >
                         Type
                       </label>
                       <input
@@ -113,11 +138,20 @@ const NewCategory = () => {
                       />
                     </div>
 
-                    <div className="col-md-6">
-                      <label className="small mb-1 ms-2" htmlFor="featured">
+                    <div className="col-md-2">
+                      <label
+                        className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary ms-2"
+                        htmlFor="featured"
+                      >
                         Featured
                       </label>
-                      <select id="featured" onChange={handleChange}>
+                      <select
+                        className="form-control"
+                        id="featured"
+                        onChange={handleChange}
+                        style={{ lineHeight: "1.7rem" }}
+                      >
+                        <option hidden>Select Option</option>
                         <option value={false}>False</option>
                         <option value={true}>True</option>
                       </select>
@@ -138,6 +172,7 @@ const NewCategory = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };
