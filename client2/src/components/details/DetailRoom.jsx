@@ -124,12 +124,12 @@ const DetailRoom = () => {
           </p>
         </div>
       </div>
-      <div className="card border-primary mb-3" style={{ maxwidth: "18rem" }}>
+      {/* <div className="card border-primary mb-3" style={{ maxwidth: "18rem" }}>
         <div id="detail-h1" className="card-header text-center">
-          Comment
+          Map
         </div>
         <div className="card-body text-black"></div>
-      </div>
+      </div> */}
     </>
   );
 };
