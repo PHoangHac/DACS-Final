@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import useFetch from "../../hooks/useFetch";
 import { Link, useParams } from "react-router-dom";
 import ReactPaginate from "react-paginate";
+import Rating from "../roomlist/Rating";
 
 const UserPost = () => {
   let { id } = useParams();
@@ -61,23 +62,7 @@ const UserPost = () => {
                       <div className="col-md-6">
                         <div className="info-main mt-3">
                           <div className="h5 title"> {val.title} </div>
-                          <div className="rating-wrap mb-3">
-                            <ul
-                              className="rating-stars"
-                              style={{
-                                listStyleType: "none",
-                                paddingLeft: 0,
-                              }}
-                            >
-                              <li className="stars-active w-80">
-                                <i className="fa fa-star"></i>{" "}
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>{" "}
-                                <i className="fa fa-star"></i>
-                                <i className="fa fa-star"></i>
-                              </li>
-                            </ul>
-                          </div>
+                          <Rating value={val.rating} />
 
                           <p> {val.desc} </p>
                         </div>

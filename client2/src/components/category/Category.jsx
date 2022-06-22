@@ -12,9 +12,15 @@ const Category = () => {
   return (
     <div className="container mt-5 mb-5">
       <h3 className="mt-2 badge bg-primary text-wrap fs-4">Category</h3>
+
       <div className="row flex-row flex-nowrap overflow-auto">
         {loading ? (
-          "loading data ....."
+          <div className="lds-ellipsis">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
         ) : (
           <>
             {data.map((value, index) => {

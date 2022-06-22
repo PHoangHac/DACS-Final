@@ -11,9 +11,9 @@ export const checkAuthSignUp = async (req, res, next) => {
   try {
     const checkEmail = await Users.findOne({ email: req.body.email });
     const checkUserName = await Users.findOne({ username: req.body.username });
-    if (checkEmail) return res.status(409).json("email đã tồn tại");
+    if (checkEmail) return res.status(409).json("Email already exists");
 
-    if (checkUserName) return res.status(409).json("username đã tồn tại");
+    if (checkUserName) return res.status(409).json("username already exists");
     next();
   } catch (err) {
     return res.status(400).json(err);

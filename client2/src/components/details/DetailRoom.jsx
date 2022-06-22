@@ -16,7 +16,7 @@ const DetailRoom = () => {
   const [status, setSatus] = useState("");
   const [maxPeople, setPeople] = useState("");
   const [username, setUserName] = useState("");
-  const [typeRoom, setTypeRoom] = useState("");
+  const [type, setTypeRoom] = useState("");
 
   const { id } = useParams();
 
@@ -35,7 +35,7 @@ const DetailRoom = () => {
     setSatus(getData.data.status);
     setPeople(getData.data.maxPeople);
     setUserName(getData.data.username);
-    setTypeRoom(getData.data.typeRoom);
+    setTypeRoom(getData.data.type);
   }, [id]);
 
   useEffect(() => {
@@ -83,7 +83,7 @@ const DetailRoom = () => {
         <div id="detail-h1" className="card-header text-center">
           {title}
         </div>
-        <div className="card-body text-black">
+        <div className="card-body">
           {username === user?.username && (
             <div className="card-text float-end">
               <h6 className="card-title">
@@ -101,26 +101,32 @@ const DetailRoom = () => {
             </div>
           )}
           <div className="card-text">
-            <h5 id="detail-h5" className="card-title">
+            <h5 id="detail-h5" className="card-title text-danger">
               {price} Triệu
             </h5>
           </div>
 
-          <p className="card-text">
-            <i className="fa-solid fa-location-dot me-2"></i>
+          <p className="card-text text-primary">
+            <i className="fa-solid fa-location-dot me-2 text-success"></i>
             {address}
           </p>
           <p className="card-text">{desc}</p>
-          <p className="card-text float-start">
-            <i className="fa-solid fa-chart-area mb-4"></i> Diện tích: {area} m²
+          <p className="card-text float-start fw-bold">
+            <i className="fa-solid fa-chart-area mb-4 text-success"></i> Diện
+            tích: {area} m²
             <br />
-            <i id="detail-type" className="fa-solid fa-align-left "></i> Loại
-            hình: {typeRoom}
+            <i
+              id="detail-type"
+              className="fa-solid fa-align-left text-success"
+            ></i>{" "}
+            Loại hình: {type}
           </p>
-          <p className="card-text float-end">
-            <i className="fa-brands fa-airbnb mb-4"></i> Trạng thái: {status}
+          <p className="card-text float-end fw-bold">
+            <i className="fa-brands fa-airbnb mb-4 text-success"></i> Trạng
+            thái: {status}
             <br />
-            <i className="fa-solid fa-people-line "></i> Số người: {maxPeople}
+            <i className="fa-solid fa-people-line text-success"></i> Số người:{" "}
+            {maxPeople}
           </p>
         </div>
       </div>

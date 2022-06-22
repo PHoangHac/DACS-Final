@@ -47,7 +47,7 @@ const Contact = () => {
         "wSPa9QiB1yf65NOCy"
       )
       .then((res) => {
-        toast.success(res.text, {
+        toast.success("Send Successfull !", {
           position: toast.POSITION.TOP_LEFT,
           autoClose: 5000,
         });

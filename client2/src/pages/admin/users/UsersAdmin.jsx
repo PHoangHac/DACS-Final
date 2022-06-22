@@ -47,7 +47,7 @@ const UsersAdmin = () => {
             <tr>
               <th scope="col">Id</th>
               <th scope="col">Username</th>
-              <th scope="col">Password</th>
+              {/* <th scope="col">Password</th> */}
               <th scope="col">First name</th>
               <th scope="col">Last name</th>
               <th scope="col">Admin ?</th>
@@ -67,7 +67,7 @@ const UsersAdmin = () => {
                   {/* <th className="counterCell" scope="row"></th> */}
                   <td></td>
                   <td>{value.username}</td>
-                  <td>{value.password}</td>
+                  {/* <td>{value.password}</td> */}
                   <td>{value.lastName}</td>
                   <td>{value.firstName}</td>
                   <td>{value.isAdmin.toString()}</td>

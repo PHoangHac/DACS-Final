@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import useFetch from "../../hooks/useFetch";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
+import { RatingStarts } from "../../data/Rating.js";
 
 //custom css slider
 const useStyles = makeStyles({
@@ -28,7 +29,11 @@ const Filter = ({
   selectedCategory,
   selectToggle,
   handleRefresh,
+  selectedRating,
+  handleSelectRating,
 }) => {
+  // console.log(RatingStarts);
+
   const classes = useStyles();
 
   const { data } = useFetch(`/Category`);
@@ -66,7 +71,7 @@ const Filter = ({
               </div>
             </div>
           </article>
-          <article className="filter-group">
+          {/* <article className="filter-group">
             <header className="card-header">
               <i className="icon-control fa fa-chevron-down"></i>
               <h6 className="title">Address </h6>
@@ -83,7 +88,7 @@ const Filter = ({
                 </div>
               </div>
             </div>
-          </article>
+          </article> */}
           <article className="filter-group">
             <header className="card-header">
               <i className="icon-control fa fa-chevron-down"></i>
@@ -115,7 +120,26 @@ const Filter = ({
             </header>
             <div className="filter-content collapse show" id="collapse_4">
               <div className="card-body">
-                <label className="checkbox-btn">
+                <ToggleButtonGroup
+                  value={selectedRating}
+                  onChange={handleSelectRating}
+                  size="small"
+                  orientation="horizontal"
+                  exclusive
+                >
+                  {RatingStarts.map(({ value, label, id }) => (
+                    <ToggleButton
+                      aria-label="bold"
+                      value={value}
+                      key={id}
+                      className="text-black me-3 border border-primary"
+                    >
+                      {/* <i className="fa-solid fa-arrow-right-from-bracket me-1"></i> */}
+                      {label}
+                    </ToggleButton>
+                  ))}
+                </ToggleButtonGroup>
+                {/* <label className="checkbox-btn">
                   <input type="checkbox" />
                   <span className="btn btn-light"> 1 ★ </span>
                 </label>
@@ -138,7 +162,7 @@ const Filter = ({
                 <label className="checkbox-btn">
                   <input type="checkbox" />
                   <span className="btn btn-light"> 5 ★ </span>
-                </label>
+                </label> */}
               </div>
             </div>
             <header className="card-header">
