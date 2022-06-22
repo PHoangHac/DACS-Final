@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../../components/navbar/Header";
 import Footer from "../../components/footer/Footer";
 import "./room.scss";
-import Filter from "../../components/filter/Filter";
+// import Filter from "../../components/filter/Filter";
 import CategoryRoom from "../../components/roomlist/CategoryRoom";
 
 const CategoriesR = () => {
@@ -13,7 +13,7 @@ const CategoriesR = () => {
         <div className="container">
           <div className="row">
             {/* start filter */}
-            <Filter />
+            {/* <Filter /> */}
             {/* End filter */}
 
             <CategoryRoom />

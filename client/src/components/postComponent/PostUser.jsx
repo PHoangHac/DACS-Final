@@ -159,6 +159,7 @@ const PostUser = () => {
                         id="inputPrice"
                         type="number"
                         min="0"
+                        step="0.01"
                         placeholder="Enter price ...."
                         onChange={(e) => {
                           setPrice(e.target.value);

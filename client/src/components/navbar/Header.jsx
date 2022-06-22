@@ -67,7 +67,7 @@ const Header = () => {
                     <NavDropdown.Item as={Link} to={`/MyPost/${user?._id}`}>
                       My Post
                     </NavDropdown.Item>
-                    <NavDropdown.Item>ChangePassword</NavDropdown.Item>
+                    {/* <NavDropdown.Item>ChangePassword</NavDropdown.Item> */}
                     <NavDropdown.Item as={Link} to={`/profiles/${user?._id}`}>
                       Profile
                     </NavDropdown.Item>

@@ -7,12 +7,19 @@ import moment from "moment";
 const RoomRecom2 = () => {
   const { data, loading } = useFetch("/room?bestChoice=true");
 
+  const PL = "http://localhost:7070/images/";
+
   return (
     <div className="container mb-5">
       <h3 className="mt-2 badge bg-primary text-wrap fs-4">Recommend</h3>
       <div className="row flex-row flex-nowrap overflow-auto">
         {loading ? (
-          "loading data ....."
+          <div className="lds-ellipsis">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
         ) : (
           <>
             {data.map((value) => {
@@ -24,12 +31,12 @@ const RoomRecom2 = () => {
                   <div className="card">
                     <img
                       className="card-img"
-                      src={value.photos[0]}
+                      src={PL + value.photos[0]}
                       alt="Bologna"
                     />
                     <div className="card-body">
                       <h4 className="card-title">{value.title}</h4>
-                      <small className="text-muted cat">
+                      <small className="text-dark cat fs-6">
                         <i className="fa text-info fa-area-chart"></i>{" "}
                         {value.area} m²
                         <i className="fas fa-users text-info ms-3"></i>{" "}
@@ -47,7 +54,7 @@ const RoomRecom2 = () => {
                     </div>
                     <div className="card-footer text-muted d-flex justify-content-between bg-transparent border-top-0">
                       <div className="views">
-                        {moment(value.createdAt).startOf("day").fromNow()}
+                        {moment(value.createdAt).startOf("hour").fromNow()}
                       </div>
                       <div className="stats">
                         <i className="far fa-eye"></i> 1347

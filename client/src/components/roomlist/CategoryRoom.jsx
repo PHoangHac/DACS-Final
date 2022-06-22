@@ -1,11 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import useFetch from "../../hooks/useFetch";
 import { Link, useParams } from "react-router-dom";
+import ReactPaginate from "react-paginate";
+import Rating from "../../components/roomlist/Rating";
 
 const CategoryRoom = () => {
   const { id } = useParams();
 
   const { data, loading } = useFetch(`/category/AllRoom/${id}`);
+
+  const [pageNumber, setPageNumber] = useState(0);
+
+  const RoomsPerPage = 3;
+  const pagesVisited = pageNumber * RoomsPerPage;
+
+  const pageCount = Math.ceil(data.length / RoomsPerPage);
+
+  const changePage = ({ selected }) => {
+    setPageNumber(selected);
+  };
 
   const PL = "http://localhost:7070/images/";
 
@@ -24,102 +37,94 @@ const CategoryRoom = () => {
         </header>
 
         {loading ? (
-          "loading"
+          <div class="lds-ellipsis">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
         ) : (
           <>
-            {data.map((val) => {
-              return (
-                <article className="card card-product-list mb-2" key={val._id}>
-                  <div className="row no-gutters">
-                    <aside className="col-md-3">
-                      <div className="img-wrap" style={{ height: "100%" }}>
-                        <img
-                          alt=""
-                          src={PL + val.photos[0]}
-                          className="img-fluid rounded border border-warning"
-                          style={{ height: "100%" }}
-                        />
-                      </div>
-                    </aside>
-                    <div className="col-md-6">
-                      <div className="info-main mt-3">
-                        <div className="h5 title"> {val.title} </div>
-                        <div className="rating-wrap mb-3">
-                          <ul
-                            className="rating-stars"
-                            style={{ listStyleType: "none", paddingLeft: 0 }}
-                          >
-                            <li className="stars-active w-80">
-                              <i className="fa fa-star"></i>{" "}
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>{" "}
-                              <i className="fa fa-star"></i>
-                              <i className="fa fa-star"></i>
-                            </li>
-                          </ul>
+            {data
+              .slice(pagesVisited, pagesVisited + RoomsPerPage)
+              .map((val) => {
+                return (
+                  <article
+                    className="card card-product-list mb-2"
+                    key={val._id}
+                  >
+                    <div className="row no-gutters">
+                      <aside className="col-md-3">
+                        <div className="img-wrap" style={{ height: "100%" }}>
+                          <img
+                            alt=""
+                            src={PL + val.photos[0]}
+                            className="img-fluid rounded border border-primary border-3"
+                            style={{ height: "100%" }}
+                          />
                         </div>
+                      </aside>
+                      <div className="col-md-6">
+                        <div className="info-main mt-3">
+                          <div className="h5 title"> {val.title} </div>
+                          <Rating value={val.rating} />
 
-                        <p> {val.desc} </p>
-                      </div>
-                    </div>
-                    <aside className="col-sm-3">
-                      <div className="info-aside mt-3">
-                        <div className="price-wrap">
-                          <span className="price h5"> {val.price} Triệu </span>
+                          <p> {val.desc} </p>
                         </div>
-                        <p className="text-success">{val.status}</p>
-                        <br />
-                        <p>
-                          <button className="btn btn-primary btn-block">
-                            <Link
-                              to={`/detailRoom/${val._id}`}
-                              className="text-light"
-                            >
-                              Detail
-                            </Link>
-                          </button>
-                          <button className="btn btn-danger btn-block mt-2">
-                            <i className="fa fa-heart"></i>
-                            <span className="text">Add to wishlist</span>
-                          </button>
-                        </p>
                       </div>
-                    </aside>
-                  </div>
-                </article>
-              );
-            })}
+                      <aside className="col-sm-3">
+                        <div className="info-aside mt-3">
+                          <div className="price-wrap">
+                            <span className="price h5">
+                              {" "}
+                              {val.price} Triệu{" "}
+                            </span>
+                          </div>
+                          <p className="text-success">{val.status}</p>
+                          <br />
+                          <p>
+                            <button className="btn btn-primary btn-block">
+                              <Link
+                                to={`/detailRoom/${val._id}`}
+                                className="text-light"
+                              >
+                                Detail
+                              </Link>
+                            </button>
+                            <button className="btn btn-danger btn-block mt-2">
+                              <i className="fa fa-heart"></i>
+                              <span className="text">Add to wishlist</span>
+                            </button>
+                          </p>
+                        </div>
+                      </aside>
+                    </div>
+                  </article>
+                );
+              })}
           </>
         )}
 
         <nav className="mt-4" aria-label="Page navigation sample">
-          <ul className="pagination">
-            <li className="page-item disabled">
-              <a className="page-link" href="!#">
-                Previous
-              </a>
-            </li>
-            <li className="page-item active">
-              <a className="page-link" href="!#">
-                1
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="!#">
-                2
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="!#">
-                3
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="!#">
-                Next
-              </a>
-            </li>
-          </ul>
+          <ReactPaginate
+            previousLabel={"previous"}
+            nextLabel={"next"}
+            breakLabel={"..."}
+            pageCount={pageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={3}
+            onPageChange={changePage}
+            containerClassName={"pagination justify-content-center"}
+            pageClassName={"page-item"}
+            pageLinkClassName={"page-link"}
+            previousClassName={"page-item"}
+            previousLinkClassName={"page-link"}
+            nextClassName={"page-item"}
+            nextLinkClassName={"page-link"}
+            breakClassName={"page-item"}
+            breakLinkClassName={"page-link"}
+            activeClassName={"active"}
+          />
         </nav>
       </main>
     </>

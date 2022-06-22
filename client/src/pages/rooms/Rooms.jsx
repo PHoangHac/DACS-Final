@@ -6,12 +6,25 @@ import axios from "axios";
 import Filter from "../../components/filter/Filter";
 import RoomList from "../../components/roomlist/RoomList";
 import Empty from "../../components/empty/Empty";
+import useFetch from "../../hooks/useFetch";
 
 const Rooms = () => {
   const [dataC, setDataC] = useState([]);
   const [selectedPrice, setSelectedPrice] = useState([0, 200]);
   const [resultsFound, setResultsFound] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedRating, setSelectedRating] = useState(null);
+
+  const { data } = useFetch(`/room`);
+
+  // console.log(data);
+
+  const handleRefresh = (event, value) => {
+    setSelectedCategory(null);
+    setSelectedRating(null);
+    setDataC(data);
+    setSelectedPrice([0, 200]);
+  };
 
   const handleFilterPrice = (event, value) => {
     setSelectedPrice(value);
@@ -19,6 +32,9 @@ const Rooms = () => {
 
   const handleSelectCategory = (event, value) =>
     !value ? null : setSelectedCategory(value);
+
+  const handleSelectRating = (event, value) =>
+    !value ? null : setSelectedRating(value);
 
   const FilterRoom = useCallback(async () => {
     let Rooms = await axios.get("/room");
@@ -36,12 +52,19 @@ const Rooms = () => {
       Result = Result.filter((item) => item.type === selectedCategory);
     }
 
+    //Rating filter
+    if (selectedRating) {
+      Result = Result.filter(
+        (item) => parseInt(item.rating) === parseInt(selectedRating)
+      );
+    }
+
     // console.log(Result);
 
     setDataC(Result);
 
     !Result.length ? setResultsFound(false) : setResultsFound(true);
-  }, [selectedPrice, selectedCategory]);
+  }, [selectedPrice, selectedCategory, selectedRating]);
 
   useEffect(() => {
     FilterRoom();
@@ -59,13 +82,16 @@ const Rooms = () => {
               setSelectedPrice={selectedPrice}
               selectedCategory={selectedCategory}
               selectToggle={handleSelectCategory}
+              handleRefresh={handleRefresh}
+              selectedRating={selectedRating}
+              handleSelectRating={handleSelectRating}
             />
             {/* End filter */}
 
             <main className="col-md-9">
-              <header className="border-bottom mb-4 pb-3 mt-3">
+              <header className="border-bottom border-primary mb-3 pb-3 mt-3">
                 <div className="form-inline">
-                  <select className="mr-2 form-control">
+                  <select className="mr-2 form-control" disabled>
                     <option>Latest items</option>
                     <option>Trending</option>
                     <option>Most Popular</option>

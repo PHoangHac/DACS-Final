@@ -41,7 +41,7 @@ const PostUpdate = () => {
         maxPeople: maxPeople,
         desc: desc,
         photos: files ? listphoto : photos,
-        typeRoom: typeRoom,
+        type: typeRoom,
       });
 
       // alert("Update Room successful !");
@@ -61,7 +61,7 @@ const PostUpdate = () => {
     setArea(getdata.data.area);
     setDesc(getdata.data.desc);
     setPhotos(getdata.data.photos);
-    setTypeRoom(getdata.data.typeRoom);
+    setTypeRoom(getdata.data.type);
   }, [id]);
 
   useEffect(() => {
@@ -249,6 +249,7 @@ const PostUpdate = () => {
                         onChange={(e) => {
                           setTypeRoom(e.target.value);
                         }}
+                        disabled
                       />
                     </div>
                   </div>
