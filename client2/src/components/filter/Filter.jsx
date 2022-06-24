@@ -71,24 +71,6 @@ const Filter = ({
               </div>
             </div>
           </article>
-          {/* <article className="filter-group">
-            <header className="card-header">
-              <i className="icon-control fa fa-chevron-down"></i>
-              <h6 className="title">Address </h6>
-            </header>
-            <div className="filter-content collapse show" id="collapse_2">
-              <div className="card-body">
-                <div className="form-inline">
-                  <select className="mr-2 form-control">
-                    <option defaultValue>Select Address</option>
-                    <option>District 1</option>
-                    <option>District 10</option>
-                    <option>District 3</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </article> */}
           <article className="filter-group">
             <header className="card-header">
               <i className="icon-control fa fa-chevron-down"></i>
@@ -134,35 +116,10 @@ const Filter = ({
                       key={id}
                       className="text-black me-3 border border-primary"
                     >
-                      {/* <i className="fa-solid fa-arrow-right-from-bracket me-1"></i> */}
                       {label}
                     </ToggleButton>
                   ))}
                 </ToggleButtonGroup>
-                {/* <label className="checkbox-btn">
-                  <input type="checkbox" />
-                  <span className="btn btn-light"> 1 ★ </span>
-                </label>
-
-                <label className="checkbox-btn">
-                  <input type="checkbox" />
-                  <span className="btn btn-light"> 2 ★ </span>
-                </label>
-
-                <label className="checkbox-btn">
-                  <input type="checkbox" />
-                  <span className="btn btn-light"> 3 ★ </span>
-                </label>
-
-                <label className="checkbox-btn">
-                  <input type="checkbox" />
-                  <span className="btn btn-light"> 4 ★ </span>
-                </label>
-
-                <label className="checkbox-btn">
-                  <input type="checkbox" />
-                  <span className="btn btn-light"> 5 ★ </span>
-                </label> */}
               </div>
             </div>
             <header className="card-header">

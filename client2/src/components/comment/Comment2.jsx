@@ -13,25 +13,24 @@ const Comment2 = () => {
   // const { data } = useFetch(`/room`);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
+
+  const [reviews, setReviews] = useState([]);
+
   const { id } = useParams();
 
   const [dataComment, setDataComment] = useState([]);
 
+  console.log(dataComment);
+
   const FilterRoom = useCallback(async () => {
-    let Rooms = await axios.get("/room");
-    let Result = Rooms.data;
-    setDataComment(Result);
-  }, []);
+    let Rooms = await axios.get(`/room/${id}`);
+    setReviews(Rooms.data.reviews);
+    setDataComment(Rooms);
+  }, [id]);
 
   useEffect(() => {
     FilterRoom();
   }, [FilterRoom]);
-
-  //   console.log(rating);
-  //   console.log(comment);
-  //   console.log(id);
-  //   console.log(RatingStartsReview);
-  console.log(dataComment);
 
   const CreateSubmit = async (e) => {
     e.preventDefault();
@@ -65,31 +64,34 @@ const Comment2 = () => {
         <div className="border-bottom border-primary border-2 mt-3"></div>
         {user ? (
           <>
-            <div id="comment-sroll" className="list-grou mt-3 pe-2">
-              {dataComment.map((val) =>
-                val.reviews.map((value) => {
+            {reviews.length === 0 ? (
+              <div className="text-center mt-2">No Comment</div>
+            ) : (
+              <div id="comment-sroll" className="list-grou mt-3 pe-2">
+                {reviews.map((val) => {
                   return (
                     <div
-                      className="list-group-item  list-group-item-action mb-3 border-top"
-                      key={value._id}
+                      className="list-group-item  list-group-item-action mb-3 border-top shadow bg-body rounded border-info border-1"
+                      key={val._id}
                     >
                       <div className="d-flex w-100 justify-content-between">
-                        <h5 className="">{value.username}</h5>
+                        <h5 className="">{val.username}</h5>
                         <small className="text-muted">
-                          {moment(value.createdAt).startOf("day").fromNow()}
+                          {moment(val.createdAt).startOf("hour").fromNow()}
                         </small>
                       </div>
                       <Rating
                         id="rating-comment"
-                        value={value.rating}
+                        value={val.rating}
                         className="mt-1"
                       />
-                      <p className="mb-1">{value.comment}</p>
+                      <p className="mb-1">{val.comment}</p>
                     </div>
                   );
-                })
-              )}
-            </div>
+                })}
+              </div>
+            )}
+
             <div>
               <form onSubmit={CreateSubmit}>
                 <div className="mb-3">
@@ -139,7 +141,7 @@ const Comment2 = () => {
           </>
         ) : (
           <div className="text-black text-center mt-3">
-            <div className="badge bg-danger text-wrap  fs-4">
+            <div className="badge bg-danger text-wrap  fs-5">
               Please login to comment
             </div>
           </div>

@@ -1,7 +1,7 @@
 import React from "react";
 import logo from "../../assets/img/icons8-bbb.svg";
-// import axios from "axios";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 
@@ -11,12 +11,14 @@ import { Navbar, Container, Nav, NavDropdown, Button } from "react-bootstrap";
 const Header = () => {
   const { user, dispatch } = useContext(AuthContext);
 
+  const Navigate = useNavigate();
+
   const handleClick = async (e) => {
     e.preventDefault();
     try {
-      // await axios.get("auth/logout");
+      await axios.get("/auth");
       dispatch({ type: "LOGOUT" });
-      // Navigate("/");
+      Navigate("/");
     } catch (err) {
       console.log(err);
     }
@@ -67,7 +69,9 @@ const Header = () => {
                     <NavDropdown.Item as={Link} to={`/MyPost/${user?._id}`}>
                       My Post
                     </NavDropdown.Item>
-                    {/* <NavDropdown.Item>ChangePassword</NavDropdown.Item> */}
+                    <NavDropdown.Item as={Link} to={`/forgotPass`}>
+                      ChangePassword
+                    </NavDropdown.Item>
                     <NavDropdown.Item as={Link} to={`/profiles/${user?._id}`}>
                       Profile
                     </NavDropdown.Item>

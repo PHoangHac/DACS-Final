@@ -81,7 +81,9 @@ const CategoryRoom = () => {
                             </span>
                           </div>
                           <p className="text-success">{val.status}</p>
-                          <br />
+                          <p className="text-success">
+                            {val.numReviews} Reviews
+                          </p>
                           <p>
                             <button className="btn btn-primary btn-block">
                               <Link

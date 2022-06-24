@@ -34,6 +34,9 @@ import MyPost from "./pages/post/MyPost";
 import UpdatePost from "./pages/post/UpdatePost";
 import "react-toastify/dist/ReactToastify.css";
 import PageNotFound from "./pages/pageNotFound/PageNotFound";
+import ForgotPass from "./pages/resetPassUser/ForgotPass";
+import ResetPass from "./pages/resetPassUser/ResetPass";
+import ClickUrl from "./pages/resetPassUser/ClickUrl";
 
 //import framework, modules, other...
 
@@ -70,6 +73,13 @@ function App() {
         <Route path="/categories/:id" exact element={<CategoriesR />} />
         <Route path="/register" exact element={<Register />} />
         <Route path="/contacts" exact element={<Contact />} />
+        <Route path="/forgotPass" exact element={<ForgotPass />} />
+        <Route path="/clickUrlEmail" exact element={<ClickUrl />} />
+        <Route
+          path="/auth/reset-password/:token"
+          exact
+          element={<ResetPass />}
+        />
         <Route path="/*" exact element={<PageNotFound />} />
 
         <Route

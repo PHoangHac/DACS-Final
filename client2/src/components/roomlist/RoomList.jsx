@@ -19,6 +19,8 @@ const RoomList = ({ list }) => {
   // const { data, loading } = useFetch(`/room/?typeRoom=${props.queryName}`);
   const PL = "http://localhost:7070/images/";
 
+  // console.log(list);
+
   return (
     <>
       {list !== undefined && list.length > 0 ? (
@@ -64,7 +66,7 @@ const RoomList = ({ list }) => {
                       <span className="price h5"> {val.price} Triệu </span>
                     </div>
                     <p className="text-success">{val.status}</p>
-                    <br />
+                    <p className="text-success">{val.numReviews} Reviews</p>
                     <p>
                       <button className="btn btn-primary btn-block">
                         <Link

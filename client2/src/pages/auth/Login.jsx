@@ -139,6 +139,12 @@ const Login = () => {
               </Link>
             </div>
             <div className="text-center mt-4">
+              <span>Forgot Password ?</span>
+              <Link to={"/forgotPass"} className="text-decoration-none">
+                Reset Password
+              </Link>
+            </div>
+            <div className="text-center mt-4">
               <Link to={"/"} className="text-decoration-none">
                 <i className="fa-solid fa-arrow-left-long"></i>&nbsp;Home
               </Link>

@@ -12,7 +12,7 @@ const RoomRecom2 = () => {
   return (
     <div className="container mb-5">
       <h3 className="mt-2 badge bg-primary text-wrap fs-4">Recommend</h3>
-      <div className="row flex-row flex-nowrap overflow-auto">
+      <div className="row flex-row flex-nowrap overflow-auto pb-3">
         {loading ? (
           <div className="lds-ellipsis">
             <div></div>
@@ -28,7 +28,7 @@ const RoomRecom2 = () => {
                   className="col-12 col-sm-8 col-md-6 col-lg-4"
                   key={value._id}
                 >
-                  <div className="card">
+                  <div className="card" id="card-shadow-s">
                     <img
                       className="card-img"
                       src={PL + value.photos[0]}
@@ -58,7 +58,8 @@ const RoomRecom2 = () => {
                       </div>
                       <div className="stats">
                         <i className="far fa-eye"></i> 1347
-                        <i className="far fa-comment ms-3"></i> 12
+                        <i className="far fa-comment ms-3"></i>{" "}
+                        {value.numReviews}
                       </div>
                     </div>
                   </div>
