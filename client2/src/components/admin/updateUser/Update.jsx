@@ -22,25 +22,28 @@ const Update = () => {
   const UpdateSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const data = new FormData();
-      const filename = Date.now() + file?.name;
-      data.append("name", filename);
-      data.append("file", file);
+    const newPost = {
+      username: username,
+      firstName: firstName,
+      lastName: lastName,
+      address: address,
+      phone: phone,
+      email: email,
+    };
 
-      const uploadRes = await axios.post("/upload-single", data);
+    try {
+      if (file) {
+        const data = new FormData();
+        const filename = Date.now() + file?.name;
+        data.append("name", filename);
+        data.append("file", file);
+        const uploadRes = await axios.post("/upload-single", data);
+        newPost.img = uploadRes.data;
+      }
 
       // console.log(uploadRes);
 
-      const res = await axios.put(`/user/${id}`, {
-        username: username,
-        firstName: firstName,
-        lastName: lastName,
-        address: address,
-        phone: phone,
-        email: email,
-        img: file ? uploadRes.data : img,
-      });
+      const res = await axios.put(`/user/${id}`, newPost);
       // alert("Update User successful !");
       toast.success(res.data, {
         position: toast.POSITION.TOP_LEFT,

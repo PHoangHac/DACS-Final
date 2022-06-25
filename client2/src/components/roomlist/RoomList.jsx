@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import Rating from "./Rating";
+import axios from "axios";
+// import { AuthContext } from "../../contexts/AuthContext";
 
 const RoomList = ({ list }) => {
   const [pageNumber, setPageNumber] = useState(0);
@@ -20,6 +22,39 @@ const RoomList = ({ list }) => {
   const PL = "http://localhost:7070/images/";
 
   // console.log(list);
+
+  // const { user } = useContext(AuthContext);
+
+  // const LikePost = async (id) => {
+  //   try {
+  //     await axios.put(`/room/like`, {
+  //       body: JSON.stringify({
+  //         postid: id,
+  //         like: user._id,
+  //       }),
+  //     });
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+
+  // const UnLikePost = async (id) => {
+  //   try {
+  //     await axios.put(`/room/Unlike/${id}`);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+
+  const CountVistPost = async (id) => {
+    try {
+      await axios.put(`/room/CountPostVisit/${id}`, {
+        numVisit: 1,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <>
@@ -42,21 +77,6 @@ const RoomList = ({ list }) => {
                   <div className="info-main mt-3">
                     <div className="h5 title"> {val.title} </div>
                     <Rating value={val.rating} />
-                    {/* <div className="rating-wrap mb-3">
-                      <ul
-                        className="rating-stars"
-                        style={{ listStyleType: "none", paddingLeft: 0 }}
-                      >
-                        <li className="stars-active w-80">
-                          <i className="fa fa-star"></i>{" "}
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>{" "}
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                        </li>
-                      </ul>
-                    </div> */}
-
                     <p> {val.desc} </p>
                   </div>
                 </div>
@@ -65,10 +85,20 @@ const RoomList = ({ list }) => {
                     <div className="price-wrap">
                       <span className="price h5"> {val.price} Triệu </span>
                     </div>
-                    <p className="text-success">{val.status}</p>
-                    <p className="text-success">{val.numReviews} Reviews</p>
+                    <p className="text-success fw-bold mt-2 ">{val.status}</p>
+                    <p className="text-success badge bg-light">
+                      {val.numReviews} Reviews
+                    </p>
+                    <p className="text-success badge bg-light">
+                      {val.numVisit} Visit
+                    </p>
                     <p>
-                      <button className="btn btn-primary btn-block">
+                      <button
+                        className="btn btn-primary btn-block"
+                        onClick={() => {
+                          CountVistPost(val._id);
+                        }}
+                      >
                         <Link
                           to={`/detailRoom/${val._id}`}
                           className="text-light"
@@ -76,10 +106,25 @@ const RoomList = ({ list }) => {
                           Detail
                         </Link>
                       </button>
-                      <button className="btn btn-danger btn-block mt-2">
-                        <i className="fa fa-heart"></i>
-                        <span className="text">Add to wishlist</span>
-                      </button>
+                      <br />
+
+                      {/* {val.like?.includes(user._id) ? (
+                        <i
+                          className="fa-solid fa-thumbs-down"
+                          onClick={() => {
+                            UnLikePost(val._id);
+                          }}
+                        ></i>
+                      ) : (
+                        <i
+                          className="fa-solid fa-thumbs-up"
+                          onClick={() => {
+                            LikePost(val._id);
+                          }}
+                        ></i>
+                      )}
+
+                      <span className="text">{val.like?.length} like</span> */}
                     </p>
                   </div>
                 </aside>

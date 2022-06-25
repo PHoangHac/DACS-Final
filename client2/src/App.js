@@ -37,6 +37,7 @@ import PageNotFound from "./pages/pageNotFound/PageNotFound";
 import ForgotPass from "./pages/resetPassUser/ForgotPass";
 import ResetPass from "./pages/resetPassUser/ResetPass";
 import ClickUrl from "./pages/resetPassUser/ClickUrl";
+import Count from "./pages/Count";
 
 //import framework, modules, other...
 
@@ -75,6 +76,7 @@ function App() {
         <Route path="/contacts" exact element={<Contact />} />
         <Route path="/forgotPass" exact element={<ForgotPass />} />
         <Route path="/clickUrlEmail" exact element={<ClickUrl />} />
+        <Route path="/Count" exact element={<Count />} />
         <Route
           path="/auth/reset-password/:token"
           exact

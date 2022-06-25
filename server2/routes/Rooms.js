@@ -6,6 +6,9 @@ import {
   GetOneRoom,
   GetAllRoom,
   createPostReview,
+  PutLike,
+  PutUnlike,
+  PutVisitorPost,
 } from "../controllers/RoomController.js";
 import { verifyToken } from "../utils/verifyToken.js";
 
@@ -31,5 +34,14 @@ router.get("/:id", GetOneRoom);
 
 //get all
 router.get("/", GetAllRoom);
+
+// //likes
+// router.put("/like", verifyToken, PutLike);
+
+// //Unlike
+// router.put("/Unlike", verifyToken, PutUnlike);
+
+//Count visit post //Dua cai vao qua xam ???
+router.put("/CountPostVisit/:id", verifyToken, PutVisitorPost);
 
 export default router;

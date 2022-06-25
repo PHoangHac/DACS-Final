@@ -139,3 +139,60 @@ export const createPostReview = async (req, res, next) => {
     next(err);
   }
 };
+
+//Like Post
+export const PutLike = async (req, res, next) => {
+  try {
+    // const UserID = req.user._id;
+    const Post = await Room.findByIdAndUpdate(
+      req.body.postid,
+      {
+        $push: { like: req.body._id },
+      },
+      {
+        new: true,
+      }
+    );
+
+    return res.status(200).json(Post);
+  } catch (err) {
+    next(err);
+  }
+};
+
+//Unlike
+export const PutUnlike = async (req, res, next) => {
+  try {
+    // const UserID = req.params.userid;
+    const Post = await Room.findByIdAndUpdate(
+      req.body.postid,
+      {
+        $pull: { like: req.user._id },
+      },
+      {
+        new: true,
+      }
+    );
+
+    return res.status(200).json(Post);
+  } catch (err) {
+    next(err);
+  }
+};
+
+//Count visit post
+export const PutVisitorPost = async (req, res, next) => {
+  try {
+    const VisitRoom = await Room.findByIdAndUpdate(
+      req.params.id,
+      { $inc: { numVisit: 1 } },
+      { new: true }
+    );
+
+    // res.status(200).json(updateRoom);
+    return res.status(200).json(VisitRoom);
+  } catch (err) {
+    //   res.status(500).json(err);
+    next(err);
+  }
+};

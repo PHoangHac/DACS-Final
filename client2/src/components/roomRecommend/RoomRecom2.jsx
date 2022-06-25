@@ -57,7 +57,7 @@ const RoomRecom2 = () => {
                         {moment(value.createdAt).startOf("hour").fromNow()}
                       </div>
                       <div className="stats">
-                        <i className="far fa-eye"></i> 1347
+                        <i className="far fa-eye"></i> {value.numVisit}
                         <i className="far fa-comment ms-3"></i>{" "}
                         {value.numReviews}
                       </div>
