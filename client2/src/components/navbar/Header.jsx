@@ -4,6 +4,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
+import "./header.scss";
 
 //import components bootstrap 5
 import { Navbar, Container, Nav, NavDropdown, Button } from "react-bootstrap";
@@ -23,6 +24,8 @@ const Header = () => {
       console.log(err);
     }
   };
+
+  const PL = "http://localhost:7070/images/";
 
   return (
     <>
@@ -50,16 +53,26 @@ const Header = () => {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link className=" fs-5" as={Link} to={"/rooms"}>
-                Rooms
+              <Nav.Link
+                className="fs-5 fw-bold"
+                id="header-link"
+                as={Link}
+                to={"/rooms"}
+              >
+                Posts
               </Nav.Link>
-              <Nav.Link className=" fs-5" as={Link} to={"/contacts"}>
+              <Nav.Link
+                className="fs-5 fw-bold"
+                id="header-link"
+                as={Link}
+                to={"/contacts"}
+              >
                 Contacts
               </Nav.Link>
               <NavDropdown
-                title="Setting"
-                className=" fs-5"
-                id="collasible-nav-dropdown"
+                title={<span id="header-link-3">Setting</span>}
+                className="fs-5 fw-bold"
+                id="collasible-nav-dropdown "
               >
                 <NavDropdown.Item as={Link} to={`/Createpost/${user?._id}`}>
                   New Post
@@ -80,7 +93,7 @@ const Header = () => {
                 <NavDropdown.Divider />
                 {user?.isAdmin && (
                   <NavDropdown.Item>
-                    <Link to={"/Admin"}>Admin Pages</Link>
+                    <Link to={"/Admin/OverView"}>Admin Pages</Link>
                   </NavDropdown.Item>
                 )}
               </NavDropdown>
@@ -88,26 +101,53 @@ const Header = () => {
 
             {!user && (
               <Nav>
-                <Nav.Link className=" fs-5" as={Link} to={"/login"}>
+                <Nav.Link
+                  className="fs-5 fw-bold"
+                  id="header-link"
+                  as={Link}
+                  to={"/login"}
+                >
                   Login
                 </Nav.Link>
-                <Nav.Link className=" fs-5" as={Link} to={"/register"}>
+                <Nav.Link
+                  className="fs-5 fw-bold"
+                  id="header-link"
+                  as={Link}
+                  to={"/register"}
+                >
                   Sign Up
                 </Nav.Link>
               </Nav>
             )}
 
             {user && (
+              <Navbar.Brand>
+                <img
+                  src={PL + user.img}
+                  roundedcircle="true"
+                  width="42"
+                  height="42"
+                  alt=""
+                  id="img-user"
+                />
+              </Navbar.Brand>
+            )}
+
+            {user && (
               <Nav className="me-3">
                 {/* <Container> */}
-                <Navbar.Text className="text-info fs-5">
-                  Welcome ! {user.username} <br />
+                <Navbar.Text className="text-info fs-5 fw-bold">
+                  {user.username} <br />
                 </Navbar.Text>
                 {/* </Container> */}
               </Nav>
             )}
 
-            {user && <Button onClick={handleClick}>Logout</Button>}
+            {user && (
+              <Button className="fw-bold" onClick={handleClick}>
+                Logout
+              </Button>
+            )}
           </Navbar.Collapse>
         </Container>
       </Navbar>

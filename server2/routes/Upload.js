@@ -32,7 +32,18 @@ const imageFilter = function (req, file, cb) {
   cb(null, true);
 };
 
-let upload = multer({ storage: storage, fileFilter: imageFilter });
+// let upload = multer({
+//   storage: storage,
+//   fileFilter: imageFilter,
+// });
+
+const maxSize = 5 * 1024 * 1024;
+
+let uploadSingle = multer({
+  storage: storage,
+  fileFilter: imageFilter,
+  limits: { fileSize: maxSize },
+}).single("file");
 
 let uploadMultipleFiles = multer({
   storage: storage,
@@ -40,7 +51,22 @@ let uploadMultipleFiles = multer({
 }).array("MultipleFiles", 3);
 
 //Single file
-router.post("/upload-single", upload.single("file"), handleUpdloadFile);
+router.post(
+  "/upload-single",
+  (req, res, next) => {
+    uploadSingle(req, res, (err) => {
+      if (err instanceof multer.MulterError) {
+        // res.send(err);
+        return res.status(404).json({ msg: "File to large upload failed" });
+      } else if (err) {
+        res.send(err);
+      } else {
+        next();
+      }
+    });
+  },
+  handleUpdloadFile
+);
 
 //Multiple files
 router.post(
@@ -63,5 +89,26 @@ router.post(
   },
   handleUpdloadMultipleFile
 );
+
+// router.post(
+//   "/upload-multiple",
+//   (req, res, next) => {
+//     uploadMultipleFiles(req, res, (err) => {
+//       if (
+//         err instanceof multer.MulterError &&
+//         err.code === "LIMIT_UNEXPECTED_FILE"
+//       ) {
+//         // handle multer file limit error here
+//         res.send("LIMIT_UNEXPECTED_FILE");
+//       } else if (err) {
+//         res.send(err);
+//       } else {
+//         // make sure to call next() if all was well
+//         next();
+//       }
+//     });
+//   },
+//   handleUpdloadMultipleFile
+// );
 
 export default router;

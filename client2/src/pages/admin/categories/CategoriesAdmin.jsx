@@ -44,8 +44,11 @@ const CategoriesAdmin = () => {
           New Category
         </Link>
       </div>
-      <div className="table-responsive bg-light table-scrolls">
-        <table className="table table-hover table-bordered text-center">
+      <div
+        style={{ height: "85vh", width: "85vw" }}
+        className="table-responsive bg-light table-scrolls"
+      >
+        <table className="table table-hover table-bordered text-center fw-bold">
           <thead>
             <tr>
               <th scope="col">Id</th>

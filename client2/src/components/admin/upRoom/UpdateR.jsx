@@ -88,14 +88,14 @@ const UpdateR = () => {
 
   return (
     <div className="container">
-      <h3>Update Room</h3>
+      <h3 className="badge bg-primary text-wrap fs-4">Update Post</h3>
       <div className="container-xl px-4 mt-4">
         <hr className="mt-0 mb-4"></hr>
         <div className="row">
           {/* piture-profile */}
           <div className="col-xl-4">
             <div className="card mb-4 mb-xl-0">
-              <div className="card-header">Room Picture</div>
+              <div className="card-header">Post Picture</div>
               <form onSubmit={UpdateSubmit}>
                 <div className="card-body text-center">
                   <img
@@ -124,7 +124,7 @@ const UpdateR = () => {
           {/* Proflie-details */}
           <div className="col-xl-8">
             <div className="card mb-4">
-              <div className="card-header">Room Details</div>
+              <div className="card-header">Post Information</div>
               <div className="card-body">
                 <form onSubmit={UpdateSubmit}>
                   <div className="mb-3">

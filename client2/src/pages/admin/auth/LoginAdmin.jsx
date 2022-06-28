@@ -33,7 +33,7 @@ const LoginAdmin = () => {
       const res = await axios.post("auth/login", credentials);
       if (res.data.isAdmin) {
         dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
-        Navigate("/Admin");
+        Navigate("/Admin/OverView");
       } else {
         dispatch({
           type: "LOGIN_FAILURE",
@@ -55,7 +55,7 @@ const LoginAdmin = () => {
           <div className="card px-5 py-5 card-signup">
             <div>{error && <span>{error.message}</span>}</div>
             <h1 className="mt-3">SIGN IN </h1>
-            <form onSubmit={handleClick}>
+            <form onSubmit={handleClick} autoComplete="off">
               <div className="form-input form-signup">
                 <label htmlFor="username">Username :</label>
                 <i className="fa fa-user"></i>
@@ -65,6 +65,8 @@ const LoginAdmin = () => {
                   onChange={handleChange}
                   className="form-control form-control-input"
                   placeholder="User name"
+                  pattern="^[A-Za-z0-9]{5,12}$"
+                  title="Username should be 5-12 characters and shouldn't include any special character!"
                   required
                 />
               </div>
@@ -78,6 +80,8 @@ const LoginAdmin = () => {
                   className="form-control form-control-input"
                   placeholder="password"
                   type={showpass ? "text" : "password"}
+                  pattern={`^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$`}
+                  title="Password should be 8-20 characters and include at least 1 letter, 1 number and 1 special character!"
                   required
                 />
               </div>

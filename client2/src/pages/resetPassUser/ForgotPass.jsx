@@ -64,6 +64,8 @@ const ForgotPass = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     className="form-control form-control-input "
                     placeholder="Email address"
+                    pattern={"[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$"}
+                    title="Must includes @gmail.com"
                     required
                   />
                 </div>

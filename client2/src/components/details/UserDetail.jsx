@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 // import { AuthContext } from "../../contexts/AuthContext";
+import userimg from "../../assets/img/user.png";
 
 const UserDetail = () => {
   const { id } = useParams();
@@ -33,7 +34,7 @@ const UserDetail = () => {
         <div className="text-black">
           <div>
             <img
-              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+              src={userimg}
               // src={user?.img}
               alt="UserProfileUser"
               className="img-fluid"

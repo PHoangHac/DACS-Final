@@ -87,16 +87,18 @@ const UsersAdmin = () => {
                   <td>
                     {moment(value.updatedAt).format("MMMM Do YYYY, h:mm:ss a")}
                   </td>
-                  <td>
-                    <Link to={`/Admin/UpdateUser/${value._id}`}>
-                      <FaRegEdit id="update_user" />
-                    </Link>
-                    &nbsp;&nbsp;&nbsp;
-                    <FaTrashAlt
-                      onClick={() => deleteUser(value._id)}
-                      id="delete_user"
-                    />
-                  </td>
+                  {!value.isAdmin && (
+                    <td>
+                      <Link to={`/Admin/UpdateUser/${value._id}`}>
+                        <FaRegEdit id="update_user" />
+                      </Link>
+                      &nbsp;&nbsp;&nbsp;
+                      <FaTrashAlt
+                        onClick={() => deleteUser(value._id)}
+                        id="delete_user"
+                      />
+                    </td>
+                  )}
                 </tr>
               );
             })}

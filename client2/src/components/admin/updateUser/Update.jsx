@@ -65,6 +65,33 @@ const Update = () => {
     </div>
   );
 
+  const isValidFileUploaded = (file) => {
+    const validExtensions = ["png", "jpeg", "jpg"];
+    const fileExtension = file.type.split("/")[1];
+    return validExtensions.includes(fileExtension);
+  };
+
+  const handleValdate = (e) => {
+    if (e.target.files.length < 1) {
+      return;
+    }
+    const file = e.target.files[0];
+    setFile(e.target.files[0]);
+    if (isValidFileUploaded(file)) {
+      //file is valid
+      toast.success("file is valid", {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 2000,
+      });
+    } else {
+      //file is invalid
+      toast.error("file is invalid", {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 2000,
+      });
+    }
+  };
+
   const getUserById = useCallback(async () => {
     const getdata = await axios.get(`/user/${id}`);
     setImg(getdata.data.img);
@@ -104,10 +131,10 @@ const Update = () => {
                     JPG or PNG no larger than 5 MB
                   </div>
                   <input
-                    onChange={(e) => setFile(e.target.files[0])}
                     className="form-control"
                     type="file"
                     id="formFile"
+                    onChange={handleValdate}
                   ></input>
                 </div>
               </form>

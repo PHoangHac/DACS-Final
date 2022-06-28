@@ -41,21 +41,12 @@ const ProfileUser = () => {
         const filename = Date.now() + file?.name;
         data.append("name", filename);
         data.append("file", file);
-        const uploadRes = await axios.post("/upload-single", data);
+        const uploadRes = await axios.post(
+          `http://localhost:7070/api/upload-single`,
+          data
+        );
         newPost.img = uploadRes.data;
       }
-      // setAvatar(uploadRes.data);
-      // console.log(uploadRes.data);
-
-      // const res = await axios.put(`/user/${id}`, {
-      //   username: username,
-      //   firstName: firstName,
-      //   lastName: lastName,
-      //   address: address,
-      //   phone: phone,
-      //   email: email,
-      //   img: file ? uploadRes.data : img,
-      // });
       const res = await axios.put(`/user/${id}`, newPost);
 
       toast.success(res.data, {
@@ -63,6 +54,10 @@ const ProfileUser = () => {
         autoClose: 2000,
       });
     } catch (err) {
+      toast.error(err.response.data.msg, {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 2000,
+      });
       console.log(err);
     }
   };
@@ -84,8 +79,31 @@ const ProfileUser = () => {
 
   const PL = "http://localhost:7070/images/";
 
+  const isValidFileUploaded = (file) => {
+    const validExtensions = ["png", "jpeg", "jpg"];
+    const fileExtension = file.type.split("/")[1];
+    return validExtensions.includes(fileExtension);
+  };
+
   const handleValdate = (e) => {
+    if (e.target.files.length < 1) {
+      return;
+    }
+    const file = e.target.files[0];
     setFiles(e.target.files[0]);
+    if (isValidFileUploaded(file)) {
+      //file is valid
+      toast.success("file is valid", {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 2000,
+      });
+    } else {
+      //file is invalid
+      toast.error("file is invalid", {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 2000,
+      });
+    }
   };
 
   return (
@@ -107,7 +125,7 @@ const ProfileUser = () => {
                   />
 
                   <div className="small font-italic text-muted mb-4">
-                    JPG or PNG no larger than 5 MB
+                    jpg, jpeg, png, no larger than 5 MB
                   </div>
                   <input
                     onChange={handleValdate}

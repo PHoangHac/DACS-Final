@@ -38,6 +38,7 @@ import ForgotPass from "./pages/resetPassUser/ForgotPass";
 import ResetPass from "./pages/resetPassUser/ResetPass";
 import ClickUrl from "./pages/resetPassUser/ClickUrl";
 import Count from "./pages/Count";
+import Overview from "./pages/admin/overview/Overview";
 
 //import framework, modules, other...
 
@@ -202,6 +203,14 @@ function App() {
             element={
               <ProtectedRouteAdmin>
                 <UpdateRoom />
+              </ProtectedRouteAdmin>
+            }
+          />
+          <Route
+            path="OverView"
+            element={
+              <ProtectedRouteAdmin>
+                <Overview />
               </ProtectedRouteAdmin>
             }
           />

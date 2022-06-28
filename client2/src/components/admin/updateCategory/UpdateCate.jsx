@@ -17,20 +17,23 @@ const UpdateCate = () => {
   const handleSumbit = async (e) => {
     e.preventDefault();
 
+    const newCatePost = {
+      name: name,
+      type: type,
+      featured: featured,
+    };
+
     try {
-      const data = new FormData();
-      const filename = Date.now() + files?.name;
-      data.append("name", filename);
-      data.append("file", files);
+      if (files) {
+        const data = new FormData();
+        const filename = Date.now() + files?.name;
+        data.append("name", filename);
+        data.append("file", files);
+        const uploadRes = await axios.post("/upload-single", data);
+        newCatePost.img = uploadRes.data;
+      }
 
-      const uploadRes = await axios.post("/upload-single", data);
-
-      const res = await axios.put(`/category/${id}`, {
-        name: name,
-        type: type,
-        featured: featured,
-        img: files ? uploadRes.data : img,
-      });
+      const res = await axios.put(`/category/${id}`, newCatePost);
       // alert("Update category Successfull !");
       // Navigate("/Admin/Category");
       toast.success(res.data, {
@@ -42,7 +45,38 @@ const UpdateCate = () => {
         autoClose: 20000,
       });
     } catch (err) {
+      toast.error(err.response.data.msg, {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 2000,
+      });
       console.log(err);
+    }
+  };
+
+  const isValidFileUploaded = (file) => {
+    const validExtensions = ["png", "jpeg", "jpg"];
+    const fileExtension = file.type.split("/")[1];
+    return validExtensions.includes(fileExtension);
+  };
+
+  const handleValdate = (e) => {
+    if (e.target.files.length < 1) {
+      return;
+    }
+    const file = e.target.files[0];
+    setFiles(e.target.files[0]);
+    if (isValidFileUploaded(file)) {
+      //file is valid
+      toast.success("file is valid", {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 2000,
+      });
+    } else {
+      //file is invalid
+      toast.error("file is invalid", {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 2000,
+      });
     }
   };
 
@@ -96,7 +130,7 @@ const UpdateCate = () => {
                     className="form-control"
                     type="file"
                     id="formFile"
-                    onChange={(e) => setFiles(e.target.files[0])}
+                    onChange={handleValdate}
                   ></input>
                 </div>
               </form>
@@ -146,7 +180,7 @@ const UpdateCate = () => {
                       />
                     </div>
 
-                    <div className="col-md-2">
+                    <div className="col-md-2" hidden>
                       <label
                         className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary ms-2"
                         htmlFor="featured"

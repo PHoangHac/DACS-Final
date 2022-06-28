@@ -45,7 +45,7 @@ const Filter = ({
           <article className="filter-group">
             <header className="card-header">
               <i className="icon-control fa fa-chevron-down"></i>
-              <h6 className="title">Room type</h6>
+              <h6 className="title">Post type</h6>
             </header>
             <div className="filter-content collapse show" id="collapse_1">
               <div className="card-body">

@@ -1,0 +1,45 @@
+#img-user {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 3px;
+}
+
+#img-user:hover {
+  box-shadow: 0 0 2px 5px rgba(255, 0, 0, 0.5);
+}
+
+#header-link {
+  background: transparent;
+  border-radius: 10px;
+}
+
+#header-link:hover {
+  color: white;
+  background: #01529d;
+  border-radius: 10px;
+}
+
+#header-link-3 {
+  background: transparent;
+  border-radius: 10px;
+  padding: 8px;
+}
+
+#header-link-3:hover {
+  color: white;
+  background: #01529d;
+  padding: 10px;
+}
+
+#header-link-3-1 {
+  background: transparent;
+  border-radius: 10px;
+  padding: 8px;
+  color: white;
+}
+
+#header-link-3-1:hover {
+  color: white;
+  background: #172431;
+  padding: 10px;
+}

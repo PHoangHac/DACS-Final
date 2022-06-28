@@ -3,11 +3,22 @@ import "./roomreco.scss";
 import useFetch from "../../hooks/useFetch";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import axios from "axios";
 
 const RoomRecom2 = () => {
   const { data, loading } = useFetch("/room?bestChoice=true");
 
   const PL = "http://localhost:7070/images/";
+
+  const CountVistPost = async (id) => {
+    try {
+      await axios.put(`/room/CountPostVisit/${id}`, {
+        numVisit: 1,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div className="container mb-5">
@@ -48,6 +59,9 @@ const RoomRecom2 = () => {
                       <Link
                         to={`/detailRoom/${value._id}`}
                         className="btn btn-info mt-3"
+                        onClick={() => {
+                          CountVistPost(value._id);
+                        }}
                       >
                         View
                       </Link>

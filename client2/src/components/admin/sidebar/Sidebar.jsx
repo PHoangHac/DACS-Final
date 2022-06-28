@@ -6,6 +6,7 @@ import {
   FaRegChartBar,
   FaCommentAlt,
   FaHome,
+  FaStackOverflow,
 } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import "../adminDashBoard.scss";
@@ -20,6 +21,7 @@ const Sidebar = ({ children }) => {
       path: "/Admin",
       name: "Dashboard",
       icon: <FaTh />,
+      hidden: true,
     },
     {
       path: "/Admin/User",
@@ -33,8 +35,13 @@ const Sidebar = ({ children }) => {
     },
     {
       path: "/Admin/Room",
-      name: "Rooms",
+      name: "Posts",
       icon: <FaCommentAlt />,
+    },
+    {
+      path: "/Admin/OverView",
+      name: "OverView",
+      icon: <FaStackOverflow />,
     },
     {
       path: "/",
@@ -81,6 +88,7 @@ const Sidebar = ({ children }) => {
       </div>
       <main className="main-sidebar">
         {children}
+
         <Outlet />
       </main>
     </div>

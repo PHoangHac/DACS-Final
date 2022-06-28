@@ -80,7 +80,7 @@ export const forgotPassword = async (req, res, next) => {
     if (!user) return res.status(409).json("Email not found in systemm !");
     //create acc token
     const ac_token = jwt.sign({ id: user._id }, process.env.ACCESS_SECRET_KEY, {
-      expiresIn: "15m",
+      expiresIn: "5m",
     });
     //send email
     const url = `http://localhost:3000/auth/reset-password/${ac_token}`;
@@ -114,6 +114,7 @@ export const resestPassword = async (req, res, next) => {
     // reset success
     res.status(200).json({ msg: "Password was updated successfully." });
   } catch (err) {
+    res.status(404).json({ msg: "password update expired" });
     next(err);
   }
 };

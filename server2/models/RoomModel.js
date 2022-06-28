@@ -73,10 +73,10 @@ const RoomSchema = new mongoose.Schema(
       required: true,
       default: 0,
     },
-    like: {
-      type: Schema.Types.ObjectId,
-      ref: "Users",
-    },
+    // like: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: "Users",
+    // },
     bestChoice: {
       type: Boolean,
       default: false,

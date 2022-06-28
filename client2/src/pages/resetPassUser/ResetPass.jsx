@@ -23,9 +23,10 @@ const ResetPass = () => {
 
   const handleSumbit = async (e) => {
     e.preventDefault();
-    setDisabled(true);
+
     try {
       if (password === Repassword) {
+        setDisabled(true);
         const res = await axios.post(
           `http://localhost:7070/api/auth/reset_pass`,
           {
@@ -57,6 +58,10 @@ const ResetPass = () => {
         // console.log("Password not match !");
       }
     } catch (err) {
+      toast.error(err, {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 2000,
+      });
       console.log(err);
     }
   };
@@ -90,6 +95,8 @@ const ResetPass = () => {
                     disabled={disabled}
                     onChange={(e) => setPassWord(e.target.value)}
                     className="form-control form-control-input "
+                    pattern={`^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$`}
+                    title="Password should be 8-20 characters and include at least 1 letter, 1 number and 1 special character!"
                     placeholder="Your password..."
                     required
                   />
