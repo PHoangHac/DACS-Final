@@ -99,7 +99,7 @@ const Rooms = () => {
                   </select>
                 </div>
               </header>
-
+              
               {resultsFound ? <RoomList list={dataC} /> : <Empty />}
             </main>
           </div>
