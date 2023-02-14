@@ -33,10 +33,10 @@ const RoomsAdmin = () => {
 
   return (
     <div className="container">
-      <div className="badge bg-primary text-wrap fs-4 mb-3">All Room</div>
+      <div className="badge bg-primary text-wrap fs-4 mb-3">All Post</div>
       <div className="badge bg-light text-wrap fs-6 mb-3 ms-5">
         <Link id="newuser-user" to={"/Admin/NewRoom"}>
-          New Room
+          New post
         </Link>
       </div>
       <div className="table-responsive bg-light table-scrolls ">
@@ -63,7 +63,7 @@ const RoomsAdmin = () => {
           <tbody id="tbody-user">
             {listRoom.map((value) => {
               return (
-                <tr key={value._id}>
+                <tr key={value._id} className="fw-bold">
                   {/* <th className="counterCell" scope="row"></th> */}
                   <td></td>
                   <td>{value.title}</td>
@@ -73,7 +73,7 @@ const RoomsAdmin = () => {
                   <td>{value.maxPeople}</td>
                   <td>{value.area}</td>
                   <td>{value.username}</td>
-                  <td>{value.desc}</td>
+                  <td id="descripton">{value.desc}</td>
                   <td>
                     <img
                       src={PL + value.photos[0]}

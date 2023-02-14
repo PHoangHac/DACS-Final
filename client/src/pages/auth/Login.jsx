@@ -55,29 +55,38 @@ const Login = () => {
             <h1 className="mt-3">SIGN IN </h1>
             <form onSubmit={handleClick} autoComplete="off">
               <div className="form-input form-signup">
-                <label htmlFor="username">Username :</label>
+                <label htmlFor="username" className="fw-bold">
+                  Username :
+                </label>
                 <i className="fa fa-user"></i>
+
                 <input
                   type="text"
                   id="username"
                   onChange={handleChange}
                   className="form-control form-control-input"
                   placeholder="User name"
+                  pattern="^[A-Za-z0-9]{5,12}$"
+                  title="Username should be 5-12 characters and shouldn't include any special character!"
                   required
                 />
               </div>
 
               <div className="form-input form-signup">
-                <label htmlFor="password">Password :</label>
+                <label htmlFor="password" className="fw-bold">
+                  Password :
+                </label>
                 <i className="fa fa-lock"></i>
                 <input
                   id="password"
                   onChange={handleChange}
                   className="form-control form-control-input"
-                  placeholder="password"
+                  placeholder="********"
                   type={showpass ? "text" : "password"}
+                  pattern={`^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$`}
+                  title="Password should be 8-20 characters and include at least 1 letter, 1 number and 1 special character!"
                   required
-                  autoComplete="true"
+                  // autoComplete="true"
                 />
               </div>
 
@@ -107,7 +116,7 @@ const Login = () => {
                 type="submit"
                 disabled={loading}
                 onSubmit={handleClick}
-                className="btn btn-primary mt-4 signup"
+                className="btn btn-primary mt-4 signup fw-bold fs-5"
               >
                 Login
               </button>
@@ -134,13 +143,31 @@ const Login = () => {
 
             <div className="text-center mt-4">
               <span>Don't Have Account?</span>
-              <Link to={"/register"} className="text-decoration-none">
+              <Link
+                to={"/register"}
+                className="text-decoration-none ms-1 fw-bold "
+                id="btn-all"
+              >
                 Register
               </Link>
             </div>
             <div className="text-center mt-4">
-              <Link to={"/"} className="text-decoration-none">
-                <i className="fa-solid fa-arrow-left-long"></i>&nbsp;Home
+              <span>Forgot Password ?</span>
+              <Link
+                to={"/forgotPass"}
+                className="text-decoration-none ms-1 fw-bold"
+                id="btn-all"
+              >
+                Reset Password
+              </Link>
+            </div>
+            <div className="text-center mt-4">
+              <Link
+                to={"/"}
+                className="text-decoration-none fw-bold"
+                id="btn-all"
+              >
+                <i className="fa-solid fa-arrow-left-long "></i>&nbsp;Home
               </Link>
             </div>
           </div>

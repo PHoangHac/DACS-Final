@@ -106,7 +106,7 @@ const DetailRoom = () => {
             </h5>
           </div>
 
-          <p className="card-text text-primary">
+          <p className="card-text text-primary fw-bold pt-2">
             <i className="fa-solid fa-location-dot me-2 text-success"></i>
             {address}
           </p>

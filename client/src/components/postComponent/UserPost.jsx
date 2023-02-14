@@ -76,7 +76,12 @@ const UserPost = () => {
                             </span>
                           </div>
                           <p className="text-success">{val.status}</p>
-                          <br />
+                          <p className="text-success badge bg-light">
+                            {val.numReviews} Reviews
+                          </p>
+                          <p className="text-success badge bg-light">
+                            {val.numVisit} Visit
+                          </p>
                           <p>
                             <button className="btn btn-primary btn-block">
                               <Link
@@ -85,10 +90,6 @@ const UserPost = () => {
                               >
                                 Detail
                               </Link>
-                            </button>
-                            <button className="btn btn-danger btn-block mt-2">
-                              <i className="fa fa-heart"></i>
-                              <span className="text">Add to wishlist</span>
                             </button>
                           </p>
                         </div>

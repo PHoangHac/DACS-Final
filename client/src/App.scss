@@ -2,7 +2,7 @@
 
 //------custom scrollbar-----
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 16px;
 }
 
 ::-webkit-scrollbar-track {
@@ -15,6 +15,11 @@
   border: 5px solid transparent;
   background-clip: content-box;
   background-color: #8070d4;
+}
+
+.MuiToggleButton-root.Mui-selected {
+  background-color: #4528d5 !important;
+  color: white !important;
 }
 
 //

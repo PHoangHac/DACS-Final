@@ -1,5 +1,5 @@
 import React from "react";
-import GifNoR from "../../../src/assets/img/NoResultFound2.gif";
+import GifNoR from "../../assets/img/NoResultFound2.gif";
 
 const Empty = () => {
   return (

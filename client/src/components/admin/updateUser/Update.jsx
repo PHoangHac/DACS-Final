@@ -22,25 +22,28 @@ const Update = () => {
   const UpdateSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const data = new FormData();
-      const filename = Date.now() + file?.name;
-      data.append("name", filename);
-      data.append("file", file);
+    const newPost = {
+      username: username,
+      firstName: firstName,
+      lastName: lastName,
+      address: address,
+      phone: phone,
+      email: email,
+    };
 
-      const uploadRes = await axios.post("/upload-single", data);
+    try {
+      if (file) {
+        const data = new FormData();
+        const filename = Date.now() + file?.name;
+        data.append("name", filename);
+        data.append("file", file);
+        const uploadRes = await axios.post("/upload-single", data);
+        newPost.img = uploadRes.data;
+      }
 
       // console.log(uploadRes);
 
-      const res = await axios.put(`/user/${id}`, {
-        username: username,
-        firstName: firstName,
-        lastName: lastName,
-        address: address,
-        phone: phone,
-        email: email,
-        img: file ? uploadRes.data : img,
-      });
+      const res = await axios.put(`/user/${id}`, newPost);
       // alert("Update User successful !");
       toast.success(res.data, {
         position: toast.POSITION.TOP_LEFT,
@@ -61,6 +64,33 @@ const Update = () => {
       <Link to="/Admin/User">Click here back to List</Link>
     </div>
   );
+
+  const isValidFileUploaded = (file) => {
+    const validExtensions = ["png", "jpeg", "jpg"];
+    const fileExtension = file.type.split("/")[1];
+    return validExtensions.includes(fileExtension);
+  };
+
+  const handleValdate = (e) => {
+    if (e.target.files.length < 1) {
+      return;
+    }
+    const file = e.target.files[0];
+    setFile(e.target.files[0]);
+    if (isValidFileUploaded(file)) {
+      //file is valid
+      toast.success("file is valid", {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 2000,
+      });
+    } else {
+      //file is invalid
+      toast.error("file is invalid", {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 2000,
+      });
+    }
+  };
 
   const getUserById = useCallback(async () => {
     const getdata = await axios.get(`/user/${id}`);
@@ -101,10 +131,10 @@ const Update = () => {
                     JPG or PNG no larger than 5 MB
                   </div>
                   <input
-                    onChange={(e) => setFile(e.target.files[0])}
                     className="form-control"
                     type="file"
                     id="formFile"
+                    onChange={handleValdate}
                   ></input>
                 </div>
               </form>

@@ -2,7 +2,8 @@
 import Users from "../models/UserModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { createError } from "../utils/error.js";
+import { sendEmailReset } from "../sendEmail/SendEmail.js";
+// import { createError } from "../utils/error.js";
 
 export const CreateUser = async (req, res, next) => {
   //Su dung framwork bcrypt de ma hoa(bam) password
@@ -59,7 +60,61 @@ export const loginUser = async (req, res, next) => {
   }
 };
 
-// export const logout = async (req, res, next) => {
-//   res.clearCookie("access_token");
-//   res.redirect("/");
-// };
+export const logout = async (req, res, next) => {
+  try {
+    //clear cookies
+    res.clearCookie("access_token");
+    //success
+    res.status(200).json("Signout Success");
+  } catch (err) {}
+  // res.redirect("/");
+};
+
+//forgot password
+export const forgotPassword = async (req, res, next) => {
+  try {
+    //get email
+    const { email } = req.body;
+    //check email
+    const user = await Users.findOne({ email });
+    if (!user) return res.status(409).json("Email not found in systemm !");
+    //create acc token
+    const ac_token = jwt.sign({ id: user._id }, process.env.ACCESS_SECRET_KEY, {
+      expiresIn: "5m",
+    });
+    //send email
+    const url = `http://localhost:3000/auth/reset-password/${ac_token}`;
+    const username = user.username;
+    sendEmailReset(email, url, "Reset your Password", username);
+    //success
+    res
+      .status(200)
+      .json({ msg: "Re-send the password, please check your email." });
+  } catch (err) {
+    next(err);
+  }
+};
+
+//reset password
+export const resestPassword = async (req, res, next) => {
+  try {
+    // get password
+    const { password } = req.body;
+
+    // hash password
+    const salt = await bcrypt.genSalt();
+    const hashPassword = await bcrypt.hash(password, salt);
+
+    // update password
+    await Users.findOneAndUpdate(
+      { _id: req.user.id },
+      { password: hashPassword }
+    );
+
+    // reset success
+    res.status(200).json({ msg: "Password was updated successfully." });
+  } catch (err) {
+    res.status(404).json({ msg: "password update expired" });
+    next(err);
+  }
+};

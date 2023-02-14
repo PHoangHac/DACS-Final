@@ -46,6 +46,10 @@ const NewCategory = () => {
         autoClose: 20000,
       });
     } catch (err) {
+      toast.error(err.response.data.msg, {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 2000,
+      });
       console.log(err);
     }
   };
@@ -58,6 +62,33 @@ const NewCategory = () => {
 
   const handleChange = (e) => {
     setFeatured(e.target.value);
+  };
+
+  const isValidFileUploaded = (file) => {
+    const validExtensions = ["png", "jpeg", "jpg"];
+    const fileExtension = file.type.split("/")[1];
+    return validExtensions.includes(fileExtension);
+  };
+
+  const handleValdate = (e) => {
+    if (e.target.files.length < 1) {
+      return;
+    }
+    const file = e.target.files[0];
+    setFile(e.target.files[0]);
+    if (isValidFileUploaded(file)) {
+      //file is valid
+      toast.success("file is valid", {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 2000,
+      });
+    } else {
+      //file is invalid
+      toast.error("file is invalid", {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 2000,
+      });
+    }
   };
 
   return (
@@ -91,7 +122,7 @@ const NewCategory = () => {
                     className="form-control"
                     type="file"
                     id="formFile"
-                    onChange={(e) => setFile(e.target.files[0])}
+                    onChange={handleValdate}
                   ></input>
                 </div>
               </form>
@@ -138,7 +169,7 @@ const NewCategory = () => {
                       />
                     </div>
 
-                    <div className="col-md-2">
+                    <div className="col-md-3" hidden>
                       <label
                         className="small mb-1 fs-6 fw-normal badge bg-light text-dark border border-primary ms-2"
                         htmlFor="featured"

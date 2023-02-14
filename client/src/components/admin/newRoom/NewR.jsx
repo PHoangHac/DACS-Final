@@ -118,14 +118,14 @@ const NewR = () => {
 
   return (
     <div className="container">
-      <h3 className="badge bg-success text-wrap fs-4 ms-4 ">Add New Room</h3>
+      <h3 className="badge bg-success text-wrap fs-4 ms-4 ">Add Post</h3>
       <div className="container-xl px-4 mt-4">
         <hr className="mt-0 mb-4"></hr>
         <div className="row">
           {/* piture-profile */}
           <div className="col-xl-4">
             <div className="card mb-4 mb-xl-0">
-              <div className="card-header fs-5">Room Image</div>
+              <div className="card-header fs-5">Post Image</div>
               <form onSubmit={handleSumbit}>
                 <div className="card-body text-center">
                   <img
@@ -158,7 +158,7 @@ const NewR = () => {
           {/* Proflie-details */}
           <div className="col-xl-8">
             <div className="card mb-4">
-              <div className="card-header fs-5">Room infomation</div>
+              <div className="card-header fs-5">Post infomation</div>
               <div className="card-body">
                 <form onSubmit={handleSumbit}>
                   <div className="mb-3">

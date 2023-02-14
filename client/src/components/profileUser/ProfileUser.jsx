@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./profile.scss";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 const ProfileUser = () => {
-  const [files, setFiles] = useState(null);
+  const [file, setFiles] = useState(null);
   const [img, setImg] = useState("");
   const [username, setUserName] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -14,32 +15,49 @@ const ProfileUser = () => {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
 
+  // const [avatar, setAvatar] = useState("");
+
   const { id } = useParams();
-  const Nagigate = useNavigate();
+
+  // console.log(avatar);
+  // console.log(img);
+  // console.log(file);
 
   const UpdateSubmit = async (e) => {
     e.preventDefault();
 
+    const newPost = {
+      username: username,
+      firstName: firstName,
+      lastName: lastName,
+      address: address,
+      phone: phone,
+      email: email,
+    };
+
     try {
-      const data = new FormData();
-      const filename = Date.now() + files?.name;
-      data.append("name", filename);
-      data.append("file", files);
+      if (file) {
+        const data = new FormData();
+        const filename = Date.now() + file?.name;
+        data.append("name", filename);
+        data.append("file", file);
+        const uploadRes = await axios.post(
+          `http://localhost:7070/api/upload-single`,
+          data
+        );
+        newPost.img = uploadRes.data;
+      }
+      const res = await axios.put(`/user/${id}`, newPost);
 
-      const uploadRes = await axios.post("/upload-single", data);
-
-      await axios.put(`/user/${id}`, {
-        username: username,
-        firstName: firstName,
-        lastName: lastName,
-        address: address,
-        phone: phone,
-        email: email,
-        img: files ? uploadRes.data : img,
+      toast.success(res.data, {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 2000,
       });
-      // alert("Update User successful !");
-      Nagigate("/profiles");
     } catch (err) {
+      toast.error(err.response.data.msg, {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 2000,
+      });
       console.log(err);
     }
   };
@@ -61,8 +79,31 @@ const ProfileUser = () => {
 
   const PL = "http://localhost:7070/images/";
 
+  const isValidFileUploaded = (file) => {
+    const validExtensions = ["png", "jpeg", "jpg"];
+    const fileExtension = file.type.split("/")[1];
+    return validExtensions.includes(fileExtension);
+  };
+
   const handleValdate = (e) => {
+    if (e.target.files.length < 1) {
+      return;
+    }
+    const file = e.target.files[0];
     setFiles(e.target.files[0]);
+    if (isValidFileUploaded(file)) {
+      //file is valid
+      toast.success("file is valid", {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 2000,
+      });
+    } else {
+      //file is invalid
+      toast.error("file is invalid", {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 2000,
+      });
+    }
   };
 
   return (
@@ -75,16 +116,16 @@ const ProfileUser = () => {
           <div className="col-xl-4">
             <div className="card mb-4 mb-xl-0">
               <div className="card-header fs-5">Profile Picture</div>
-              <form onSubmit={UpdateSubmit}>
+              <form autoComplete="off" onSubmit={UpdateSubmit}>
                 <div className="card-body text-center">
                   <img
                     className="img-account-profile rounded-circle mb-2"
-                    src={files ? URL.createObjectURL(files) : PL + img}
+                    src={file ? URL.createObjectURL(file) : PL + img}
                     alt="Userimage"
                   />
 
                   <div className="small font-italic text-muted mb-4">
-                    JPG or PNG no larger than 5 MB
+                    jpg, jpeg, png, no larger than 5 MB
                   </div>
                   <input
                     onChange={handleValdate}
@@ -234,6 +275,7 @@ const ProfileUser = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

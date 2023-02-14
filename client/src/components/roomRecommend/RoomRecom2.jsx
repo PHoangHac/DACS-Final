@@ -3,16 +3,27 @@ import "./roomreco.scss";
 import useFetch from "../../hooks/useFetch";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import axios from "axios";
 
 const RoomRecom2 = () => {
   const { data, loading } = useFetch("/room?bestChoice=true");
 
   const PL = "http://localhost:7070/images/";
 
+  const CountVistPost = async (id) => {
+    try {
+      await axios.put(`/room/CountPostVisit/${id}`, {
+        numVisit: 1,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="container mb-5">
       <h3 className="mt-2 badge bg-primary text-wrap fs-4">Recommend</h3>
-      <div className="row flex-row flex-nowrap overflow-auto">
+      <div className="row flex-row flex-nowrap overflow-auto pb-3">
         {loading ? (
           <div className="lds-ellipsis">
             <div></div>
@@ -28,7 +39,7 @@ const RoomRecom2 = () => {
                   className="col-12 col-sm-8 col-md-6 col-lg-4"
                   key={value._id}
                 >
-                  <div className="card">
+                  <div className="card" id="card-shadow-s">
                     <img
                       className="card-img"
                       src={PL + value.photos[0]}
@@ -48,6 +59,9 @@ const RoomRecom2 = () => {
                       <Link
                         to={`/detailRoom/${value._id}`}
                         className="btn btn-info mt-3"
+                        onClick={() => {
+                          CountVistPost(value._id);
+                        }}
                       >
                         View
                       </Link>
@@ -57,8 +71,9 @@ const RoomRecom2 = () => {
                         {moment(value.createdAt).startOf("hour").fromNow()}
                       </div>
                       <div className="stats">
-                        <i className="far fa-eye"></i> 1347
-                        <i className="far fa-comment ms-3"></i> 12
+                        <i className="far fa-eye"></i> {value.numVisit}
+                        <i className="far fa-comment ms-3"></i>{" "}
+                        {value.numReviews}
                       </div>
                     </div>
                   </div>

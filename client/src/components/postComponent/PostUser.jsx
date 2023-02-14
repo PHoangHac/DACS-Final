@@ -1,10 +1,11 @@
 import React, { useState, useContext } from "react";
-import "../../components/admin/updateUser/update.scss";
+import "../admin/updateUser/update.scss";
 // import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
 import { AuthContext } from "../../contexts/AuthContext";
+import { ToastContainer, toast } from "react-toastify";
 
 const PostUser = () => {
   const [file, setFile] = useState("");
@@ -44,30 +45,40 @@ const PostUser = () => {
       categoryid: categoryId,
       userid: id,
     };
-
-    const listphoto = await Promise.all(
-      Object.values(file).map(async (file) => {
-        const data = new FormData();
-        const filename = Date.now() + file.name;
-        data.append("name", filename);
-        data.append("MultipleFiles", file);
-        const uploadRes = await axios.post("/upload-multiple", data);
-
-        return uploadRes.data;
-      })
-    );
-
-    newPost.photos = listphoto;
-
-    // console.log(listphoto);
-
     try {
+      const listphoto = await Promise.all(
+        Object.values(file).map(async (file) => {
+          const data = new FormData();
+          const filename = Date.now() + file.name;
+          data.append("name", filename);
+          data.append("MultipleFiles", file);
+          const uploadRes = await axios.post(
+            `http://localhost:7070/api/upload-multiple`,
+            data
+          );
+
+          return uploadRes.data;
+        })
+      );
+
+      newPost.photos = listphoto;
+
+      // console.log(listphoto);
+
       await axios.post(`/room/${categoryId}/${id}`, newPost);
       // alert("Create Room successful !");
       Nagigate(`/MyPost/${user._id}`);
     } catch (err) {
+      toast.error(err, {
+        position: toast.POSITION.TOP_LEFT,
+        autoClose: 2000,
+      });
       console.log(err);
     }
+  };
+
+  const handleValdate = (e) => {
+    setFile(e.target.files);
   };
 
   // console.log(categoryId);
@@ -112,9 +123,7 @@ const PostUser = () => {
                     id="formFile"
                     name="MultipleFiles"
                     multiple
-                    onChange={(e) => {
-                      setFile(e.target.files);
-                    }}
+                    onChange={handleValdate}
                   ></input>
                 </div>
               </form>
@@ -323,6 +332,7 @@ const PostUser = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

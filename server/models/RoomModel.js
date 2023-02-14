@@ -1,5 +1,27 @@
 import mongoose from "mongoose";
 import Schema from "mongoose";
+
+const ReviewSchema = new mongoose.Schema(
+  {
+    username: {
+      type: String,
+      required: true,
+    },
+    rating: {
+      type: Number,
+      required: true,
+    },
+    comment: {
+      type: String,
+      required: true,
+    },
+    userid: { type: Schema.Types.ObjectId, required: true, ref: "Users" },
+  },
+  {
+    timestamps: true,
+  }
+);
+
 const RoomSchema = new mongoose.Schema(
   {
     title: {
@@ -39,9 +61,22 @@ const RoomSchema = new mongoose.Schema(
     },
     rating: {
       type: Number,
-      max: 5,
-      min: 0,
+      default: 0,
     },
+    numReviews: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    numVisit: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    // like: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: "Users",
+    // },
     bestChoice: {
       type: Boolean,
       default: false,
@@ -50,6 +85,7 @@ const RoomSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    reviews: [ReviewSchema],
     categoryid: { type: Schema.Types.ObjectId, ref: "Category" },
     userid: { type: Schema.Types.ObjectId, ref: "Users" },
   },

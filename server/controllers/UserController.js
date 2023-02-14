@@ -56,6 +56,7 @@ export const getAllUser = async (req, res, next) => {
   }
 };
 
+//get all room by user have
 export const GetRoomsUser = async (req, res, next) => {
   try {
     const getAllRoom = await Users.findById(req.params.id);

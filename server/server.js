@@ -23,6 +23,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 app.use("/images", express.static(path.join(__dirname, "/images")));
 
+// console.log(__dirname + "/images");
+
 //connect to mongoDB
 const ConnectDB = async () => {
   try {
