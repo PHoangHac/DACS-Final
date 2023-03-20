@@ -66,8 +66,8 @@ const Login = () => {
                   onChange={handleChange}
                   className="form-control form-control-input"
                   placeholder="User name"
-                  pattern="^[A-Za-z0-9]{5,12}$"
-                  title="Username should be 5-12 characters and shouldn't include any special character!"
+                  // pattern="^[A-Za-z0-9]{5,12}$"
+                  // title="Username should be 5-12 characters and shouldn't include any special character!"
                   required
                 />
               </div>
@@ -83,8 +83,8 @@ const Login = () => {
                   className="form-control form-control-input"
                   placeholder="********"
                   type={showpass ? "text" : "password"}
-                  pattern={`^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$`}
-                  title="Password should be 8-20 characters and include at least 1 letter, 1 number and 1 special character!"
+                  // pattern={`^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$`}
+                  // title="Password should be 8-20 characters and include at least 1 letter, 1 number and 1 special character!"
                   required
                   // autoComplete="true"
                 />

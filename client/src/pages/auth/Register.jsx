@@ -65,8 +65,8 @@ const Register = () => {
                   id="email"
                   className="form-control form-control-input "
                   placeholder="Email address"
-                  pattern={"[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$"}
-                  title="Must includes @gmail.com"
+                  // pattern={"[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$"}
+                  // title="Must includes @gmail.com"
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
@@ -80,8 +80,8 @@ const Register = () => {
                   id="username"
                   className="form-control form-control-input"
                   placeholder="User name"
-                  pattern="^[A-Za-z0-9]{5,12}$"
-                  title="Username should be 5-12 characters and shouldn't include any special character!"
+                  // pattern="^[A-Za-z0-9]{5,12}$"
+                  // title="Username should be 5-12 characters and shouldn't include any special character!"
                   onChange={(e) => setUserName(e.target.value)}
                   required
                 />
@@ -97,8 +97,8 @@ const Register = () => {
                   placeholder="********"
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  pattern={`^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$`}
-                  title="Password should be 8-20 characters and include at least 1 letter, 1 number and 1 special character!"
+                  // pattern={`^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$`}
+                  // title="Password should be 8-20 characters and include at least 1 letter, 1 number and 1 special character!"
                   autoComplete="on"
                 />
               </div>
@@ -144,8 +144,8 @@ const Register = () => {
                   id="phone"
                   className="form-control form-control-input"
                   placeholder="phone"
-                  pattern="^[0-9\-\+]{10,11}$"
-                  title="Phone number should be 10-11 number and shouldn't include any special character or character!"
+                  // pattern="^[0-9\-\+]{10,11}$"
+                  // title="Phone number should be 10-11 number and shouldn't include any special character or character!"
                   onChange={(e) => setPhone(e.target.value)}
                   required
                 />
